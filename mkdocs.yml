@@ -4,5 +4,9 @@ theme:
   name: material
   palette:
     primary: indigo
+  features:
+    - navigation.sections
+    - search.highlight
 nav:
   - Home: index.md
+  - Platform Reference: journeyloop.md
