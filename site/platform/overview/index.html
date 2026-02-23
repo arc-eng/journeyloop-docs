@@ -1,0 +1,1508 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="http://192.168.1.30:8001/platform/overview/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../companion/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Overview - JourneyLoop Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#journeyloop-platform-reference-for-companion-agents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="JourneyLoop Docs" class="md-header__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            JourneyLoop Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Platform
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../companion/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Companion
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="JourneyLoop Docs" class="md-nav__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    JourneyLoop Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Platform
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-journeyloop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is JourneyLoop?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Data Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coach-coachingprofile-authuser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coach (CoachingProfile → auth.User)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-coachingclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client (CoachingClient)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-coachingsession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session (CoachingSession)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utterance-sessionutterance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utterance (SessionUtterance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-shift-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The SHIFT Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The SHIFT Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#s-surface-emotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S — Surface Emotion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h-hand-back-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        H — Hand Back Ownership
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i-illuminate-contradictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I — Illuminate Contradictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-find-the-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F — Find the Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t-turn-insight-into-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T — Turn Insight into Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-generated-session-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI-Generated Session Content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#progress-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Progress Tracking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Progress Tracking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#goals-coachinggoal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals (CoachingGoal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#milestones-coachingmilestone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Milestones (CoachingMilestone)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observations-sessionobservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observations (SessionObservation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior-loops-clientloop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior Loops (ClientLoop)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-api-apicompanionv1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion API (/api/companion/v1/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Integrations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../companion/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Companion
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Companion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companion/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companion/operator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operator Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-journeyloop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is JourneyLoop?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Data Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coach-coachingprofile-authuser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coach (CoachingProfile → auth.User)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-coachingclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client (CoachingClient)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-coachingsession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session (CoachingSession)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utterance-sessionutterance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utterance (SessionUtterance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-shift-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The SHIFT Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The SHIFT Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#s-surface-emotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S — Surface Emotion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h-hand-back-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        H — Hand Back Ownership
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i-illuminate-contradictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I — Illuminate Contradictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-find-the-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F — Find the Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t-turn-insight-into-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T — Turn Insight into Action
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-generated-session-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI-Generated Session Content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#progress-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Progress Tracking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Progress Tracking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#goals-coachinggoal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals (CoachingGoal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#milestones-coachingmilestone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Milestones (CoachingMilestone)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observations-sessionobservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observations (SessionObservation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior-loops-clientloop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior Loops (ClientLoop)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-api-apicompanionv1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion API (/api/companion/v1/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Integrations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="journeyloop-platform-reference-for-companion-agents">JourneyLoop — Platform Reference for Companion Agents</h1>
+<h2 id="what-is-journeyloop">What is JourneyLoop?</h2>
+<p>JourneyLoop is an AI-powered coaching companion platform for independent coaches. Its tagline: <em>"You hold space for everyone. But who holds space for you?"</em></p>
+<p>The core premise: coaching is an isolated profession. JourneyLoop fixes that by acting as a companion to the coach — capturing every session, surfacing insights, reflecting growth, and preparing coaches for what's next. Coaches don't manually take notes or review transcripts. JourneyLoop handles that automatically.</p>
+<p><strong>The product does three things:</strong>
+1. <strong>Records and transcribes</strong> coaching sessions automatically (via Recall.ai bot joining Zoom/Meet/Teams)
+2. <strong>Analyzes transcripts</strong> using the SHIFT framework — giving coaches structured feedback on their coaching quality
+3. <strong>Tracks client progress</strong> across goals, milestones, and behavior patterns over time</p>
+<p>Coaches get AI-generated session notes, ICF-aligned coaching feedback, and cumulative client progress tracking — without any manual input.</p>
+<hr />
+<h2 id="core-data-model">Core Data Model</h2>
+<h3 id="coach-coachingprofile-authuser">Coach (<code>CoachingProfile</code> → <code>auth.User</code>)</h3>
+<p>The primary user. Has a name, business name, coaching niche, and description. Owns all clients and sessions.</p>
+<h3 id="client-coachingclient">Client (<code>CoachingClient</code>)</h3>
+<p>Belongs to one coach. Key fields:
+- <code>name</code>, <code>email</code> — identity
+- <code>total_sessions</code> — sessions in the coaching package (e.g., 6 or 12)
+- <code>actual_completed_sessions</code> — dynamic count (date ≤ today, type = regular)
+- <code>sessions</code> → <code>CoachingSession</code> objects
+- <code>progress_goals</code> → <code>CoachingGoal</code> objects
+- <code>milestones</code> → <code>CoachingMilestone</code> objects
+- <code>has_consented</code> — client must consent before AI can process their transcripts
+- Optional client portal access (linked <code>auth.User</code>)</p>
+<h3 id="session-coachingsession">Session (<code>CoachingSession</code>)</h3>
+<p>A single coaching meeting. Key fields:
+- <code>client</code> — FK to <code>CoachingClient</code>
+- <code>title</code>, <code>date</code>, <code>session_type</code> (<code>regular</code> or <code>intake</code> — intake doesn't count toward package total)
+- <code>transcript</code> — full text (deferred by default for performance; use <code>all_fields</code> manager when needed)
+- <code>transcript_json</code> — raw JSON from Recall.ai with timestamps
+- <code>meeting_url</code>, <code>recall_bot_id</code>, <code>recall_bot_status</code> — Recall.ai recording integration
+- <code>progress_extracted</code> — whether AI has processed this session
+- <code>is_completed</code> — property: <code>date &lt;= today</code></p>
+<h3 id="utterance-sessionutterance">Utterance (<code>SessionUtterance</code>)</h3>
+<p>Individual speech segment from a transcript:
+- <code>speaker_type</code> — <code>coach</code> or <code>client</code>
+- <code>text_clean</code> — cleaned text
+- <code>sequence_number</code> — 1-based ordering
+- <code>timestamp_min</code> / <code>timestamp_sec</code> — position in session</p>
+<hr />
+<h2 id="the-shift-framework">The SHIFT Framework</h2>
+<p>SHIFT is JourneyLoop's proprietary coaching quality model, grounded in ICF competencies and evidence-based coaching research. After each session, AI analyzes the transcript against 5 principles, identifying moments where the coach applied them well (<strong>Excellence Signals</strong>) or missed an opportunity (<strong>Growth Opportunities</strong>).</p>
+<p><strong>SHIFT = S·H·I·F·T</strong></p>
+<h3 id="s-surface-emotion">S — Surface Emotion</h3>
+<p><em>Notice, name, and validate client emotions when they arise.</em></p>
+<p><strong>Patterns (what good looks like):</strong>
+- <strong>Label the Feeling</strong> — Coach reflects client's emotional language (<em>"That overwhelm sounds really heavy for you."</em>)
+- <strong>Ask About Emotion</strong> — Coach directly inquires about feelings (<em>"What feelings are coming up as you say that?"</em>)
+- <strong>Affective Mirroring</strong> — Coach's tone matches client's emotional state</p>
+<p><strong>Anti-patterns (missed opportunities):</strong>
+- <strong>Task-Switch after Emotion</strong> — Pivoting to tasks right after emotional disclosure
+- <strong>Emotion Avoidance</strong> — Ignoring or sidestepping emotional cues
+- <strong>Affect-Free Paraphrase</strong> — Paraphrasing content without reflecting the emotion</p>
+<hr />
+<h3 id="h-hand-back-ownership">H — Hand Back Ownership</h3>
+<p><em>Return agency to the client. Let them define direction and next steps.</em></p>
+<p><strong>Patterns:</strong>
+- <strong>Invite Decisions</strong> — Coach asks client to define their own solutions
+- <strong>Agency Language</strong> — Framing that emphasizes the client's choice (<em>"It's your choice which step you take first."</em>)
+- <strong>Curiosity over Advice</strong> — Using inquiry instead of giving answers</p>
+<p><strong>Anti-patterns:</strong>
+- <strong>Preemptive Advice</strong> — Offering solutions before the client has a chance to find their own
+- <strong>Goal Takeover</strong> — Coach reshapes or restates the client's goals with their own agenda
+- <strong>Directed Solutions</strong> — Dictating what the client should do</p>
+<hr />
+<h3 id="i-illuminate-contradictions">I — Illuminate Contradictions</h3>
+<p><em>Spot and reflect inconsistencies, limiting beliefs, or avoidance in the client's language.</em></p>
+<p><strong>Patterns:</strong>
+- <strong>Name the Tension</strong> — Coach reflects contradictions in client statements (<em>"You say you want to take risks, yet uncertainty feels intolerable — how do those fit together?"</em>)
+- <strong>Values-Behavior Check</strong> — Highlighting misalignment between stated values and actions
+- <strong>Invite the Disowned</strong> — Exploring topics the client is avoiding</p>
+<p><strong>Anti-patterns:</strong>
+- <strong>Contradiction Blindness</strong> — Ignoring clear inconsistencies in the client's narrative
+- <strong>Comfort Detour</strong> — Sidestepping difficult or uncomfortable material
+- <strong>Reassure Instead of Explore</strong> — Soothing away contradictions rather than exploring them</p>
+<hr />
+<h3 id="f-find-the-pattern">F — Find the Pattern</h3>
+<p><em>Name meaningful themes or behavioral loops visible within (and across) the session.</em></p>
+<p><strong>Patterns:</strong>
+- <strong>Theme Detection</strong> — Identifying a recurring theme in the client's language
+- <strong>Name Core Driver</strong> — Identifying a deeper belief or value driving behavior
+- <strong>Reframe to Meta</strong> — Lifting the narrative to a higher pattern-based level</p>
+<p><strong>Anti-patterns:</strong>
+- <strong>Surface Parroting</strong> — Repeating client words without deeper synthesis
+- <strong>Theme Avoidance</strong> — Ignoring recurring signals
+- <strong>Reactive Only</strong> — Responding moment-to-moment without connecting the dots</p>
+<hr />
+<h3 id="t-turn-insight-into-action">T — Turn Insight into Action</h3>
+<p><em>Help the client translate reflection into clear, specific, committed next steps.</em></p>
+<p><strong>Patterns:</strong>
+- <strong>Elicit Concrete Action</strong> — Asking the client to define their own next steps (<em>"What's one specific action you'll take this week?"</em>)
+- <strong>Make It Measurable</strong> — Encouraging time-bound, specific commitments
+- <strong>Reflect Decisions Made</strong> — Consolidating commitments voiced during the session</p>
+<p><strong>Anti-patterns:</strong>
+- <strong>No Next Step</strong> — Session ends without any explicit action
+- <strong>Insight-Only Closure</strong> — Celebrating insight but skipping action planning
+- <strong>Coach-Defined Action</strong> — Prescribing steps instead of eliciting them</p>
+<hr />
+<h2 id="ai-generated-session-content">AI-Generated Session Content</h2>
+<p>When a transcript is uploaded, a <code>SessionContentRequest</code> processes four things asynchronously:</p>
+<ol>
+<li><strong>Session Analysis</strong> (<code>CoachingSessionAnalysis</code>) — overall session summary, themes, key takeaways</li>
+<li><strong>SHIFT Insights</strong> — <code>GrowthOpportunity</code> + <code>ExcellenceSignal</code> objects (each linked to specific utterances, with feedback to the coach, why it matters, and a better example)</li>
+<li><strong>Progress</strong> — <code>SessionObservation</code> objects extracted from utterances, linked to goals and milestones with numeric delta impact</li>
+<li><strong>Behavior Loops</strong> (<code>ClientLoop</code>) — recurring trigger-response-consequence patterns identified across sessions</li>
+</ol>
+<hr />
+<h2 id="progress-tracking">Progress Tracking</h2>
+<h3 id="goals-coachinggoal">Goals (<code>CoachingGoal</code>)</h3>
+<p>Long-running objectives. Have a <code>slug</code> (unique per client, used for AI reference), <code>title</code>, <code>status</code> (<code>active</code>/<code>paused</code>/<code>complete</code>). Progress accumulates via <code>ObservationGoal</code> delta links (-0.10 to +0.10 per observation).</p>
+<h3 id="milestones-coachingmilestone">Milestones (<code>CoachingMilestone</code>)</h3>
+<p>Date-driven events (e.g., "Sales presentation on March 15th"). Have <code>target_date</code>, <code>status</code> (<code>upcoming</code>/<code>completed</code>/<code>missed</code>).</p>
+<h3 id="observations-sessionobservation">Observations (<code>SessionObservation</code>)</h3>
+<p>AI-extracted client moments. <code>stance</code> = <code>struggle</code>/<code>intent</code>/<code>plan</code>/<code>reflection</code>/<code>outcome</code>. Include valence (-1.0 to 1.0), intensity, and certainty scores. Linked to goals and milestones with delta impacts.</p>
+<h3 id="behavior-loops-clientloop">Behavior Loops (<code>ClientLoop</code>)</h3>
+<p>Cross-session patterns: <code>trigger</code> → <code>response</code> → <code>consequence</code>. Status: <code>emerging</code>/<code>active</code>/<code>evolving</code>/<code>resolved</code>.</p>
+<hr />
+<h2 id="companion-api-apicompanionv1">Companion API (<code>/api/companion/v1/</code>)</h2>
+<p>The agent's data access layer. Bearer token auth (<code>CompanionAPIKeyAuthentication</code>), scoped to the coach who owns the key.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/clients/</code></td>
+<td>List clients (id, name, email)</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/clients/&lt;id&gt;/</code></td>
+<td>Client detail with goals and milestones</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/clients/search/?q=</code></td>
+<td>Search clients by name</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/clients/&lt;id&gt;/sessions/</code></td>
+<td>All sessions for a client</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/clients/&lt;id&gt;/goals/</code></td>
+<td>List goals</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/clients/&lt;id&gt;/goals/</code></td>
+<td>Create a goal</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/clients/&lt;id&gt;/goals/&lt;goal_id&gt;/</code></td>
+<td>Update goal title or status</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/clients/&lt;id&gt;/goals/&lt;goal_id&gt;/</code></td>
+<td>Delete a goal</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/sessions/upcoming/</code></td>
+<td>Upcoming sessions (next 7 days)</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/sessions/recent/?limit=N</code></td>
+<td>Recent past sessions (default 10)</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/sessions/&lt;id&gt;/</code></td>
+<td>Session detail</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/sessions/&lt;id&gt;/transcript/</code></td>
+<td>Raw transcript text</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/profile/</code></td>
+<td>Update companion profile (e.g., set name)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-integrations">Key Integrations</h2>
+<ul>
+<li><strong>Recall.ai</strong> — recording bot that joins video calls, captures live transcript</li>
+<li><strong>Google Calendar</strong> — auto-creates sessions from calendar events</li>
+<li><strong>Stripe</strong> — coach subscription billing (Starter free, paid tiers for more clients)</li>
+<li><strong>Client portal</strong> — clients can log in, view session takeaways, track their own progress</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

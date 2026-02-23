@@ -1,0 +1,441 @@
+SHIFT_framework:
+  acronym: "SHIFT"
+  version: "1.2"
+  description: "Transcript-detectable coaching framework with 3 patterns and 3 anti-patterns per principle. Each block is evidence-backed and includes a concrete example."
+
+  principles:
+    - code: "S"
+      name: "Surface Emotion"
+      description: "Notice, name, and validate client emotions when they arise."
+      patterns:
+        - name: "Label the Feeling"
+          text: "Coach labels or reflects client emotional language."
+          sources:
+            - title: "ICF Core Competency 6: Listens Actively"
+              url: "https://coachingfederation.org/core-competencies"
+            - title: "Rogers (1957). Conditions of therapeutic change"
+              url: "https://psycnet.apa.org/record/1957-08954-001"
+          reasoning: "Empathic reflection strengthens alliance and deepens exploration."
+          impact:
+            when_applied: "Client feels validated and safe."
+            when_not_applied: "Client feels unseen; shuts down emotionally."
+          example_scenario: |
+            Client: "I feel overwhelmed."
+            Coach: "That overwhelm sounds really heavy for you."
+
+        - name: "Ask About Emotion"
+          text: "Coach directly inquires about feelings."
+          sources:
+            - title: "ICF Core Competency 7: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+            - title: "Miller & Rollnick (2013). Motivational Interviewing"
+              url: "https://www.guilford.com/books/Motivational-Interviewing/Miller-Rollnick/9781609182274"
+          reasoning: "Direct inquiry promotes emotional literacy."
+          impact:
+            when_applied: "Client names and processes feelings."
+            when_not_applied: "Emotion remains vague and unprocessed."
+          example_scenario: |
+            Client: "I don’t know why I’m stuck."
+            Coach: "What feelings are coming up as you say that?"
+
+        - name: "Affective Mirroring"
+          text: "Coach uses affective tone that mirrors client state."
+          sources:
+            - title: "ICF Core Competency 5: Maintains Presence"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Tone attunement signals empathy and safety."
+          impact:
+            when_applied: "Trust builds; deeper disclosure occurs."
+            when_not_applied: "Conversation feels mechanical or distant."
+          example_scenario: |
+            Client: "I’m devastated."
+            Coach (gentle tone): "That devastation sounds painful."
+
+      anti_patterns:
+        - name: "Task-Switch after Emotion"
+          text: "Coach pivots to tasks right after emotional disclosure."
+          sources:
+            - title: "ICF Competency: Listens Actively"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Interrupts processing and signals discomfort."
+          impact:
+            when_applied: "Client feels dismissed."
+            when_not_applied: "Client processes fully and learns."
+          example_scenario: |
+            Client: "I feel crushed."
+            Coach: "Okay, so what’s on your agenda next week?"
+
+        - name: "Emotion Avoidance"
+          text: "Coach ignores or sidesteps emotional cues."
+          sources:
+            - title: "Rogers (1957). Conditions of therapeutic change"
+              url: "https://psycnet.apa.org/record/1957-08954-001"
+          reasoning: "Avoidance teaches suppression of data."
+          impact:
+            when_applied: "Alliance weakens."
+            when_not_applied: "Safe disclosure emerges."
+          example_scenario: |
+            Client: "I’m angry with my boss."
+            Coach: "Let’s talk about your workload timeline."
+
+        - name: "Affect-Free Paraphrase"
+          text: "Coach paraphrases without emotional reflection."
+          sources:
+            - title: "ICF Competency: Listens Actively"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Misses affective core of the statement."
+          impact:
+            when_applied: "Client feels unseen."
+            when_not_applied: "Client feels validated."
+          example_scenario: |
+            Client: "I’m heartbroken."
+            Coach: "So you had a tough meeting."
+
+    - code: "H"
+      name: "Hand Back Ownership"
+      description: "Return agency to the client by letting them define direction and next steps."
+      patterns:
+        - name: "Invite Decisions"
+          text: "Coach invites client to define solutions."
+          sources:
+            - title: "Whitmore (2009). Coaching for Performance"
+              url: "https://www.routledge.com/Coaching-for-Performance/Whitmore/p/book/9781857885354"
+          reasoning: "Invites autonomy and accountability."
+          impact:
+            when_applied: "Client owns action."
+            when_not_applied: "Coach dependency grows."
+          example_scenario: |
+            Coach: "What decision feels right to you?"
+
+        - name: "Agency Language"
+          text: "Coach frames language to emphasize client agency."
+          sources:
+            - title: "Deci & Ryan (2000). Self-Determination Theory"
+              url: "https://psycnet.apa.org/record/2000-13324-007"
+          reasoning: "Autonomy-supportive framing boosts motivation."
+          impact:
+            when_applied: "Self-efficacy grows."
+            when_not_applied: "Client defers decisions to coach."
+          example_scenario: |
+            Coach: "It’s your choice which step you take first."
+
+        - name: "Curiosity over Advice"
+          text: "Coach uses inquiry instead of giving advice."
+          sources:
+            - title: "Miller & Rollnick (2013). Motivational Interviewing"
+              url: "https://www.guilford.com/books/Motivational-Interviewing/Miller-Rollnick/9781609182274"
+          reasoning: "Evocation yields stickier solutions."
+          impact:
+            when_applied: "Client creativity increases."
+            when_not_applied: "Solutions imposed externally."
+          example_scenario: |
+            Client: "I don’t know what to try."
+            Coach: "What options have you considered already?"
+
+      anti_patterns:
+        - name: "Preemptive Advice"
+          text: "Coach offers solutions before client does."
+          sources:
+            - title: "Grant (2012). Goal-focused coaching"
+              url: "https://psycnet.apa.org/record/2012-16542-001"
+          reasoning: "Undermines exploration."
+          impact:
+            when_applied: "Compliance, not ownership."
+            when_not_applied: "Self-directed action."
+          example_scenario: |
+            Client: "I’m not sure what to do."
+            Coach: "You should start with journaling."
+
+        - name: "Goal Takeover"
+          text: "Coach restates or reshapes client’s goals."
+          sources:
+            - title: "ICF Competency: Facilitates Growth"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Substitutes coach’s agenda."
+          impact:
+            when_applied: "Misaligned goals, weak motivation."
+            when_not_applied: "Authentic client goals."
+          example_scenario: |
+            Client: "I want to feel balanced."
+            Coach: "So your goal is to meditate daily."
+
+        - name: "Directed Solutions"
+          text: "Coach dictates solutions instead of eliciting."
+          sources:
+            - title: "Whitmore – GROW model"
+              url: "https://www.routledge.com/Coaching-for-Performance/Whitmore/p/book/9781857885354"
+          reasoning: "Reduces ownership."
+          impact:
+            when_applied: "Client follows passively."
+            when_not_applied: "Client innovates actively."
+          example_scenario: |
+            Client: "I feel stuck."
+            Coach: "Here’s the process you need to follow."
+
+
+
+    - code: "I"
+      name: "Illuminate Contradictions"
+      description: "Spot and reflect inconsistencies, limiting beliefs, or avoidance in the client’s language."
+      patterns:
+        - name: "Name the Tension"
+          text: "Coach reflects contradictions in client statements."
+          sources:
+            - title: "Festinger (1957). A Theory of Cognitive Dissonance"
+              url: "https://www.sup.org/books/title/?id=2266"
+            - title: "ICF Core Competency 7: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Surfacing contradictions creates cognitive dissonance that catalyzes reflection and choice."
+          impact:
+            when_applied: "Client notices hidden conflicts and finds clarity."
+            when_not_applied: "Contradictions persist; indecision and stagnation follow."
+          example_scenario: |
+            Client: "I want to take risks but I also can’t handle uncertainty."
+            Coach: "I hear that you want to take risks, yet uncertainty feels intolerable. How do you see those fitting together?"
+
+        - name: "Values-Behavior Check"
+          text: "Coach highlights tensions between stated values and current behaviors."
+          sources:
+            - title: "Acceptance & Commitment Therapy – Values-Based Action"
+              url: "https://www.apa.org/pubs/books/4317312"
+            - title: "ICF: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Linking values and behavior helps clients align actions with deeper purpose."
+          impact:
+            when_applied: "Motivation grows through value alignment."
+            when_not_applied: "Misalignment undermines satisfaction and progress."
+          example_scenario: |
+            Client: "Family is my top priority, but I always stay late at the office."
+            Coach: "I notice your actions around work may not align with your stated priority of family. What do you make of that?"
+
+        - name: "Invite the Disowned"
+          text: "Coach explores avoided or minimized topics."
+          sources:
+            - title: "de Haan et al. (2016). Critical moments in coaching"
+              url: "https://www.taylorfrancis.com/books/edit/10.4324/9781315693734/Critical-Moments-Coaching"
+            - title: "ICF: Maintains Presence"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Approaching avoided material opens space for breakthroughs."
+          impact:
+            when_applied: "Client integrates shadow aspects; more freedom of choice."
+            when_not_applied: "Avoidance persists; cycles repeat."
+          example_scenario: |
+            Client: "I’d rather not talk about how my team reacted."
+            Coach: "I hear some hesitation — what feels difficult about looking at their reaction?"
+
+      anti_patterns:
+        - name: "Contradiction Blindness"
+          text: "Coach ignores clear inconsistencies in client narrative."
+          sources:
+            - title: "ICF Competency: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Missed contradictions allow ambivalence to persist."
+          impact:
+            when_applied: "Client remains conflicted and stuck."
+            when_not_applied: "Tensions are explored and resolved."
+          example_scenario: |
+            Client: "I value honesty, but I haven’t told my partner about my plans."
+            Coach: "Okay, let’s move on to your project timeline."
+
+        - name: "Comfort Detour"
+          text: "Coach avoids difficult or uncomfortable client material."
+          sources:
+            - title: "ICF Core Competency 5: Maintains Presence"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Dodging discomfort weakens growth potential."
+          impact:
+            when_applied: "Session remains shallow; insight limited."
+            when_not_applied: "Client faces reality and grows through it."
+          example_scenario: |
+            Client: "I feel like a fraud at work."
+            Coach: "Well, let’s talk about your goals for the quarter."
+
+        - name: "Reassure Instead of Explore"
+          text: "Coach soothes contradictions with reassurance instead of exploration."
+          sources:
+            - title: "ICF Core Competency 7: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Premature reassurance reduces awareness of growth edge."
+          impact:
+            when_applied: "Issues stay unexamined; no shift occurs."
+            when_not_applied: "Contradictions lead to reflection and change."
+          example_scenario: |
+            Client: "I want to step up as a leader but I hate conflict."
+            Coach: "Don’t worry, you’ll get better at it naturally."
+
+    - code: "F"
+      name: "Find the Pattern"
+      description: "Name meaningful themes or behavioral loops visible within the session."
+      patterns:
+        - name: "Theme Detection"
+          text: "Coach identifies a recurring theme in the client’s language or experiences."
+          sources:
+            - title: "de Haan, E. (2016). Critical moments in coaching"
+              url: "https://www.taylorfrancis.com/books/edit/10.4324/9781315693734/Critical-Moments-Coaching"
+            - title: "ICF Core Competency 6: Listens Actively"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Spotting recurring themes simplifies complexity and creates leverage for change."
+          impact:
+            when_applied: "Client recognizes bigger picture patterns shaping behavior."
+            when_not_applied: "Session remains fragmented; same issues re-emerge."
+          example_scenario: |
+            Client: "I feel stressed at work… at home it’s the same, I’m always stressed."
+            Coach: "I notice stress shows up as a recurring theme across contexts."
+
+        - name: "Name Core Driver"
+          text: "Coach identifies a deeper driver, value, or belief influencing behavior."
+          sources:
+            - title: "ICF Core Competency 7: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+            - title: "Schwartz & Sharpe (2010). Practical Wisdom"
+              url: "https://www.penguinrandomhouse.com/books/172359/practical-wisdom-by-barry-schwartz-and-kenneth-sharpe/"
+          reasoning: "Pointing out the driver helps the client see why behaviors repeat."
+          impact:
+            when_applied: "Client gains clarity on what truly motivates them."
+            when_not_applied: "Hidden drivers unconsciously steer behavior."
+          example_scenario: |
+            Client: "I always end up taking on too much work."
+            Coach: "It seems a strong value of responsibility is driving this pattern."
+
+        - name: "Reframe to Meta"
+          text: "Coach reframes the narrative at a higher, pattern-based level."
+          sources:
+            - title: "Gross, J. (2015). Emotion regulation: Current status and future prospects"
+              url: "https://www.sciencedirect.com/science/article/abs/pii/S0065260115000021"
+            - title: "ICF Competency: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Meta-framing creates distance from the immediate story and fosters flexibility."
+          impact:
+            when_applied: "Client sees options; expands perspective."
+            when_not_applied: "Client stays stuck in the weeds of one narrative."
+          example_scenario: |
+            Client: "I keep failing at presentations."
+            Coach: "I hear a broader pattern of self-criticism around performance moments."
+
+      anti_patterns:
+        - name: "Surface Parroting"
+          text: "Coach repeats client words without deeper synthesis."
+          sources:
+            - title: "ICF Core Competency 7: Evokes Awareness"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Parroting validates but doesn’t generate new insight."
+          impact:
+            when_applied: "Conversation stays shallow and repetitive."
+            when_not_applied: "New insight emerges from synthesis."
+          example_scenario: |
+            Client: "I feel overwhelmed with deadlines."
+            Coach: "So you’re overwhelmed with deadlines."
+
+        - name: "Theme Avoidance"
+          text: "Coach ignores recurring signals or repeated language."
+          sources:
+            - title: "ICF Competency: Listens Actively"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Avoiding themes misses the structure in the client’s story."
+          impact:
+            when_applied: "Coach and client chase symptoms endlessly."
+            when_not_applied: "Coach highlights leverage points for change."
+          example_scenario: |
+            Client (several times): "I’m overwhelmed… I’m always busy."
+            Coach: "So, what’s your project this week?"
+
+        - name: "Reactive Only"
+          text: "Coach stays reactive to moment-to-moment narrative without synthesizing."
+          sources:
+            - title: "ICF Core Competency 5: Maintains Presence"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Pure reactivity limits the ability to see the bigger system at play."
+          impact:
+            when_applied: "Client leaves with little new understanding."
+            when_not_applied: "Session connects dots; new possibilities appear."
+          example_scenario: |
+            Client: "I missed another deadline, I don’t know why."
+            Coach: "So what’s the next deadline?"
+    - code: "T"
+      name: "Turn Insight into Action"
+      description: "Help the client turn reflection into clear, specific, and committed next steps."
+      patterns:
+        - name: "Elicit Concrete Action"
+          text: "Coach asks the client to define concrete actions or commitments."
+          sources:
+            - title: "Grant, A. (2012). Goal-focused coaching and coaching psychology"
+              url: "https://psycnet.apa.org/record/2012-16542-001"
+            - title: "ICF Core Competency 8: Facilitates Client Growth"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Client-authored actions are more relevant and sustainable."
+          impact:
+            when_applied: "Client leaves session with practical, owned steps."
+            when_not_applied: "Insight doesn’t translate to real-world progress."
+          example_scenario: |
+            Coach: "What’s one specific action you’ll take this week to put this into practice?"
+
+        - name: "Make It Measurable"
+          text: "Coach encourages articulation of measurable, time-bound steps."
+          sources:
+            - title: "Locke & Latham (2002). Building a practically useful theory of goal setting"
+              url: "https://psycnet.apa.org/record/2002-02467-001"
+            - title: "Whitmore (2009). Coaching for Performance"
+              url: "https://www.routledge.com/Coaching-for-Performance/Whitmore/p/book/9781857885354"
+          reasoning: "Specificity boosts clarity, accountability, and execution."
+          impact:
+            when_applied: "Progress is easier to track and celebrate."
+            when_not_applied: "Commitments stay vague; low follow-through."
+          example_scenario: |
+            Client: "I’ll try to communicate better."
+            Coach: "How will you measure that? For example, how many times will you check in with your team this week?"
+
+        - name: "Reflect Decisions Made"
+          text: "Coach reflects and consolidates commitments voiced in session."
+          sources:
+            - title: "Kolb, D. (1984). Experiential learning: Experience as the source of learning and development"
+              url: "https://www.pearson.com/en-us/subject-catalog/p/experiential-learning/P200000005566/9780132952613"
+            - title: "ICF: Facilitates Client Growth"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Reflecting back consolidates memory, learning, and accountability."
+          impact:
+            when_applied: "Commitments are remembered and acted on."
+            when_not_applied: "Client forgets or downplays commitments."
+          example_scenario: |
+            Coach: "So you’ve decided to have that conversation with your manager by Thursday — and to prepare three talking points."
+
+      anti_patterns:
+        - name: "No Next Step"
+          text: "Session ends without explicit action or next step."
+          sources:
+            - title: "ICF Core Competency 8: Facilitates Client Growth"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Without steps, insights decay and fail to materialize."
+          impact:
+            when_applied: "Session feels good but produces no change."
+            when_not_applied: "Momentum builds; behavior shifts."
+          example_scenario: |
+            Client: "This was a great session."
+            Coach: "Glad it helped, see you next week."
+
+        - name: "Insight-Only Closure"
+          text: "Coach celebrates insight but skips action planning."
+          sources:
+            - title: "Grant, A. (2012). Goal-focused coaching"
+              url: "https://psycnet.apa.org/record/2012-16542-001"
+          reasoning: "Aha moments alone don’t ensure transformation."
+          impact:
+            when_applied: "Client feels inspired but change fades."
+            when_not_applied: "Insights anchor into behavior."
+          example_scenario: |
+            Client: "I realize I’ve been avoiding tough conversations."
+            Coach: "That’s a powerful insight. Let’s wrap up here."
+
+        - name: "Coach-Defined Action"
+          text: "Coach prescribes action steps instead of eliciting them."
+          sources:
+            - title: "Deci & Ryan (2000). Self-determination theory"
+              url: "https://psycnet.apa.org/record/2000-13324-007"
+            - title: "ICF: Client-driven planning"
+              url: "https://coachingfederation.org/core-competencies"
+          reasoning: "Externally imposed steps lack ownership and reduce persistence."
+          impact:
+            when_applied: "Client complies briefly but disengages long-term."
+            when_not_applied: "Client takes full ownership of chosen actions."
+          example_scenario: |
+            Client: "I’m not sure what to do."
+            Coach: "You should set up three meetings by Friday."

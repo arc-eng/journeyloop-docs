@@ -1,15 +1,27 @@
 site_name: JourneyLoop Docs
-site_url: http://localhost:8001
+site_url: http://192.168.1.30:8001
 theme:
   name: material
   palette:
     primary: indigo
   features:
+    - navigation.tabs
     - navigation.sections
+    - navigation.indexes
+    - navigation.expand
+    - navigation.top
     - search.highlight
+    - search.suggest
+
 nav:
   - Home: index.md
-  - Platform Reference: journeyloop.md
-  - Companion API: companion-api.md
-  - Companion Operator Guide: companion-operator.md
-  - Engineering Process: process.md
+  - Platform:
+    - platform/index.md
+    - Overview: platform/overview.md
+  - Companion:
+    - companion/index.md
+    - API Reference: companion/api-reference.md
+    - Operator Guide: companion/operator.md
+  - Engineering:
+    - engineering/index.md
+    - Process: engineering/process.md
