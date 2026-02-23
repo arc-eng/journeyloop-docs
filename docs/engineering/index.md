@@ -10,3 +10,6 @@ This section covers the **team and process layer**: how issues move through the 
 
 **[Process](process.md)**
 The engineering process: issue lifecycle (from brief through spec, UX, tech spec, dev, and done), label taxonomy, planning conventions, and how agents collaborate. The single source of truth for how work moves through the system.
+
+**[Agent Roster & Org Structure](agent-roster.md)**
+The full AI agent team: roles, responsibilities, session keys, and collaboration protocols. Covers the JourneyLoop agents (CTO, PM, UX, SWE, Docs, Ray, Audit, Doctor) and supporting agents on the same OpenClaw instance.
