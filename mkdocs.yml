@@ -1,0 +1,8 @@
+site_name: JourneyLoop Docs
+site_url: http://localhost:8001
+theme:
+  name: material
+  palette:
+    primary: indigo
+nav:
+  - Home: index.md
