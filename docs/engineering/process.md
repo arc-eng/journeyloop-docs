@@ -1,4 +1,9 @@
-# Engineering Process
+---
+title: Engineering Process
+description: Issue lifecycle, agent roles, planning conventions, and collaboration protocols.
+---
+
+# :material-state-machine: Engineering Process
 
 How the JourneyLoop agent team manages issues, specs, and development workflow.
 
@@ -25,9 +30,11 @@ planning/<project>/<feature>/
   tech-spec.md      ← Technical architecture: system design, decisions
 ```
 
-Not every feature needs every file. Backend-only features skip `ux.md`. Simple features might only need `brief.md`.
+!!! tip "Not every feature needs every file"
+    Backend-only features skip `ux.md`. Simple features might only need `brief.md`.
 
-**Example:**
+**Example structure:**
+
 ```
 planning/companion/
   memory-system/
@@ -74,8 +81,20 @@ The status table is updated as verticals are completed.
 
 Each feature issue carries **exactly one** lifecycle label at a time. The label answers: *"What does this feature need next?"*
 
-```
-[*] → needs-spec → needs-ux → needs-tech-spec → needs-review → ready-for-dev → [done]
+```mermaid
+stateDiagram-v2
+    [*] --> needs_spec : Feature created
+    needs_spec --> needs_ux : PM writes brief
+    needs_ux --> needs_tech_spec : UX concept done
+    needs_tech_spec --> needs_review : CTO writes tech spec
+    needs_review --> ready_for_dev : Marco approves
+    ready_for_dev --> [*] : SWE ships it
+
+    needs_spec : needs-spec
+    needs_ux : needs-ux
+    needs_tech_spec : needs-tech-spec
+    needs_review : needs-review
+    ready_for_dev : ready-for-dev
 ```
 
 ### Lifecycle Labels
@@ -93,10 +112,12 @@ Each feature issue carries **exactly one** lifecycle label at a time. The label 
 
 ### Escalation Labels (to Marco)
 
+!!! warning "Escalation labels trigger a ping to Marco"
+
 | Label | Action | Means |
 |-------|--------|-------|
-| `needs-founder-decision` | 🔔 Ping Marco | Above agent authority — options + recommendation |
-| `needs-founder-approval` | 🔔 Ping Marco | Both agents signed off, need go/no-go |
+| `needs-founder-decision` | :material-bell: Ping Marco | Above agent authority — options + recommendation |
+| `needs-founder-approval` | :material-bell: Ping Marco | Both agents signed off, need go/no-go |
 | `founder-fyi` | Silent | Awareness only |
 
 ---
@@ -105,39 +126,45 @@ Each feature issue carries **exactly one** lifecycle label at a time. The label 
 
 | Role | Owns | Transitions |
 |------|------|------------|
-| **PM** | `brief.md`, acceptance criteria, prioritization | `needs-spec` → `needs-ux` or `needs-tech-spec` |
-| **CTO** | `tech-spec.md`, architecture decisions, PR review | `needs-tech-spec` → `needs-review` |
-| **UX Agent** | `ux.md`, interaction design, wireframes | `needs-ux` → `needs-tech-spec` or `needs-review` |
-| **Marco** | Founder decisions, approvals | `needs-review` → `ready-for-dev` |
-| **SWE** | Implementation, PRs | `ready-for-dev` → done |
+| :material-briefcase-outline: **PM** | `brief.md`, acceptance criteria, prioritization | `needs-spec` → `needs-ux` or `needs-tech-spec` |
+| :material-wrench-outline: **CTO** | `tech-spec.md`, architecture decisions, PR review | `needs-tech-spec` → `needs-review` |
+| :material-palette-outline: **UX Agent** | `ux.md`, interaction design, wireframes | `needs-ux` → `needs-tech-spec` or `needs-review` |
+| :material-crown-outline: **Marco** | Founder decisions, approvals | `needs-review` → `ready-for-dev` |
+| :material-code-braces: **SWE** | Implementation, PRs | `ready-for-dev` → done |
 
 ---
 
 ## Label Taxonomy
 
-### Type
-`feature`, `bug`, `tech-debt`, `enhancement`, `adr`
+=== ":material-tag-outline: Type"
 
-### Area
-`backend`, `frontend`, `api`, `cli`, `calendar`, `ai`
+    `feature` · `bug` · `tech-debt` · `enhancement` · `adr`
 
-### Size
-`size/S`, `size/M`, `size/L`, `size/XL`
+=== ":material-layers-outline: Area"
 
-### Priority
-`p0-critical`, `p1-high`, `p2-medium`, `p3-low`
+    `backend` · `frontend` · `api` · `cli` · `calendar` · `ai`
 
-### Category
-`vision`, `bug`, `enhancement`, `epic`
+=== ":material-resize: Size"
+
+    `size/S` · `size/M` · `size/L` · `size/XL`
+
+=== ":material-alert-outline: Priority"
+
+    `p0-critical` · `p1-high` · `p2-medium` · `p3-low`
+
+=== ":material-folder-outline: Category"
+
+    `vision` · `bug` · `enhancement` · `epic`
 
 ---
 
 ## Documentation Rules
 
-### Every label change gets a comment
-Explain WHY the label changed and WHO needs to act next.
+!!! example "Every label change gets a comment"
+    Explain **WHY** the label changed and **WHO** needs to act next.
 
 ### Comment signing
+
 All agents sign their comments:
 
 - `— PO Agent`
@@ -146,18 +173,30 @@ All agents sign their comments:
 - `— SWE Agent`
 
 ### Specs are files, not comments
-Tech specs, UX concepts, and briefs are **files** in the planning folder. Issue comments are **transition signals only** — one line linking the file. Never paste spec content into comments (it creates drift if the file changes).
 
-**Good comment:**
-```
-Tech spec written: `planning/companion/interface/tech-spec.md`
-Removing `needs-tech-spec`, adding `needs-review`.
-— CTO Agent
-```
+!!! danger "Never paste spec content into issue comments"
+    Tech specs, UX concepts, and briefs are **files** in the planning folder. Issue comments are **transition signals only** — one line linking the file. Pasting specs into comments creates drift if the file changes.
 
-**Bad comment:** Pasting the full tech spec into the issue.
+=== ":material-check: Good comment"
+
+    ```
+    Tech spec written: `planning/companion/interface/tech-spec.md`
+    Removing `needs-tech-spec`, adding `needs-review`.
+    — CTO Agent
+    ```
+
+=== ":material-close: Bad comment"
+
+    ```
+    ## Tech Spec
+    ### Architecture
+    We will use Django REST framework to...
+    [2000 words of spec content pasted inline]
+    — CTO Agent
+    ```
 
 ### Acceptance criteria use checkboxes
+
 ```markdown
 ## Acceptance Criteria
 - [ ] CompanionMemory model created with required fields
@@ -166,6 +205,7 @@ Removing `needs-tech-spec`, adding `needs-review`.
 ```
 
 When checking off criteria, comment what you did:
+
 ```
 ✅ Checked off "Add companion memory model"
 — Added CompanionMemory in companion/models.py with migration 0001.
@@ -188,7 +228,7 @@ Why this matters — 1-2 sentences.
 - [x] #ZZ — Feature Name (`done`)
 ```
 
-**Max 2 active epics.**
+!!! warning "Max 2 active epics at any time."
 
 ---
 
