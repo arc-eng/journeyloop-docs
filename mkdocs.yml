@@ -20,7 +20,6 @@ nav:
     - Overview: platform/overview.md
   - Companion:
     - companion/index.md
-    - API Reference: companion/api-reference.md
     - Operator Guide: companion/operator.md
   - Engineering:
     - engineering/index.md
