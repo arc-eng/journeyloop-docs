@@ -1,176 +1,220 @@
+---
+description: The AI agent team that builds and operates JourneyLoop — roles, session keys, responsibilities, and collaboration protocols.
+---
+
 # Agent Roster & Org Structure
 
-This page documents the AI agent team that builds and operates JourneyLoop, how they're organized, and how they collaborate.
+JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Each agent has a defined role, a set of responsibilities, and a communication protocol. **Marco Lamina** (founder) is the human stakeholder who approves work, makes product decisions, and owns escalation.
 
 ---
 
-## Overview
+## Agent Overview
 
-JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Each agent has a defined role, a set of responsibilities, and a communication protocol. Marco Lamina (founder) is the human stakeholder who approves work, makes product decisions, and owns escalation.
+<div class="grid cards" markdown>
 
-Agents communicate primarily via:
+- :material-brain: **CTO**
 
-- **Slack** — human-facing status updates and reviews (Marco reads these)
-- **`sessions_send`** — agent-to-agent task dispatch (direct session messaging, no Slack @mentions)
-- **GitHub issues and PRs** — structured work artifacts
+    Owns technical architecture. Writes tech specs, authors ADRs, reviews PRs.
 
----
+    `agent:cto:main`
 
-## The JourneyLoop Agent Team
+- :material-clipboard-list: **PM**
 
-### CTO (Chief Technology Officer)
+    Owns the product backlog. Writes specs, manages issue lifecycle, prioritizes.
 
-**Session key:** `agent:cto:main`
-**Slack:** posts to `#development`, `#reviews`
+    `agent:pm:main`
 
-**Role:** Owns technical architecture for JourneyLoop. Translates product specs into engineering plans and ensures the codebase stays healthy.
+- :material-pencil-ruler: **UX Engineer**
 
-**Responsibilities:**
+    Owns design principles and wireframes. Reviews PRs for UX quality.
 
-- Write tech specs (`planning/<feature>/tech-spec.md`) for issues labeled `needs-tech-spec`
-- Author Architecture Decision Records (ADRs) as GitHub issues labeled `adr`
-- Review PRs for architectural consistency, security, and code quality
-- Identify and quantify technical debt
-- Maintain architectural consistency across `arc-eng/journeyloop` and `arc-eng/journeyloop-startup-assistant`
+    `agent:ux:main`
 
-**Key constraint:** Never auto-proceeds — always checks in with Marco via `#reviews` before starting a tech spec. Iterates in conversation with Marco rather than writing complete specs upfront.
+- :material-code-braces: **SWE**
 
-**Signs GitHub comments:** `— CTO Agent`
+    Implements features, fixes bugs, writes tests. Works from `ready-for-dev`.
 
----
+    `agent:swe:main`
 
-### PM (Product Owner)
+- :material-file-document: **Docs Agent**
 
-**Session key:** `agent:pm:main`
-**Slack:** posts to `#development`, `#reviews`
+    Owns the documentation site. Accepts structured `WRITE` / `READ` / `LIST` messages.
 
-**Role:** Owns the product backlog for JourneyLoop. Writes specs, manages issue lifecycle, and keeps the team aligned on priorities.
+    `agent:docs:main`
 
-**Responsibilities:**
+- :material-account-tie: **Ray**
 
-- Write user stories, feature specs, and briefs
-- Manage GitHub issue labels through the lifecycle
-- Prioritize the backlog in consultation with Marco
-- Escalate when product decisions require founder input
+    Practitioner advisor and product tester. A practicing executive coach using JourneyLoop on staging.
 
-**Does not:** Make architecture decisions, manage sprints, or touch code.
+    `agent:ray:main`
 
----
+- :material-shield-search: **Audit Agent**
 
-### UX Engineer
+    Monitors all agent activity. Runs every 20 minutes; maintains structured audit logs.
 
-**Session key:** `agent:ux:main`
-**Slack:** posts to `#development`, `#reviews`
+    `agent:audit:main`
 
-**Role:** Owns design principles, wireframes, and user experience for JourneyLoop.
+- :material-stethoscope: **Doctor**
 
-**Responsibilities:**
+    Infrastructure diagnostic tool. Audits multi-agent setup for misconfigurations and policy violations.
 
-- Design UI layouts and wireframes (HTML/CSS prototypes)
-- Define and maintain design principles and component patterns
-- Review PRs for UX quality
-- Champion the user's perspective in technical discussions
-- Write `ux.md` files in feature planning folders
+    `agent:doctor:main`
 
-**Triggered by:** Issues labeled `needs-ux` (dispatched by PM).
+</div>
 
 ---
 
-### SWE (Senior Software Engineer)
+## Agent Profiles
 
-**Session key:** `agent:swe:main`
-**Slack:** posts to `#development`
+=== ":material-brain: CTO"
 
-**Role:** Implements features, fixes bugs, writes tests, and maintains code quality across `arc-eng/journeyloop`.
+    **Session key:** `agent:cto:main`  
+    **Slack:** `#development`, `#reviews`
 
-**Responsibilities:**
+    Owns technical architecture for JourneyLoop. Translates product specs into engineering plans and ensures the codebase stays healthy.
 
-- Implement features from tech specs when issues reach `ready-for-dev`
-- Follow gitflow: feature branch (named with issue number) → commits → PR
-- Write and maintain tests
-- Maintain `CLAUDE.md` files across repos
-- Fix bugs and handle tech debt items
+    **Responsibilities**
 
-**Note:** SWE is not auto-triggered. `ready-for-dev` is the final pipeline stage — Marco initiates dev work manually.
+    - Write tech specs (`planning/<feature>/tech-spec.md`) for issues labeled `needs-tech-spec`
+    - Author Architecture Decision Records (ADRs) as GitHub issues labeled `adr`
+    - Review PRs for architectural consistency, security, and code quality
+    - Identify and quantify technical debt
+    - Maintain architectural consistency across `arc-eng/journeyloop` and `arc-eng/journeyloop-startup-assistant`
+
+    !!! warning "Key Constraint"
+        Never auto-proceeds. Always checks in with Marco via `#reviews` before starting a tech spec. Iterates in conversation with Marco rather than writing complete specs upfront.
+
+    !!! info ""
+        Signs GitHub comments: `— CTO Agent`
+
+=== ":material-clipboard-list: PM"
+
+    **Session key:** `agent:pm:main`  
+    **Slack:** `#development`, `#reviews`
+
+    Owns the product backlog for JourneyLoop. Writes specs, manages issue lifecycle, and keeps the team aligned on priorities.
+
+    **Responsibilities**
+
+    - Write user stories, feature specs, and briefs
+    - Manage GitHub issue labels through the lifecycle
+    - Prioritize the backlog in consultation with Marco
+    - Escalate when product decisions require founder input
+
+    !!! note "Out of Scope"
+        Does not make architecture decisions, manage sprints, or touch code.
+
+=== ":material-pencil-ruler: UX Engineer"
+
+    **Session key:** `agent:ux:main`  
+    **Slack:** `#development`, `#reviews`
+
+    Owns design principles, wireframes, and user experience for JourneyLoop.
+
+    **Responsibilities**
+
+    - Design UI layouts and wireframes (HTML/CSS prototypes)
+    - Define and maintain design principles and component patterns
+    - Review PRs for UX quality
+    - Champion the user's perspective in technical discussions
+    - Write `ux.md` files in feature planning folders
+
+    !!! tip "Trigger"
+        Activated by issues labeled `needs-ux`, dispatched by PM.
+
+=== ":material-code-braces: SWE"
+
+    **Session key:** `agent:swe:main`  
+    **Slack:** `#development`
+
+    Implements features, fixes bugs, writes tests, and maintains code quality across `arc-eng/journeyloop`.
+
+    **Responsibilities**
+
+    - Implement features from tech specs when issues reach `ready-for-dev`
+    - Follow gitflow: feature branch (named with issue number) → commits → PR
+    - Write and maintain tests
+    - Maintain `CLAUDE.md` files across repos
+    - Fix bugs and handle tech debt items
+
+    !!! warning "Not Auto-Triggered"
+        `ready-for-dev` is the final pipeline stage — Marco initiates dev work manually.
+
+=== ":material-file-document: Docs Agent"
+
+    **Session key:** `agent:docs:main`  
+    **Repo:** `arc-eng/journeyloop-docs`
+
+    Owns the JourneyLoop documentation site (MkDocs Material, live at http://192.168.1.30:8001).
+
+    **Responsibilities**
+
+    - Write and update markdown documentation files on instruction
+    - Maintain `mkdocs.yml` navigation
+    - Rebuild and restart the MkDocs service after every write
+    - Answer retrieval queries with doc content
+
+    Not conversational. Accepts structured messages:
+
+    | Message | Purpose |
+    |---|---|
+    | `WRITE: <path> \| <title> \| <content>` | Write or update a doc |
+    | `READ: <query>` | Retrieve relevant docs |
+    | `LIST` | List all current docs |
+
+=== ":material-account-tie: Ray"
+
+    **Session key:** `agent:ray:main`
+
+    A practicing executive coach who uses JourneyLoop on staging. Ray serves as both a real user and a coaching practitioner advisor.
+
+    === "As Product Tester"
+        Logs into `staging.journeyloop.ai` and uses the product as a real coach — not running test scripts, but doing actual coaching work and surfacing friction.
+
+        **Active staging clients:** David Chen · Neha Sharma · Samantha Lin
+
+    === "As Practitioner Advisor"
+        Provides gut-checks on coach workflow design, UX assumptions, and feature trade-offs from a practitioner's perspective.
+
+    !!! tip "How to Reach Ray"
+        Dispatch tasks via `sessions_send`. Ray responds conversationally — give context, ask something specific.
+
+=== ":material-shield-search: Audit"
+
+    **Session key:** `agent:audit:main`
+
+    Monitors all agent activity across the OpenClaw system and maintains a structured audit trail.
+
+    | Property | Value |
+    |---|---|
+    | Run frequency | Every 20 minutes (cron) |
+    | Output | `logs/YYYY-MM-DD-<slug>.md` in audit workspace |
+    | Flags | Errors, unexpected behavior, security issues |
+
+=== ":material-stethoscope: Doctor"
+
+    **Session key:** `agent:doctor:main`
+
+    Infrastructure diagnostic tool. Audits the multi-agent setup for misconfigurations, isolation failures, and policy violations.
+
+    !!! info "Output Style"
+        Clinical, precise — no filler. Reports findings as **Critical** / **Warning** / **Passing** with suggested fixes.
 
 ---
 
-### Docs Agent
+## Supporting Agents
 
-**Session key:** `agent:docs:main`
+These agents run on the same OpenClaw instance but serve Dobby's personal or other-client contexts.
 
-**Role:** Owns the JourneyLoop documentation site (MkDocs Material, live at http://192.168.1.30:8001).
-
-**Responsibilities:**
-
-- Write and update markdown documentation files on instruction
-- Maintain `mkdocs.yml` navigation
-- Rebuild and restart the MkDocs service after every write
-- Answer retrieval queries with doc content
-
-Not conversational. Accepts structured messages from other agents:
-
-| Message | Purpose |
-|---|---|
-| `WRITE: <path> | <title> | <content>` | Write or update a doc |
-| `READ: <query>` | Retrieve relevant docs |
-| `LIST` | List all current docs |
-
-**Repo:** `arc-eng/journeyloop-docs` at `/home/dobby/.openclaw/workspace/repos/journeyloop-docs`
-
----
-
-### Ray (Practitioner Advisor & Product Tester)
-
-**Session key:** `agent:ray:main`
-
-**Role:** A practicing executive coach who uses JourneyLoop on staging. Ray serves as both a real user and a coaching practitioner advisor.
-
-**As product tester:** Logs into staging.journeyloop.ai and uses the product as a real coach — not running test scripts, but doing actual coaching work and surfacing friction.
-
-**As practitioner advisor:** Provides gut-checks on coach workflow design, UX assumptions, and feature trade-offs from a practitioner's perspective.
-
-**Active clients (staging):** David Chen, Neha Sharma, Samantha Lin
-
-**Reach:** Other agents dispatch tasks to Ray via `sessions_send`. Ray responds conversationally — give context, ask something specific.
-
----
-
-### Audit Agent
-
-**Session key:** `agent:audit:main`
-
-**Role:** Monitors all agent activity across the OpenClaw system and maintains a structured audit trail.
-
-**Runs:** Every 20 minutes (cron-based heartbeat).
-
-**Output:** Daily log files at `logs/YYYY-MM-DD-<slug>.md` in the audit agent workspace. Flags errors, unexpected behavior, or security issues when found.
-
----
-
-### Doctor
-
-**Session key:** `agent:doctor:main`
-
-**Role:** Infrastructure diagnostic tool. Audits the multi-agent setup for misconfigurations, isolation failures, and policy violations.
-
-**Style:** Clinical, precise — no filler. Reports findings as Critical / Warning / Passing with suggested fixes.
-
----
-
-## Supporting Agents (non-JourneyLoop)
-
-These agents run on the same OpenClaw instance but serve Dobby's personal or other-client contexts:
-
-| Agent | Purpose |
-|---|---|
-| `coding-agent` | General-purpose coding assistant for Dobby |
-| `screen-dev` | Frontend development for Dobby's 5" touchscreen UI (Flask + Alpine.js + Tailwind, Raspberry Pi 5) |
-| `secops` | Security auditing for OpenClaw deployments and host hardening |
-| `business-analyst` | Daily strategic business research and analysis for JourneyLoop |
-| `caitlin-assistant` | Business assistant for Caitlin Ryan (ocean-themed wellness pivot) |
-| `voice` | Reformats text for voice/TTS output |
-| `coach-test` (Sarah Chen) | Staging coaching companion for a test coach persona |
+| Agent | Session | Purpose |
+|---|---|---|
+| `coding-agent` | `agent:coding-agent:main` | General-purpose coding assistant for Dobby |
+| `screen-dev` | `agent:screen-dev:main` | Frontend for Dobby's 5" touchscreen UI (Flask + Alpine.js + Tailwind, Pi 5) |
+| `secops` | `agent:secops:main` | Security auditing for OpenClaw deployments and host hardening |
+| `business-analyst` | `agent:business-analyst:main` | Daily strategic business research for JourneyLoop |
+| `caitlin-assistant` | `agent:caitlin-assistant:main` | Business assistant for Caitlin Ryan (ocean-themed wellness pivot) |
+| `voice` | `agent:voice:main` | Reformats text for voice/TTS output |
+| `coach-test` | `agent:coach-test:main` | Staging coaching companion — Sarah Chen persona |
 
 ---
 
@@ -178,17 +222,34 @@ These agents run on the same OpenClaw instance but serve Dobby's personal or oth
 
 ### Issue Lifecycle
 
-Issues in `arc-eng/journeyloop` move through these labels:
+Issues in `arc-eng/journeyloop` move through these labels, each triggering the responsible agent:
 
-```
-needs-spec → needs-ux → needs-tech-spec → needs-review → ready-for-dev → in-progress → done
+```mermaid
+graph LR
+    A[needs-spec] --> B[needs-ux]
+    B --> C[needs-tech-spec]
+    C --> D[needs-review]
+    D --> E[ready-for-dev]
+    E --> F[in-progress]
+    F --> G[done]
+
+    style D fill:#f4a261,stroke:#e76f51,color:#000
+    style E fill:#2a9d8f,stroke:#264653,color:#fff
 ```
 
-Each label triggers the responsible agent. Marco approves transitions at key gates (`needs-review`).
+!!! note "Marco's Gate"
+    Marco approves transitions at `needs-review` before work proceeds to `ready-for-dev`.
 
 ### Agent-to-Agent Communication
 
-Agents dispatch work to each other via `sessions_send(sessionKey="agent:<name>:main", ...)`. **Never via Slack @mentions** — bots don't receive those reliably.
+Agents dispatch work to each other via:
+
+```python
+sessions_send(sessionKey="agent:<name>:main", message="...")
+```
+
+!!! danger "Never Use Slack @mentions"
+    Bots don't receive Slack @mentions reliably. Always use `sessions_send` for agent-to-agent dispatch.
 
 ### Slack Channels
 
@@ -200,14 +261,19 @@ Agents dispatch work to each other via `sessions_send(sessionKey="agent:<name>:m
 
 ### Marco's Role
 
-Marco Lamina is the founder and primary stakeholder. He:
+Marco Lamina is the founder and primary stakeholder.
 
 - Approves work before agents start (no autonomous sprinting)
 - Makes product prioritization calls
 - Reviews tech specs and UX before dev proceeds
 - Has final say on architecture trade-offs, vendor decisions, and scope
 
-Agents escalate to Marco when: architecture has significant trade-offs, there are technical blockers requiring business context, or effort estimate exceeds expectations by >2x.
+!!! warning "Escalation Triggers"
+    Agents escalate to Marco when:
+
+    - Architecture decisions carry significant trade-offs
+    - Technical blockers require business context
+    - Effort estimate exceeds expectations by >2×
 
 ---
 
@@ -215,10 +281,10 @@ Agents escalate to Marco when: architecture has significant trade-offs, there ar
 
 | Repo | Purpose |
 |---|---|
-| `arc-eng/journeyloop` | Main Django codebase — user stories, feature specs, bugs, tech specs, ADRs |
-| `arc-eng/journeyloop-startup-assistant` | Planning — roadmap, business intel, revenue analysis, strategic decisions |
-| `arc-eng/journeyloop-docs` | Documentation site (this site) |
-| `arc-eng/companion-operator` | OpenClaw companion infrastructure scripts |
+| [`arc-eng/journeyloop`](https://github.com/arc-eng/journeyloop) | Main Django codebase — user stories, feature specs, bugs, tech specs, ADRs |
+| [`arc-eng/journeyloop-startup-assistant`](https://github.com/arc-eng/journeyloop-startup-assistant) | Planning — roadmap, business intel, revenue analysis, strategic decisions |
+| [`arc-eng/journeyloop-docs`](https://github.com/arc-eng/journeyloop-docs) | Documentation site (this site) |
+| [`arc-eng/companion-operator`](https://github.com/arc-eng/companion-operator) | OpenClaw companion infrastructure scripts |
 
 ---
 
