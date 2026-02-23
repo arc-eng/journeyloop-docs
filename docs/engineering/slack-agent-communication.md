@@ -18,20 +18,13 @@ How JourneyLoop AI agents communicate over Slack: the thread-per-session model, 
 
 Every Slack channel thread is an **isolated agent session**. When you post to a channel and the agent replies, OpenClaw creates a thread automatically and binds a new session to it. Subsequent messages in that thread are part of the same session — the agent has context continuity for that entire conversation.
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant S as Slack Channel
-    participant OC as OpenClaw Gateway
-    participant A as Agent
-
-    U->>S: Posts message in channel
-    OC->>A: Routes to new session (channel key)
-    A->>S: Replies — Slack creates thread
-    Note over S,OC: Thread TS captured; new session key bound
-    U->>S: Replies in thread (@mention bot)
-    OC->>A: Routes to existing thread session
-    A->>S: Continues in thread
+```
+1. User posts "@SWE implement #126" in #development
+2. OpenClaw routes to SWE → new channel session
+3. SWE replies → Slack auto-creates a thread (replyToMode: "first")
+4. Thread TS captured → new session key: agent:swe:slack:channel:<id>:thread:<ts>
+5. User replies in thread with @SWE → routes to existing thread session
+6. SWE continues with full thread context
 ```
 
 ### Why Thread-Per-Session?
