@@ -34,4 +34,13 @@ Documentation for how the JourneyLoop engineering team works — process, conven
 
     [:octicons-arrow-right-24: View the Agent Roster](agent-roster.md)
 
+
+-   :material-slack: **Slack Agent Communication**
+
+    ---
+
+    How agents communicate over Slack: thread-per-session model, gateway config (`replyToMode`, session keys, idle reset), agent behavior rules, known limitations (bug #24816), and troubleshooting.
+
+    [:octicons-arrow-right-24: View the Slack Communication Guide](slack-agent-communication.md)
+
 </div>
