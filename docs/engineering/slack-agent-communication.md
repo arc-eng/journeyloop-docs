@@ -198,7 +198,7 @@ A channel root message and a thread off that same message are **different sessio
 
 | Check | What to do |
 |---|---|
-| Did you `@mention` the bot? | Required due to [bug #24816](#material-bug-implicit-mention-bug----openclawopenclawissues24816). Add the `@mention` and retry. |
+| Did you `@mention` the bot? | Required due to bug #24816 (see Known Limitations above). Add the `@mention` and retry. |
 | Is the session idle-expired? | Sessions reset after 24h idle. The next `@mention` in the thread will restart the session with the last 20 messages as context. |
 | Is the agent account active? | Check `openclaw gateway status` on Dobby. All five agent Slack accounts run through the same gateway. |
 | Is the channel configured? | Confirm the channel is in the agent's allowed channels list in `openclaw.json`. |
@@ -210,6 +210,7 @@ A channel root message and a thread off that same message are **different sessio
 **Cause:** The agent used the `message` tool instead of a natural reply, and the tool resolved to your DM.
 
 **Fix:** Update the agent's `AGENTS.md` — reinforce that thread replies must be natural replies, not `message` tool calls. If an individual agent instance did this, it may have hallucinated a tool call; a session reset usually clears it.
+
 
 ### Response goes to channel root instead of the thread
 

@@ -1,0 +1,1600 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How JourneyLoop AI agents communicate over Slack — thread-per-session model, gateway config, agent behavior rules, and troubleshooting.">
+      
+      
+      
+        <link rel="canonical" href="http://192.168.1.30:8001/engineering/slack-agent-communication/">
+      
+      
+        <link rel="prev" href="../agent-roster/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Slack Agent Communication Architecture - JourneyLoop Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#slack-agent-communication-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="JourneyLoop Docs" class="md-header__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            JourneyLoop Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Slack Agent Communication Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../platform/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Platform
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../companion/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Companion
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="JourneyLoop Docs" class="md-nav__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    JourneyLoop Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../platform/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Platform
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../platform/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../companion/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Companion
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Companion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companion/operator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operator Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-roster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Roster & Org Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slack Agent Communication
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slack Agent Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#thread-per-session-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread-Per-Session Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-thread-per-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Thread-Per-Session?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gateway-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Gateway Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Gateway Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replytomode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        replyToMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replytomodebychattype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        replyToModeByChatType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread History
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-agent-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Agent Instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Agent Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reply-behavior-by-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reply Behavior by Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-acknowledge-first-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Acknowledge-First Rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-session-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Session Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Known Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Known Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implicit-mention-bug-openclawopenclaw24816" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implicit Mention Bug — openclaw/openclaw#24816
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-not-responding-in-a-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent not responding in a thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-goes-to-dm-instead-of-the-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response goes to DM instead of the thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-goes-to-channel-root-instead-of-the-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response goes to channel root instead of the thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-has-no-context-of-earlier-thread-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent has no context of earlier thread messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-agents-responding-to-the-same-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two agents responding to the same thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#thread-per-session-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread-Per-Session Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-thread-per-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Thread-Per-Session?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gateway-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Gateway Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Gateway Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replytomode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        replyToMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replytomodebychattype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        replyToModeByChatType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread History
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-agent-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Agent Instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Agent Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reply-behavior-by-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reply Behavior by Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-acknowledge-first-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Acknowledge-First Rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-session-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Session Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Known Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Known Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implicit-mention-bug-openclawopenclaw24816" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implicit Mention Bug — openclaw/openclaw#24816
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-not-responding-in-a-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent not responding in a thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-goes-to-dm-instead-of-the-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response goes to DM instead of the thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-goes-to-channel-root-instead-of-the-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response goes to channel root instead of the thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-has-no-context-of-earlier-thread-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent has no context of earlier thread messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-agents-responding-to-the-same-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two agents responding to the same thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="slack-agent-communication-architecture"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 15a2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2h2zm1 0a2 2 0 0 1 2-2 2 2 0 0 1 2 2v5a2 2 0 0 1-2 2 2 2 0 0 1-2-2zm2-8a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2v2zm0 1a2 2 0 0 1 2 2 2 2 0 0 1-2 2H4a2 2 0 0 1-2-2 2 2 0 0 1 2-2zm8 2a2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2h-2zm-1 0a2 2 0 0 1-2 2 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2 2 2 0 0 1 2 2zm-2 8a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2v-2zm0-1a2 2 0 0 1-2-2 2 2 0 0 1 2-2h5a2 2 0 0 1 2 2 2 2 0 0 1-2 2z"/></svg></span> Slack Agent Communication Architecture</h1>
+<p>How JourneyLoop AI agents communicate over Slack: the thread-per-session model, OpenClaw gateway configuration, expected agent behavior, session key mapping, known limitations, and troubleshooting.</p>
+<div class="admonition info">
+<p class="admonition-title">Internal reference</p>
+<p>This doc is for the engineering team. It describes the configuration active on all five agent Slack accounts (PM, CTO, UX, SWE, Ray) as of <strong>2026-02-23</strong>.</p>
+</div>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<h3 id="thread-per-session-model">Thread-Per-Session Model</h3>
+<p>Every Slack channel thread is an <strong>isolated agent session</strong>. When you post to a channel and the agent replies, OpenClaw creates a thread automatically and binds a new session to it. Subsequent messages in that thread are part of the same session — the agent has context continuity for that entire conversation.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as User
+    participant S as Slack Channel
+    participant OC as OpenClaw Gateway
+    participant A as Agent
+
+    U-&gt;&gt;S: Posts message in channel
+    OC-&gt;&gt;A: Routes to new session (channel key)
+    A-&gt;&gt;S: Replies — Slack creates thread
+    Note over S,OC: Thread TS captured; new session key bound
+    U-&gt;&gt;S: Replies in thread (@mention bot)
+    OC-&gt;&gt;A: Routes to existing thread session
+    A-&gt;&gt;S: Continues in thread</code></pre>
+<h3 id="why-thread-per-session">Why Thread-Per-Session?</h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Before (flat channel)</th>
+<th>After (thread-per-session)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Context isolation</td>
+<td>All channel messages bleed into one session</td>
+<td>Each thread = its own conversation</td>
+</tr>
+<tr>
+<td>Parallel conversations</td>
+<td>Agents confused by interleaved topics</td>
+<td>Clean isolation per thread</td>
+</tr>
+<tr>
+<td>History retrieval</td>
+<td>Full channel history loaded (noisy)</td>
+<td>Thread history only (<code>historyScope: "thread"</code>)</td>
+</tr>
+<tr>
+<td>Auditability</td>
+<td>Hard to trace a request end-to-end</td>
+<td>Thread = single logical unit</td>
+</tr>
+</tbody>
+</table>
+<p>DMs and group DMs are intentionally <strong>not</strong> threaded — they stay as flat conversations (see <a href="#2-gateway-configuration">Gateway Configuration</a> below).</p>
+<hr />
+<h2 id="2-gateway-configuration">2. Gateway Configuration</h2>
+<p>These settings are applied to <strong>all five Slack accounts</strong> in each agent's <code>openclaw.json</code>.</p>
+<h3 id="replytomode"><code>replyToMode</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&quot;replyToMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;first&quot;</span>
+</code></pre></div>
+<p>The bot's <strong>first reply</strong> to a channel message creates a Slack thread. This is what triggers thread creation — the bot does not post in the channel root for subsequent replies.</p>
+<h3 id="replytomodebychattype"><code>replyToModeByChatType</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">&quot;replyToModeByChatType&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;channel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;first&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;direct&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;group&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong><code>channel: "first"</code></strong> — thread on first reply (channel posts only)</li>
+<li><strong><code>direct: "off"</code></strong> — DMs remain flat; no thread wrapping</li>
+<li><strong><code>group: "off"</code></strong> — group DMs remain flat</li>
+</ul>
+<h3 id="thread-history">Thread History</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">&quot;thread&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;historyScope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;thread&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;inheritParent&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;initialHistoryLimit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
+</code></pre></div>
+<dl>
+<dt><code>historyScope: "thread"</code></dt>
+<dd>Agent only sees messages within the thread. Parent channel messages are excluded.</dd>
+<dt><code>inheritParent: false</code></dt>
+<dd>Thread sessions do <strong>not</strong> inherit context from the parent channel session. Each thread starts fresh.</dd>
+<dt><code>initialHistoryLimit: 20</code></dt>
+<dd>On first load of an existing thread, up to 20 prior messages are loaded for context.</dd>
+</dl>
+<h3 id="session-reset">Session Reset</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">&quot;session&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;resetByType&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">&quot;thread&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">&quot;idleMinutes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1440</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}</span>
+</code></pre></div>
+<p>Thread sessions reset after <strong>24 hours of inactivity</strong> (<code>1440</code> minutes). After reset, the next message in the thread starts a fresh session — prior thread history is re-loaded up to <code>initialHistoryLimit</code>.</p>
+<hr />
+<h2 id="3-agent-instructions">3. Agent Instructions</h2>
+<p>These rules apply to all JourneyLoop agents (PM, CTO, UX, SWE, Ray). They are codified in each agent's <code>AGENTS.md</code> and the shared <code>ORG.md</code> and <code>MEMORY.md</code>.</p>
+<h3 id="reply-behavior-by-context">Reply Behavior by Context</h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Channel Thread</label><label for="__tabbed_1_2">Direct Message</label><label for="__tabbed_1_3">Proactive / Agent-Initiated Post</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>Reply <strong>naturally</strong> — OpenClaw routes the reply back to the same thread automatically</li>
+<li>Do <strong>not</strong> use the <code>message</code> tool for thread replies; that would create a separate DM or mis-routed post</li>
+<li>Stay within the thread; never surface a thread response back to the channel root</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Use the <strong><code>message</code> tool</strong> explicitly to reply</li>
+<li>DMs have no thread; responses go directly to the DM conversation</li>
+<li>Session key is DM-scoped (see <a href="#4-session-keys">Session Keys</a>)</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Always use the <code>message</code> tool with a fully-qualified <code>target</code> (channel ID or user ID)</li>
+<li>Do not assume a channel context exists</li>
+<li>If starting a new channel topic, post to the channel root — do not reply to an existing thread unless explicitly continuing one</li>
+</ul>
+</div>
+</div>
+</div>
+<h3 id="the-acknowledge-first-rule">The Acknowledge-First Rule</h3>
+<div class="admonition warning">
+<p class="admonition-title">Always acknowledge before starting long tasks</p>
+<p>If a request will take more than a few seconds, <strong>send a short acknowledgment first</strong>, then execute.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>✅ &quot;On it — reviewing the spec now.&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>✅ &quot;Got it, running the build.&quot;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>❌ (silence for 30 seconds, then a wall of output)
+</code></pre></div>
+<p>This prevents users from thinking the bot missed the message, and makes thread conversations feel responsive.</p>
+</div>
+<hr />
+<h2 id="4-session-keys">4. Session Keys</h2>
+<p>Session keys are how OpenClaw tracks conversation state. Each distinct context gets its own key.</p>
+<table>
+<thead>
+<tr>
+<th>Context</th>
+<th>Session Key Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channel (root)</td>
+<td><code>agent:&lt;id&gt;:slack:channel:&lt;channelId&gt;</code></td>
+</tr>
+<tr>
+<td>Channel Thread</td>
+<td><code>agent:&lt;id&gt;:slack:channel:&lt;channelId&gt;:thread:&lt;threadTs&gt;</code></td>
+</tr>
+<tr>
+<td>Direct Message</td>
+<td><code>agent:&lt;id&gt;:slack:dm:&lt;userId&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key points:</strong></p>
+<ul>
+<li><code>&lt;id&gt;</code> is the agent identifier (e.g. <code>pm</code>, <code>cto</code>, <code>ux</code>, <code>swe</code>, <code>ray</code>)</li>
+<li><code>&lt;channelId&gt;</code> is the Slack channel ID (e.g. <code>C08ABCDEF</code>)</li>
+<li><code>&lt;threadTs&gt;</code> is the Slack thread timestamp of the <strong>parent message</strong> (e.g. <code>1740349800.123456</code>)</li>
+<li><code>&lt;userId&gt;</code> is the Slack user ID for DMs (e.g. <code>U01ABCDEF</code>)</li>
+</ul>
+<p>A channel root message and a thread off that same message are <strong>different sessions</strong>. This is intentional — threads are isolated.</p>
+<hr />
+<h2 id="5-known-limitations">5. Known Limitations</h2>
+<h3 id="implicit-mention-bug-openclawopenclaw24816"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 12h-4v-2h4m0 6h-4v-2h4m6-6h-2.81a6 6 0 0 0-1.82-1.96L17 4.41 15.59 3l-2.17 2.17a6 6 0 0 0-2.83 0L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20z"/></svg></span> Implicit Mention Bug — <code>openclaw/openclaw#24816</code></h3>
+<p><strong>Issue:</strong> Thread follow-up messages that do <strong>not</strong> <code>@mention</code> the bot are silently ignored. The agent never sees them.</p>
+<p><strong>Root cause:</strong> OpenClaw's implicit mention check compares <code>parent_user_id === botUserId</code> — i.e., it only triggers on threads where the <em>bot started the thread</em>. Since the thread is created by the user's channel post (and the bot replies into it), <code>parent_user_id</code> is the user, not the bot. The implicit mention never fires.</p>
+<p><strong>Status:</strong> Filed at <a href="https://github.com/openclaw/openclaw/issues/24816">openclaw/openclaw#24816</a>. No fix timeline yet.</p>
+<p><strong>Workaround:</strong></p>
+<div class="admonition tip">
+<p class="admonition-title">Always @mention the bot in thread replies</p>
+<p>Every message in a thread directed at the agent must explicitly <code>@mention</code> the bot account.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>❌ &quot;Can you check the spec again?&quot;          ← bot never sees this
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>✅ &quot;@pm-agent Can you check the spec again?&quot; ← works correctly
+</code></pre></div>
+<p>This applies to <strong>all</strong> thread follow-ups, not just the first one. Document this in any user-facing onboarding for Slack.</p>
+</div>
+<hr />
+<h2 id="6-troubleshooting">6. Troubleshooting</h2>
+<h3 id="agent-not-responding-in-a-thread">Agent not responding in a thread</h3>
+<p><strong>Symptoms:</strong> You reply in a thread, no response.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Did you <code>@mention</code> the bot?</td>
+<td>Required due to <a href="#material-bug-implicit-mention-bug----openclawopenclawissues24816">bug #24816</a>. Add the <code>@mention</code> and retry.</td>
+</tr>
+<tr>
+<td>Is the session idle-expired?</td>
+<td>Sessions reset after 24h idle. The next <code>@mention</code> in the thread will restart the session with the last 20 messages as context.</td>
+</tr>
+<tr>
+<td>Is the agent account active?</td>
+<td>Check <code>openclaw gateway status</code> on Dobby. All five agent Slack accounts run through the same gateway.</td>
+</tr>
+<tr>
+<td>Is the channel configured?</td>
+<td>Confirm the channel is in the agent's allowed channels list in <code>openclaw.json</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-goes-to-dm-instead-of-the-thread">Response goes to DM instead of the thread</h3>
+<p><strong>Symptoms:</strong> Agent responds in a DM to you rather than in the channel thread.</p>
+<p><strong>Cause:</strong> The agent used the <code>message</code> tool instead of a natural reply, and the tool resolved to your DM.</p>
+<p><strong>Fix:</strong> Update the agent's <code>AGENTS.md</code> — reinforce that thread replies must be natural replies, not <code>message</code> tool calls. If an individual agent instance did this, it may have hallucinated a tool call; a session reset usually clears it.</p>
+<h3 id="response-goes-to-channel-root-instead-of-the-thread">Response goes to channel root instead of the thread</h3>
+<p><strong>Symptoms:</strong> Agent's reply appears in the channel as a top-level post, not in the thread.</p>
+<p><strong>Cause:</strong> Usually a <code>message</code> tool call targeting the channel ID without a <code>threadTs</code>. Or the agent replied before OpenClaw bound the thread session.</p>
+<p><strong>Fix:</strong> Same as above — reinforce natural reply behavior in <code>AGENTS.md</code>. Check whether <code>replyToMode</code> is set to <code>"first"</code> in <code>openclaw.json</code>; if it's <code>"off"</code> or missing, threading is disabled.</p>
+<h3 id="agent-has-no-context-of-earlier-thread-messages">Agent has no context of earlier thread messages</h3>
+<p><strong>Symptoms:</strong> Agent responds as if the thread is brand new, ignoring prior context.</p>
+<p><strong>Cause 1:</strong> Session idle-expired (24h) — the session was reset. Prior history is re-loaded up to <code>initialHistoryLimit: 20</code>.</p>
+<p><strong>Cause 2:</strong> <code>inheritParent: false</code> is correct behavior — threads intentionally don't inherit parent channel context.</p>
+<p><strong>Cause 3:</strong> <code>historyScope</code> misconfigured. Verify <code>"historyScope": "thread"</code> in the agent's gateway config.</p>
+<h3 id="two-agents-responding-to-the-same-thread">Two agents responding to the same thread</h3>
+<p><strong>Symptoms:</strong> Both e.g. PM and CTO agents reply to the same thread message.</p>
+<p><strong>Cause:</strong> The message <code>@mentioned</code> both bots, or a channel is subscribed by multiple agents.</p>
+<p><strong>Fix:</strong> Be explicit about which agent you're addressing. Each agent monitors specific channels — review channel assignments in each agent's <code>openclaw.json</code>.</p>
+<hr />
+<p><em><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg></span> Last updated: 2026-02-23 — configuration applied in the Slack thread sessions restructure.</em></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
