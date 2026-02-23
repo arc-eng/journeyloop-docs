@@ -665,6 +665,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's in this section
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -681,7 +700,13 @@
 
 
 <h1 id="companion">Companion</h1>
-<p>Documentation for the AI companion feature — architecture, API, CLI, and operator infrastructure.</p>
+<p>Documentation for the AI companion feature — how it's architected, deployed, and operated.</p>
+<p>The companion is a per-coach AI agent running on a dedicated GCP VM (the "companion operator"), proxied by the Django app. Each coach gets their own isolated agent with its own memory, workspace, and sandboxed CLI access to JourneyLoop data.</p>
+<p>This section covers the <strong>infrastructure and operations layer</strong>: how agents are provisioned, how the system is wired together, and the key decisions behind the design.</p>
+<hr />
+<h2 id="whats-in-this-section">What's in this section</h2>
+<p><strong><a href="operator/">Operator Guide</a></strong>
+Everything you need to understand how the companion works end-to-end: the two-layer architecture (Django + OpenClaw), how provisioning works, why keys are operator-generated, how sandbox isolation is configured, and how to operate the GCP VM. Includes the key design decisions and their rationale.</p>
 
 
 
