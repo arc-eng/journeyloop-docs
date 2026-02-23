@@ -51,5 +51,4 @@ nav:
   - Engineering:
     - engineering/index.md
     - Process: engineering/process.md
-    - Formatting Reference: engineering/formatting.md
     - Agent Roster & Org Structure: engineering/agent-roster.md
