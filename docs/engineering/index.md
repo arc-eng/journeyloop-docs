@@ -43,4 +43,12 @@ Documentation for how the JourneyLoop engineering team works — process, conven
 
     [:octicons-arrow-right-24: View the Slack Communication Guide](slack-agent-communication.md)
 
+-   :material-wrench: **Troubleshooting**
+
+    ---
+
+    The go-to guide when something breaks. Symptom → diagnosis → fix for every common failure: gateway issues, agent amnesia, stuck sessions, cron jobs, Slack bugs, Pi OOM, config mistakes, and emergency recovery.
+
+    [:octicons-arrow-right-24: Open the Troubleshooting Guide](troubleshooting.md)
+
 </div>

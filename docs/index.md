@@ -44,6 +44,7 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
     - [Process](engineering/process.md) — issue lifecycle, agent roles, planning conventions
     - [Agent Roster](engineering/agent-roster.md) — the full AI agent team, session keys, responsibilities
     - [Slack Agent Communication](engineering/slack-agent-communication.md) — thread-per-session model, gateway config, agent behavior, known limitations
+    - [Troubleshooting](engineering/troubleshooting.md) — symptom → diagnosis → fix for gateway, agents, sessions, cron, and Pi resources
 
     [:octicons-arrow-right-24: Explore Engineering](engineering/index.md)
 
