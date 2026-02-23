@@ -28,6 +28,7 @@ The AI companion feature — how it's architected, provisioned, and operated.
 How the team works and how decisions are made.
 
 - [Process](engineering/process.md) — issue lifecycle, agent roles, planning conventions
+- [Agent Roster](engineering/agent-roster.md) — full AI agent team, responsibilities, collaboration protocols, and repo ownership
 
 ---
 
