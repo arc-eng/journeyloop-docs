@@ -645,6 +645,8 @@
       
         
       
+        
+      
     
     
     
@@ -716,6 +718,34 @@
     
   
     Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formatting Reference
   
 
     
@@ -832,12 +862,12 @@
 - Agent memory, sandboxing, and tool execution need persistent processes — not stateless Heroku dynos
 - Docker sandbox isolation per coach: each agent runs in its own container with zero access to other coaches' data
 - OpenClaw handles conversation history, compaction, tool routing, and LLM calls natively</p>
-<p><strong>The two-layer model:</strong></p>
-<pre><code>Django (Heroku)          ←→       OpenClaw (GCP VM)
-  Coach UI                          Main operator agent
-  Companion API                     Per-coach sandboxed agents
-  CompanionProfile model            journeyloop CLI in sandbox
-</code></pre>
+<p><strong>The two-layer model:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Django (Heroku)          ←→       OpenClaw (GCP VM)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Coach UI                          Main operator agent
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Companion API                     Per-coach sandboxed agents
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  CompanionProfile model            journeyloop CLI in sandbox
+</code></pre></div></p>
 <p>The Django app proxies chat to OpenClaw via <code>POST /v1/responses</code> with <code>x-openclaw-agent-id</code>. OpenClaw handles the rest.</p>
 <hr />
 <h2 id="provisioning-flow">Provisioning Flow</h2>
@@ -870,12 +900,12 @@ The <code>journeyloop</code> CLI inside the sandbox is generated from the Django
 - <code>cloudflared.service</code> — Cloudflare tunnel (ephemeral URL, changes on restart)</p>
 <p><strong>Companion operator repo:</strong> <code>arc-eng/companion-operator</code> — provisioning scripts, Dockerfile, templates</p>
 <p><strong>Django staging:</strong> <code>https://staging.journeyloop.ai</code> — <code>OPENCLAW_GATEWAY_URL</code> must point to the current tunnel URL. Update whenever the tunnel restarts.</p>
-<p><strong>To rebuild the sandbox image after an API change:</strong></p>
-<pre><code>ssh mlamina@34.63.156.77
-cd ~/openclaw-operator
-./scripts/build-sandbox.sh
-</code></pre>
-<p>Then restart the OpenClaw gateway so it picks up the new image.</p>
+<p><strong>To rebuild the sandbox image after an API change:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh mlamina@34.63.156.77
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cd ~/openclaw-operator
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>./scripts/build-sandbox.sh
+</code></pre></div>
+Then restart the OpenClaw gateway so it picks up the new image.</p>
 
 
 
@@ -931,7 +961,7 @@ cd ~/openclaw-operator
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

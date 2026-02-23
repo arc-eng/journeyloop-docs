@@ -14,6 +14,8 @@
         <link rel="prev" href="../">
       
       
+        <link rel="next" href="../formatting/">
+      
       
         
       
@@ -551,6 +553,8 @@
       
         
       
+        
+      
     
     
     
@@ -949,6 +953,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formatting Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1298,49 +1330,49 @@
 <hr />
 <h2 id="planning-docs-one-folder-per-feature">Planning Docs: One Folder Per Feature</h2>
 <p>Every feature gets a folder under its project namespace:</p>
-<pre><code>planning/&lt;project&gt;/&lt;feature&gt;/
-  brief.md          ← Product spec: user stories, acceptance criteria
-  ux.md             ← UX concept: layout, interaction, wireframes
-  tech-spec.md      ← Technical architecture: system design, decisions
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>planning/&lt;project&gt;/&lt;feature&gt;/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  brief.md          ← Product spec: user stories, acceptance criteria
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ux.md             ← UX concept: layout, interaction, wireframes
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  tech-spec.md      ← Technical architecture: system design, decisions
+</code></pre></div>
 <p>Not every feature needs every file. Backend-only features skip <code>ux.md</code>. Simple features might only need <code>brief.md</code>.</p>
-<p><strong>Example:</strong></p>
-<pre><code>planning/companion/
-  memory-system/
-    brief.md
-    tech-spec.md
-  interface/
-    brief.md
-    ux.md
-    tech-spec.md
-  skill-system/
-    brief.md
-    ux.md
-    tech-spec.md
-</code></pre>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>planning/companion/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  memory-system/
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    brief.md
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    tech-spec.md
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  interface/
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    brief.md
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    ux.md
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    tech-spec.md
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  skill-system/
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    brief.md
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    ux.md
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    tech-spec.md
+</code></pre></div></p>
 <hr />
 <h2 id="issues-one-per-feature">Issues: One Per Feature</h2>
 <p>Each feature has <strong>one tracking issue</strong> in <code>arc-eng/journeyloop-startup-assistant</code>. The substance lives in the planning folder — the issue is lightweight.</p>
 <h3 id="issue-format">Issue Format</h3>
-<pre><code class="language-markdown">## [emoji] Feature Name
-
-**Planning:** `planning/&lt;project&gt;/&lt;feature&gt;/`
-
-| Vertical     | Status         |
-|-------------|----------------|
-| Product Spec | ✅ Done / 🔲 Not started / ➖ N/A |
-| UX Concept   | ✅ Done / 🔲 Not started / ➖ N/A |
-| Tech Spec    | ✅ Done / 🔲 Not started / ➖ N/A |
-
-### Summary
-One paragraph describing the feature and why it matters.
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gu">## [emoji] Feature Name</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="gs">**Planning:**</span> <span class="sb">`planning/&lt;project&gt;/&lt;feature&gt;/`</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>| Vertical     | Status         |
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>|-------------|----------------|
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>| Product Spec | ✅ Done / 🔲 Not started / ➖ N/A |
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>| UX Concept   | ✅ Done / 🔲 Not started / ➖ N/A |
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>| Tech Spec    | ✅ Done / 🔲 Not started / ➖ N/A |
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="gu">### Summary</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>One paragraph describing the feature and why it matters.
+</code></pre></div>
 <p>The status table is updated as verticals are completed.</p>
 <hr />
 <h2 id="lifecycle-feature-state-machine">Lifecycle: Feature State Machine</h2>
 <p>Each feature issue carries <strong>exactly one</strong> lifecycle label at a time. The label answers: <em>"What does this feature need next?"</em></p>
-<pre><code>[*] → needs-spec → needs-ux → needs-tech-spec → needs-review → ready-for-dev → [done]
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>[*] → needs-spec → needs-ux → needs-tech-spec → needs-review → ready-for-dev → [done]
+</code></pre></div>
 <h3 id="lifecycle-labels">Lifecycle Labels</h3>
 <table>
 <thead>
@@ -1484,48 +1516,48 @@ One paragraph describing the feature and why it matters.
 </ul>
 <h3 id="specs-are-files-not-comments">Specs are files, not comments</h3>
 <p>Tech specs, UX concepts, and briefs are <strong>files</strong> in the planning folder. Issue comments are <strong>transition signals only</strong> — one line linking the file. Never paste spec content into comments (it creates drift if the file changes).</p>
-<p><strong>Good comment:</strong></p>
-<pre><code>Tech spec written: `planning/companion/interface/tech-spec.md`
-Removing `needs-tech-spec`, adding `needs-review`.
-— CTO Agent
-</code></pre>
+<p><strong>Good comment:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Tech spec written: `planning/companion/interface/tech-spec.md`
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Removing `needs-tech-spec`, adding `needs-review`.
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>— CTO Agent
+</code></pre></div></p>
 <p><strong>Bad comment:</strong> Pasting the full tech spec into the issue.</p>
 <h3 id="acceptance-criteria-use-checkboxes">Acceptance criteria use checkboxes</h3>
-<pre><code class="language-markdown">## Acceptance Criteria
-- [ ] CompanionMemory model created with required fields
-- [ ] Migration generated and tested
-- [ ] Unit tests for model validation
-</code></pre>
-<p>When checking off criteria, comment what you did:</p>
-<pre><code>✅ Checked off &quot;Add companion memory model&quot;
-— Added CompanionMemory in companion/models.py with migration 0001.
-— SWE Agent
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gu">## Acceptance Criteria</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">- [ ]</span> CompanionMemory model created with required fields
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">- [ ]</span> Migration generated and tested
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">- [ ]</span> Unit tests for model validation
+</code></pre></div>
+<p>When checking off criteria, comment what you did:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>✅ Checked off &quot;Add companion memory model&quot;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>— Added CompanionMemory in companion/models.py with migration 0001.
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>— SWE Agent
+</code></pre></div></p>
 <hr />
 <h2 id="epics">Epics</h2>
 <p>Epics group related features. They're checklist issues — no specs or acceptance criteria of their own.</p>
-<pre><code class="language-markdown">## [emoji] Epic Name
-Why this matters — 1-2 sentences.
-
-### Features
-- [ ] #XX — Feature Name (`current-label`)
-- [ ] #YY — Feature Name (`current-label`)
-- [x] #ZZ — Feature Name (`done`)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gu">## [emoji] Epic Name</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Why this matters — 1-2 sentences.
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="gu">### Features</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">- [ ]</span> <span class="ni">#XX</span> — Feature Name (<span class="sb">`current-label`</span>)
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">- [ ]</span> <span class="ni">#YY</span> — Feature Name (<span class="sb">`current-label`</span>)
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="k">- [x]</span> <span class="ni">#ZZ</span> — Feature Name (<span class="sb">`done`</span>)
+</code></pre></div>
 <p><strong>Max 2 active epics.</strong></p>
 <hr />
 <h2 id="implementation-issues">Implementation Issues</h2>
 <p>When a feature reaches <code>ready-for-dev</code>, implementation issues are created in <code>arc-eng/journeyloop</code> (the code repo):</p>
-<pre><code class="language-markdown">**As a** [role],
-**I want** [goal]
-**so that** [value].
-
-## Acceptance Criteria
-- [ ] Testable condition (max 3 per issue — split if more)
-
-## Planning
-See: `planning/&lt;project&gt;/&lt;feature&gt;/` in journeyloop-startup-assistant
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gs">**As a**</span> [role],
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="gs">**I want**</span> [goal]
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gs">**so that**</span> [value].
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="gu">## Acceptance Criteria</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">- [ ]</span> Testable condition (max 3 per issue — split if more)
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="gu">## Planning</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>See: <span class="sb">`planning/&lt;project&gt;/&lt;feature&gt;/`</span> in journeyloop-startup-assistant
+</code></pre></div>
 <hr />
 <h2 id="slack-channels">Slack Channels</h2>
 <table>
@@ -1605,7 +1637,7 @@ See: `planning/&lt;project&gt;/&lt;feature&gt;/` in journeyloop-startup-assistan
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
