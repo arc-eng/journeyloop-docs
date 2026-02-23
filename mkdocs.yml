@@ -10,3 +10,6 @@ theme:
 nav:
   - Home: index.md
   - Platform Reference: journeyloop.md
+  - Companion API: companion-api.md
+  - Companion Operator Guide: companion-operator.md
+  - Engineering Process: process.md
