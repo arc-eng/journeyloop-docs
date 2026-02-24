@@ -51,4 +51,12 @@ Documentation for how the JourneyLoop engineering team works — process, conven
 
     [:octicons-arrow-right-24: Open the Troubleshooting Guide](troubleshooting.md)
 
+-   :material-monitor-screenshot: **Local Development**
+
+    ---
+
+    Running JourneyLoop locally — UX mockup dev server setup, Playwright screenshot tooling, and gotchas (IPv4 vs IPv6, `DEBUG=True`, headless Chromium).
+
+    [:octicons-arrow-right-24: Read the Local Dev Guide](local-dev.md)
+
 </div>

@@ -53,5 +53,6 @@ nav:
     - engineering/index.md
     - Process: engineering/process.md
     - Agent Roster & Org Structure: engineering/agent-roster.md
+    - Local Development: engineering/local-dev.md
     - Slack Agent Communication: engineering/slack-agent-communication.md
     - Troubleshooting: engineering/troubleshooting.md

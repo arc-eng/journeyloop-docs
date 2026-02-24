@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="How the companion is architected, provisioned, and operated on GCP.">
+        <meta name="description" content="How JourneyLoop improves companion quality over time — iterative template refinement, scenario-based evaluation, and the promotion pipeline.">
       
       
       
-        <link rel="canonical" href="http://192.168.1.30:8001/companion/operator/">
+        <link rel="canonical" href="http://192.168.1.30:8001/companion/training/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../operator/">
       
       
-        <link rel="next" href="../training/">
+        <link rel="next" href="../../engineering/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Companion Operator Guide - JourneyLoop Docs</title>
+        <title>Companion Training Program - JourneyLoop Docs</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#companion-operator-guide" class="md-skip">
+        <a href="#companion-training-program" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Companion Operator Guide
+              Companion Training Program
             
           </span>
         </div>
@@ -512,6 +512,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../operator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operator Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -531,7 +559,7 @@
   <span class="md-ellipsis">
     
   
-    Operator Guide
+    Training Program
   
 
     
@@ -549,7 +577,7 @@
   <span class="md-ellipsis">
     
   
-    Operator Guide
+    Training Program
   
 
     
@@ -575,10 +603,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#whats-actually-being-trained" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Architecture
+        What's Actually Being Trained
       
     </span>
   </a>
@@ -586,10 +614,104 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#provisioning-flow" class="md-nav__link">
+  <a href="#the-training-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Provisioning Flow
+        The Training Loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Training Loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scenario-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scenario Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-clone-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Clone Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-running-the-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Running the Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-template-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Template Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-clone-deprovisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Clone Deprovisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-rubric-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Rubric in Detail
       
     </span>
   </a>
@@ -597,10 +719,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-design-decisions" class="md-nav__link">
+  <a href="#scenarios-completed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Design Decisions
+        Scenarios Completed
       
     </span>
   </a>
@@ -608,10 +730,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#operations" class="md-nav__link">
+  <a href="#what-the-companion-learns-about-a-coach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Operations
+        What the Companion Learns About a Coach
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the Companion Learns About a Coach">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-client-relationship-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-Client Relationship Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-promotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Promotion
       
     </span>
   </a>
@@ -622,34 +772,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../training/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Training Program
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -887,10 +1009,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#whats-actually-being-trained" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Architecture
+        What's Actually Being Trained
       
     </span>
   </a>
@@ -898,10 +1020,104 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#provisioning-flow" class="md-nav__link">
+  <a href="#the-training-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Provisioning Flow
+        The Training Loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Training Loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scenario-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scenario Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-clone-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Clone Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-running-the-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Running the Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-template-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Template Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-clone-deprovisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Clone Deprovisioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-rubric-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Rubric in Detail
       
     </span>
   </a>
@@ -909,10 +1125,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-design-decisions" class="md-nav__link">
+  <a href="#scenarios-completed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Design Decisions
+        Scenarios Completed
       
     </span>
   </a>
@@ -920,10 +1136,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#operations" class="md-nav__link">
+  <a href="#what-the-companion-learns-about-a-coach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Operations
+        What the Companion Learns About a Coach
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the Companion Learns About a Coach">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-client-relationship-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-Client Relationship Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-promotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Promotion
       
     </span>
   </a>
@@ -947,154 +1191,264 @@
 
 
 
-<h1 id="companion-operator-guide"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4.6v4.8c0 .9.5 1.6 1.2 1.6h17.7c.6 0 1.2-.7 1.2-1.6V4.6C22 3.7 21.5 3 20.8 3H3.2C2.5 3 2 3.7 2 4.6M10 8V6H9v2zM5 8h2V6H5zm15 1H4V5h16zM2 14.6v4.8c0 .9.5 1.6 1.2 1.6h17.7c.6 0 1.2-.7 1.2-1.6v-4.8c0-.9-.5-1.6-1.2-1.6H3.2c-.7 0-1.2.7-1.2 1.6m8 3.4v-2H9v2zm-5 0h2v-2H5zm15 1H4v-4h16z"/></svg></span> Companion Operator Guide</h1>
-<p>How the companion is architected, provisioned, and operated.</p>
+<h1 id="companion-training-program">Companion Training Program</h1>
+<p>The companion training program is how we make JourneyLoop's coach companion agents better over time. It doesn't retrain a model — it refines the <strong>template files</strong> that define how companions think and behave. Better instructions produce better companions.</p>
+<div class="admonition info">
+<p class="admonition-title">Where it lives</p>
+<p>The training loop lives in <code>~/openclaw-operator/trainer/</code> on the companion operator VM. It is run <strong>manually, on demand</strong> — not on a schedule.</p>
+</div>
 <hr />
-<h2 id="architecture">Architecture</h2>
-<p>Each coach gets their own AI agent running inside OpenClaw — an open-source agent infrastructure platform. These agents run on a dedicated GCP VM (the "companion operator") rather than on Heroku with the Django app.</p>
-<pre class="mermaid"><code>graph LR
-    subgraph Heroku
-        UI[Coach UI]
-        API[Companion API]
-        CPM[CompanionProfile model]
-    end
-    subgraph GCP VM
-        OC[Main Operator Agent]
-        A1[Coach Agent 1&lt;br/&gt;Docker sandbox]
-        A2[Coach Agent 2&lt;br/&gt;Docker sandbox]
-        A3[Coach Agent N&lt;br/&gt;Docker sandbox]
-        OC --&gt; A1
-        OC --&gt; A2
-        OC --&gt; A3
-    end
-    UI &lt;--&gt;|POST /v1/responses&lt;br/&gt;x-openclaw-agent-id| OC
-    API &lt;--&gt; OC</code></pre>
+<h2 id="whats-actually-being-trained">What's Actually Being Trained</h2>
+<p>Each companion agent runs from a set of files that define its identity, procedures, and environment. Training improves the <em>base versions</em> of these files so that every newly provisioned coach gets the best version that exists at that moment.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it defines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SOUL.md</code></td>
+<td>Personality, values, instincts — who the companion is</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>Procedures and workflows — what it does and how</td>
+</tr>
+<tr>
+<td><code>TOOLS.md</code></td>
+<td>Paths, syntax, workspace layout — what it has access to</td>
+</tr>
+<tr>
+<td><code>skills/</code></td>
+<td>On-demand task guides: <code>prep-session</code>, <code>post-session</code>, <code>coaching-feedback</code></td>
+</tr>
+</tbody>
+</table>
+<p>The canonical base versions live in <code>trainer/best-templates/</code> and <code>trainer/skills/</code>. These are the source of truth for new provisions.</p>
 <div class="admonition note">
-<p class="admonition-title">Why separate infrastructure</p>
-<ul>
-<li>Agent memory, sandboxing, and tool execution need <strong>persistent processes</strong> — not stateless Heroku dynos</li>
-<li><strong>Docker sandbox isolation</strong> per coach: each agent runs in its own container with zero access to other coaches' data</li>
-<li>OpenClaw handles conversation history, compaction, tool routing, and LLM calls natively</li>
-</ul>
+<p class="admonition-title">Existing agents are not updated</p>
+<p>Agents already provisioned to coaches have diverged intentionally — they've been personalized through bootstrap and real use. Only new provisions get the updated base. See <a href="#production-promotion">Production Promotion</a>.</p>
 </div>
 <hr />
-<h2 id="provisioning-flow">Provisioning Flow</h2>
-<p>When a coach is provisioned from the Django admin:</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Django
-    participant Operator as Main Operator Agent
-    participant OpenClaw as OpenClaw Config
-    participant Script as provision-coach.sh
+<h2 id="the-training-loop">The Training Loop</h2>
+<pre class="mermaid"><code>graph LR
+    A[1. Write Scenario] --&gt; B[2. Provision Clone]
+    B --&gt; C[3. Run Scenario]
+    C --&gt; D[4. Evaluate &amp; Score]
+    D --&gt; E{Gap found?}
+    E -- Yes --&gt; F[5. Update Templates]
+    E -- No --&gt; G[Skip update]
+    F --&gt; H[6. Deprovision Clone]
+    G --&gt; H
+    H --&gt; I[7. Write Learnings File]
 
-    Django-&gt;&gt;Operator: Provisioning instruction
-    Operator-&gt;&gt;Script: Run provision-coach.sh
-    Script-&gt;&gt;OpenClaw: Create agent, write workspace files&lt;br/&gt;(SOUL.md, TOOLS.md, AGENTS.md)
-    Script-&gt;&gt;Script: Generate API key
-    Script-&gt;&gt;Django: POST /api/companion/v1/internal/set-key/&lt;agent_id&gt;/
-    Note over Django: Stores SHA-256 hash only&lt;br/&gt;Plaintext never persisted
-    Script-&gt;&gt;OpenClaw: Write .credentials.json&lt;br/&gt;(API key + Django URL)</code></pre>
-<div class="admonition success">
-<p class="admonition-title">Security: operator-generated keys</p>
-<p>Django used to generate keys and store them. After a Copilot review flagged this, the architecture was inverted — <strong>the operator generates the key and registers the hash with Django</strong>. This way the plaintext never exists in Django's database.</p>
+    style E fill:#f4a261,stroke:#e76f51,color:#000
+    style F fill:#2a9d8f,stroke:#264653,color:#fff</code></pre>
+<h3 id="1-scenario-generation">1. Scenario Generation</h3>
+<p>A scenario file defines the full test context:</p>
+<ul>
+<li><strong>Coach persona</strong> — name, niche, tech comfort level, emotional state</li>
+<li><strong>Scripted opening message</strong> — the first thing the persona sends</li>
+<li><strong>Follow-up messages</strong> — ordered, to be sent naturally during the run</li>
+<li><strong>Evaluation checklist</strong> — specific behaviors to watch for</li>
+</ul>
+<h3 id="2-clone-provisioning">2. Clone Provisioning</h3>
+<p>A temporary agent is spun up — <code>trainer-clone-&lt;timestamp&gt;</code> — loaded with:</p>
+<ul>
+<li>The current <code>trainer/best-templates/</code> files</li>
+<li>Real test credentials for JourneyLoop staging</li>
+</ul>
+<p>The clone is isolated and disposable. It has no memory of prior runs.</p>
+<h3 id="3-running-the-scenario">3. Running the Scenario</h3>
+<p>The Companion Operator roleplays as the coach persona, sending messages to the clone one at a time via the API, following the script naturally. The goal is a realistic interaction — not a mechanical checkbox exercise.</p>
+<h3 id="4-evaluation">4. Evaluation</h3>
+<p>Responses are scored on four rubric dimensions, each rated <strong>1–5</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>What it measures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Warm</strong></td>
+<td>Did it match the coach's emotional register? Acknowledge difficulty before pivoting?</td>
+</tr>
+<tr>
+<td><strong>Efficient</strong></td>
+<td>No padding, no repetition, appropriate depth for the context?</td>
+</tr>
+<tr>
+<td><strong>Error-free</strong></td>
+<td>Accurate data, correct quotes, no hallucinated details?</td>
+</tr>
+<tr>
+<td><strong>Accessible</strong></td>
+<td>No jargon, no leaking of internal technical steps to the coach?</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-documentation">5. Documentation</h3>
+<p>A learnings file is written at <code>trainer/learnings/YYYY-MM-DD-&lt;scenario&gt;.md</code> containing:</p>
+<ul>
+<li>Full transcript</li>
+<li>Scores with explanatory notes</li>
+<li>Key moments flagged as ✅ or ❌</li>
+<li>Specific proposed changes to templates or skills</li>
+</ul>
+<h3 id="6-template-updates">6. Template Updates</h3>
+<p>If the run revealed a real gap, <code>trainer/best-templates/</code> and/or <code>trainer/skills/</code> files are edited directly. If the score was high or no actionable gap was found, nothing changes.</p>
+<div class="admonition tip">
+<p class="admonition-title">Change only what broke</p>
+<p>Each update targets a specific failure mode. Broad rewrites in response to a single scenario are a signal that the scenario wasn't narrow enough.</p>
 </div>
+<h3 id="7-clone-deprovisioning">7. Clone Deprovisioning</h3>
+<p>The clone is torn down. No state is retained.</p>
 <hr />
-<h2 id="key-design-decisions">Key Design Decisions</h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.99.99 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88zM12 4.15 6.04 7.5 12 10.85l5.96-3.35zM5 15.91l6 3.38v-6.71L5 9.21zm14 0v-6.7l-6 3.37v6.71z"/></svg></span> OpenClaw as infrastructure</label><label for="__tabbed_1_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.07 10.41a5 5 0 0 0 0-5.82A3.4 3.4 0 0 1 15 4a3.5 3.5 0 0 1 0 7 3.4 3.4 0 0 1-1.93-.59M5.5 7.5A3.5 3.5 0 1 1 9 11a3.5 3.5 0 0 1-3.5-3.5m2 0A1.5 1.5 0 1 0 9 6a1.5 1.5 0 0 0-1.5 1.5M16 17v2H2v-2s0-4 7-4 7 4 7 4m-2 0c-.14-.78-1.33-2-5-2s-4.93 1.31-5 2m11.95-4A5.32 5.32 0 0 1 18 17v2h4v-2s0-3.63-6.06-4Z"/></svg></span> One agent per coach</label><label for="__tabbed_1_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.81 10.25c-.06-.04-.56-.43-1.64-.43-.28 0-.56.03-.84.08-.21-1.4-1.38-2.11-1.43-2.14l-.29-.17-.18.27c-.24.36-.43.77-.51 1.19-.2.8-.08 1.56.33 2.21-.49.28-1.29.35-1.46.35H2.62c-.34 0-.62.28-.62.63 0 1.15.18 2.3.58 3.38.45 1.19 1.13 2.07 2 2.61.98.6 2.59.94 4.42.94.79 0 1.61-.07 2.42-.22 1.12-.2 2.2-.59 3.19-1.16A8.3 8.3 0 0 0 16.78 16c1.05-1.17 1.67-2.5 2.12-3.65h.19c1.14 0 1.85-.46 2.24-.85.26-.24.45-.53.59-.87l.08-.24zm-17.96.99h1.76c.08 0 .16-.07.16-.16V9.5c0-.08-.07-.16-.16-.16H3.85c-.09 0-.16.07-.16.16v1.58c.01.09.07.16.16.16m2.43 0h1.76c.08 0 .16-.07.16-.16V9.5c0-.08-.07-.16-.16-.16H6.28c-.09 0-.16.07-.16.16v1.58c.01.09.07.16.16.16m2.47 0h1.75c.1 0 .17-.07.17-.16V9.5c0-.08-.06-.16-.17-.16H8.75c-.08 0-.15.07-.15.16v1.58c0 .09.06.16.15.16m2.44 0h1.77c.08 0 .15-.07.15-.16V9.5c0-.08-.06-.16-.15-.16h-1.77c-.08 0-.15.07-.15.16v1.58c0 .09.07.16.15.16M6.28 9h1.76c.08 0 .16-.09.16-.18V7.25c0-.09-.07-.16-.16-.16H6.28c-.09 0-.16.06-.16.16v1.57c.01.09.07.18.16.18m2.47 0h1.75c.1 0 .17-.09.17-.18V7.25c0-.09-.06-.16-.17-.16H8.75c-.08 0-.15.06-.15.16v1.57c0 .09.06.18.15.18m2.44 0h1.77c.08 0 .15-.09.15-.18V7.25c0-.09-.07-.16-.15-.16h-1.77c-.08 0-.15.06-.15.16v1.57c0 .09.07.18.15.18m0-2.28h1.77c.08 0 .15-.07.15-.16V5c0-.1-.07-.17-.15-.17h-1.77c-.08 0-.15.06-.15.17v1.56c0 .08.07.16.15.16m2.46 4.52h1.76c.09 0 .16-.07.16-.16V9.5c0-.08-.07-.16-.16-.16h-1.76c-.08 0-.15.07-.15.16v1.58c0 .09.07.16.15.16"/></svg></span> Sandbox isolation</label><label for="__tabbed_1_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg></span> Generated CLI</label></div>
+<h2 id="evaluation-rubric-in-detail">Evaluation Rubric in Detail</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Warm (1–5)</label><label for="__tabbed_1_2">Efficient (1–5)</label><label for="__tabbed_1_3">Error-free (1–5)</label><label for="__tabbed_1_4">Accessible (1–5)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><strong>Decision:</strong> Use OpenClaw instead of building a custom agent stack.</p>
-<p>We evaluated building a custom companion agent stack (personality model, memory system, scheduling engine). Using OpenClaw instead:</p>
+<p>Measures emotional attunement — whether the companion meets the coach where they are before offering help or information.</p>
 <ul>
-<li><code>SOUL.md</code> = personality</li>
-<li><code>MEMORY.md</code> = memory</li>
-<li>cron = scheduling</li>
+<li><strong>5</strong> — Acknowledges difficulty or frustration directly, then transitions smoothly</li>
+<li><strong>3</strong> — Notices tone but pivots too quickly or uses generic language</li>
+<li><strong>1</strong> — Jumps straight to task with no acknowledgment</li>
 </ul>
-<p><strong>Outcome:</strong> Eliminated months of custom infrastructure work.</p>
 </div>
 <div class="tabbed-block">
-<p><strong>Decision:</strong> Each coach gets their own isolated OpenClaw agent.</p>
-<p>This means:</p>
+<p>Measures response economy — no padding, no restating what the coach just said, no unnecessary hedging.</p>
 <ul>
-<li>Separate conversation history</li>
-<li>Separate memory</li>
-<li>Separate workspace</li>
+<li><strong>5</strong> — Every sentence earns its place; appropriate length for the request</li>
+<li><strong>3</strong> — Some repetition or throat-clearing before the actual answer</li>
+<li><strong>1</strong> — Long preamble, repeated points, filler phrases</li>
 </ul>
-<p>Coaches <strong>never share context</strong>.</p>
 </div>
 <div class="tabbed-block">
-<p>Each coach agent runs in a Docker container (<code>companion-sandbox:latest</code>) with:</p>
-<table>
-<thead>
-<tr>
-<th>Setting</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Networking</td>
-<td>Bridge (internet access, no host network)</td>
-</tr>
-<tr>
-<td>Workspace</td>
-<td><code>workspaceAccess: rw</code> for own workspace only</td>
-</tr>
-<tr>
-<td>Exec</td>
-<td><code>journeyloop</code> CLI only</td>
-</tr>
-<tr>
-<td>Denied tools</td>
-<td><code>browser</code>, <code>gateway</code>, <code>web_search</code>, <code>image</code></td>
-</tr>
-</tbody>
-</table>
+<p>Measures factual accuracy — especially around data fetched from JourneyLoop (client names, session dates, transcript quotes).</p>
+<ul>
+<li><strong>5</strong> — All data accurate; nothing fabricated</li>
+<li><strong>3</strong> — Minor inconsistency or vague reference where specificity was available</li>
+<li><strong>1</strong> — Hallucinated detail or incorrect data presented confidently</li>
+</ul>
 </div>
 <div class="tabbed-block">
-<p><strong>Decision:</strong> Generate the <code>journeyloop</code> CLI from the Django OpenAPI spec via <code>openapi-python-client</code>.</p>
-<p><strong>Why:</strong> When the API changes, rebuild the sandbox image. This keeps the CLI and API in sync without manual maintenance — no hand-written client code to drift.</p>
+<p>Measures whether internal technical mechanics stay invisible to the coach.</p>
+<ul>
+<li><strong>5</strong> — Output reads as natural colleague behaviour; no mention of tools, files, or internal steps</li>
+<li><strong>3</strong> — Slight awkwardness suggesting internal scaffolding (e.g. "let me check my notes")</li>
+<li><strong>1</strong> — Internal process leaks explicitly into the response</li>
+</ul>
 </div>
 </div>
 </div>
 <hr />
-<h2 id="operations">Operations</h2>
-<div class="admonition warning">
-<p class="admonition-title">GCP VM</p>
-<p><strong>IP:</strong> <code>34.63.156.77</code> — SSH as <code>mlamina</code></p>
-</div>
-<p><strong>Key services on the VM:</strong></p>
+<h2 id="scenarios-completed">Scenarios Completed</h2>
 <table>
 <thead>
 <tr>
-<th>Service</th>
-<th>Description</th>
+<th>Scenario</th>
+<th>What it tested</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>openclaw-gateway.service</code></td>
-<td>OpenClaw gateway — runs natively (not Docker), port 18789</td>
+<td><code>new-coach-onboarding</code></td>
+<td>First contact — does the companion feel like a colleague, not a manual?</td>
 </tr>
 <tr>
-<td><code>cloudflared.service</code></td>
-<td>Cloudflare tunnel (ephemeral URL, changes on restart)</td>
+<td><code>bootstrap-with-data</code></td>
+<td>Data lookup accuracy during onboarding</td>
+</tr>
+<tr>
+<td><code>frustrated-coach</code></td>
+<td>Emotional attunement — acknowledging the feeling before helping</td>
+</tr>
+<tr>
+<td><code>session-prep-real-data</code></td>
+<td>Prep from real client data with a question drawn from the brief</td>
+</tr>
+<tr>
+<td><code>transcript-deep-dive</code></td>
+<td>Transcript download, meta creation, and analysis quality</td>
+</tr>
+<tr>
+<td><code>post-session-debrief</code></td>
+<td>Capturing what happened after a call</td>
+</tr>
+<tr>
+<td><code>coaching-feedback-shift</code></td>
+<td>SHIFT framework feedback with blind spots and pattern recognition</td>
+</tr>
+<tr>
+<td><code>coaching-feedback-ask-first</code></td>
+<td>Does it ask what the <em>coach</em> noticed before sharing observations?</td>
+</tr>
+<tr>
+<td><code>coaching-feedback-restorative</code></td>
+<td>Acknowledging a difficult session emotionally before pivoting</td>
+</tr>
+<tr>
+<td><code>coaching-feedback-icf-credential</code></td>
+<td>Calibrating feedback to ICF markers for credential-track coaches</td>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="what-the-companion-learns-about-a-coach">What the Companion Learns About a Coach</h2>
+<p>Bootstrap (first contact) is the one-time calibration conversation. The companion gathers context naturally — one question at a time, never a form:</p>
+<ul>
+<li>Coaching practice shape (niche, client types, volume)</li>
+<li>Current clients and active engagements</li>
+<li>What the coach most wants from the companion relationship</li>
+<li>Preferred communication style and feedback cadence</li>
+<li>Preferred feedback framework (SHIFT, ICF, iPEC, or their own model)</li>
+</ul>
+<p>At the end of bootstrap:</p>
+<ol>
+<li><strong><code>MEMORY.md</code></strong> is written with everything learned</li>
+<li><strong><code>SOUL.md</code></strong> is rewritten — the one-time bootstrap section is removed, replaced with coach-specific context</li>
+<li>From this point on, the companion never asks about things it can look up</li>
+</ol>
+<h3 id="per-client-relationship-files">Per-Client Relationship Files</h3>
+<p>Over time, the companion builds <code>relationships/&lt;client-slug&gt;.md</code> for each client the coach works with. These files capture:</p>
+<ul>
+<li>How the coach relates to this client</li>
+<li>What kind of feedback the coach wants about them</li>
+<li>Client background and context</li>
+<li>Observed patterns across sessions</li>
+<li>A log of every feedback conversation involving this client</li>
+</ul>
+<p>Relationship files are read automatically before any session prep, debrief, or feedback work involving that client.</p>
+<hr />
+<h2 id="production-promotion">Production Promotion</h2>
+<p>Changes never go live automatically.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>trainer/best-templates/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        │  (human reviews learnings file, approves specific change)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        ▼
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>workspace/coach-template/
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        │  (next new-coach provision)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        ▼
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>live companion agent
+</code></pre></div>
 <div class="admonition danger">
-<p class="admonition-title">Tunnel URL drift</p>
-<p>Django staging (<code>https://staging.journeyloop.ai</code>) has <code>OPENCLAW_GATEWAY_URL</code> pointing to the current tunnel URL. <strong>Update this whenever the tunnel restarts.</strong></p>
+<p class="admonition-title">No automatic promotion</p>
+<p>The Companion Operator documents what changed and why in the learnings file. A human (Marco) approves before anything moves to <code>workspace/coach-template/</code>. Existing coaches are never silently updated.</p>
 </div>
-<p><strong>Rebuild the sandbox image after an API change:</strong></p>
-<div class="highlight"><span class="filename">Rebuild sandbox</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>mlamina@34.63.156.77
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>~/openclaw-operator
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./scripts/build-sandbox.sh
-</code></pre></div>
-<p>Then restart the OpenClaw gateway so it picks up the new image:</p>
-<div class="highlight"><span class="filename">Restart gateway</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>openclaw-gateway
-</code></pre></div>
+<p>When a scenario reveals a fix worth shipping, the workflow is:</p>
+<ol>
+<li>Learnings file reviewed and approved</li>
+<li>Change applied to <code>workspace/coach-template/</code></li>
+<li>Next provisioned coach inherits it</li>
+<li>Existing agents remain on their personalized version</li>
+</ol>
 <hr />
-<p><strong>Companion operator repo:</strong> <a href="https://github.com/arc-eng/companion-operator"><code>arc-eng/companion-operator</code></a> — provisioning scripts, Dockerfile, templates</p>
+<p><em>Last updated: 2026-02-23</em></p>
 
 
 

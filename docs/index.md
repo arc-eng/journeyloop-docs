@@ -46,6 +46,7 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
     - [Agent Roster](engineering/agent-roster.md) — the full AI agent team, session keys, responsibilities
     - [Slack Agent Communication](engineering/slack-agent-communication.md) — thread-per-session model, gateway config, agent behavior, known limitations
     - [Troubleshooting](engineering/troubleshooting.md) — symptom → diagnosis → fix for gateway, agents, sessions, cron, and Pi resources
+    - [Local Development](engineering/local-dev.md) — UX mockup dev server, Playwright screenshot tooling, and local setup gotchas
 
     [:octicons-arrow-right-24: Explore Engineering](engineering/index.md)
 
@@ -53,4 +54,4 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
 
 ---
 
-*:material-clock-edit-outline: Last updated: 2026-02-23 — docs are maintained by the Docs Agent. To add or update a page, send a `WRITE` message to `agent:docs:main`.*
+*:material-clock-edit-outline: Last updated: 2026-02-24 — docs are maintained by the Docs Agent. To add or update a page, send a `WRITE` message to `agent:docs:main`.*
