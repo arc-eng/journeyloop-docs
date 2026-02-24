@@ -129,7 +129,7 @@ sequenceDiagram
 
 ```bash title="Rebuild sandbox"
 ssh mlamina@34.63.156.77
-cd ~/openclaw-operator
+cd ~/journeyloop/operator
 ./scripts/build-sandbox.sh
 ```
 
@@ -141,4 +141,4 @@ sudo systemctl restart openclaw-gateway
 
 ---
 
-**Companion operator repo:** [`arc-eng/companion-operator`](https://github.com/arc-eng/companion-operator) — provisioning scripts, Dockerfile, templates
+**Companion operator files:** [`arc-eng/journeyloop/operator/`](https://github.com/arc-eng/journeyloop/tree/main/operator) — provisioning scripts, Dockerfile, templates (migrated from the now-archived [`arc-eng/companion-operator`](https://github.com/arc-eng/companion-operator))

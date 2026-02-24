@@ -8,7 +8,7 @@ description: How JourneyLoop improves companion quality over time — iterative 
 The companion training program is how we make JourneyLoop's coach companion agents better over time. It doesn't retrain a model — it refines the **template files** that define how companions think and behave. Better instructions produce better companions.
 
 !!! info "Where it lives"
-    The training loop lives in `~/openclaw-operator/trainer/` on the companion operator VM. It is run **manually, on demand** — not on a schedule.
+    The training loop lives in `~/journeyloop/operator/trainer/` on the companion operator VM. It is run **manually, on demand** — not on a schedule.
 
 ---
 

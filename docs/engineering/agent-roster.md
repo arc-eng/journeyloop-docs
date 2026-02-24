@@ -284,7 +284,7 @@ Marco Lamina is the founder and primary stakeholder.
 | [`arc-eng/journeyloop`](https://github.com/arc-eng/journeyloop) | Main Django codebase — user stories, feature specs, bugs, tech specs, ADRs |
 | [`arc-eng/journeyloop-startup-assistant`](https://github.com/arc-eng/journeyloop-startup-assistant) | Planning — roadmap, business intel, revenue analysis, strategic decisions |
 | [`arc-eng/journeyloop-docs`](https://github.com/arc-eng/journeyloop-docs) | Documentation site (this site) |
-| [`arc-eng/companion-operator`](https://github.com/arc-eng/companion-operator) | OpenClaw companion infrastructure scripts |
+| [`arc-eng/journeyloop/operator/`](https://github.com/arc-eng/journeyloop/tree/main/operator) | OpenClaw companion infrastructure scripts (monorepo — migrated from archived [`arc-eng/companion-operator`](https://github.com/arc-eng/companion-operator)) |
 
 ---
 
