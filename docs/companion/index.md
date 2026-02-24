@@ -32,4 +32,19 @@ This section covers the **infrastructure and operations layer**: how agents are 
 
     [:octicons-arrow-right-24: Read the Operator Guide](operator.md)
 
+-   :material-school-outline: **Training Program**
+
+    ---
+
+    How companion quality improves over time:
+
+    - Scenario-based evaluation loop
+    - Four-dimension scoring rubric (Warm, Efficient, Error-free, Accessible)
+    - Template refinement and the best-templates pipeline
+    - What companions learn about coaches during bootstrap
+    - Per-client relationship files
+    - Production promotion — why changes never ship automatically
+
+    [:octicons-arrow-right-24: Read the Training Program](training.md)
+
 </div>

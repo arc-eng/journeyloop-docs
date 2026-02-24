@@ -1,0 +1,2627 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Symptom → diagnosis → fix. The go-to guide when something breaks.">
+      
+      
+      
+        <link rel="canonical" href="http://192.168.1.30:8001/engineering/troubleshooting/">
+      
+      
+        <link rel="prev" href="../slack-agent-communication/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Troubleshooting - JourneyLoop Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#troubleshooting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="JourneyLoop Docs" class="md-header__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            JourneyLoop Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Troubleshooting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../platform/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Platform
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../companion/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Companion
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="JourneyLoop Docs" class="md-nav__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    JourneyLoop Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../platform/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Platform
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../platform/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../companion/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Companion
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Companion
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companion/operator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operator Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-roster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Roster & Org Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../slack-agent-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slack Agent Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quick-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Quick Health Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gateway-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Gateway Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Gateway Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-wont-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway won't start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gateway-crashes-keeps-restarting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway crashes / keeps restarting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-changes-not-taking-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config changes not taking effect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-agent-not-responding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Agent Not Responding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Agent Not Responding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-silent-on-slack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent silent on Slack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-silent-on-telegram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent silent on Telegram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-session-stuck-never-clears" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent session stuck (never clears)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-lost-identity-amnesia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent lost identity / amnesia
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-slack-specific-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Slack-Specific Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Slack-Specific Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all-bots-respond-to-every-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All bots respond to every message
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-replies-ignored-bug-24816" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread replies ignored (bug #24816)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bot-responds-in-dm-instead-of-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bot responds in DM instead of thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slack-socket-disconnected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slack socket disconnected
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-session-memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Session &amp; Memory Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Session &amp; Memory Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-has-no-context-amnesia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent has no context / amnesia
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-not-resetting-when-it-should" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session not resetting when it should
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-session-expired-unexpectedly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread session expired unexpectedly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cron-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cron Jobs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Cron Jobs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#job-not-firing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job not firing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-erroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job erroring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jobs-lost-after-restart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jobs lost after restart
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pi-resource-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Pi Resource Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Pi Resource Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oom-kills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OOM kills
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk full
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-common-config-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Common Config Mistakes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-log-locations-how-to-read-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Log Locations &amp; How to Read Them
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Log Locations &amp; How to Read Them">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File locations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-json-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing JSON logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-session-transcripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading session transcripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-emergency-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Emergency Recovery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Emergency Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-gateway-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full gateway reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-backup-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config backup &amp; rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gateway-store-reset-last-resort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway store reset (last resort)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-reference-most-common-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick reference: most common fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quick-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Quick Health Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gateway-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Gateway Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Gateway Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-wont-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway won't start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gateway-crashes-keeps-restarting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway crashes / keeps restarting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-changes-not-taking-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config changes not taking effect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-agent-not-responding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Agent Not Responding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Agent Not Responding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-silent-on-slack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent silent on Slack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-silent-on-telegram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent silent on Telegram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-session-stuck-never-clears" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent session stuck (never clears)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-lost-identity-amnesia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent lost identity / amnesia
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-slack-specific-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Slack-Specific Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Slack-Specific Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all-bots-respond-to-every-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        All bots respond to every message
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-replies-ignored-bug-24816" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread replies ignored (bug #24816)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bot-responds-in-dm-instead-of-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bot responds in DM instead of thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slack-socket-disconnected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slack socket disconnected
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-session-memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Session &amp; Memory Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Session &amp; Memory Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-has-no-context-amnesia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent has no context / amnesia
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-not-resetting-when-it-should" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session not resetting when it should
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-session-expired-unexpectedly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread session expired unexpectedly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cron-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cron Jobs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Cron Jobs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#job-not-firing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job not firing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-erroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job erroring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jobs-lost-after-restart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jobs lost after restart
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pi-resource-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Pi Resource Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Pi Resource Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oom-kills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OOM kills
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk full
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-common-config-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Common Config Mistakes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-log-locations-how-to-read-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Log Locations &amp; How to Read Them
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Log Locations &amp; How to Read Them">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File locations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-json-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing JSON logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-session-transcripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading session transcripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-emergency-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Emergency Recovery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Emergency Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-gateway-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full gateway reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-backup-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config backup &amp; rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gateway-store-reset-last-resort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway store reset (last resort)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-reference-most-common-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick reference: most common fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="troubleshooting"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4"/></svg></span> Troubleshooting</h1>
+<p><strong>Structure:</strong> symptom → diagnosis → fix. Every section has real commands. No fluff.</p>
+<hr />
+<h2 id="1-quick-health-check">1. Quick Health Check</h2>
+<p>Run this first. Always.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Is the gateway running?</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>status
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Recent errors?</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-50
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Active sessions</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span>list
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Cron state</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>openclaw<span class="w"> </span>cron<span class="w"> </span>list
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Pi resources</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>free<span class="w"> </span>-h<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>df<span class="w"> </span>-h<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uptime
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Healthy</th>
+<th>Unhealthy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gateway status</td>
+<td><code>running</code></td>
+<td><code>stopped</code> / no output</td>
+</tr>
+<tr>
+<td>Log tail</td>
+<td>No <code>ERROR</code> / <code>FATAL</code> lines</td>
+<td>Stack traces, repeated crashes</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td>Expected agents listed</td>
+<td>Missing agents, stuck <code>active</code> sessions</td>
+</tr>
+<tr>
+<td>Cron</td>
+<td><code>enabled: true</code>, recent <code>lastRun</code></td>
+<td><code>enabled: false</code>, <code>lastError</code> set</td>
+</tr>
+<tr>
+<td>Memory (<code>free -h</code>)</td>
+<td>&gt;200MB free</td>
+<td>&lt;100MB free — OOM risk</td>
+</tr>
+<tr>
+<td>Disk (<code>df -h</code>)</td>
+<td>&lt;80% on <code>/</code></td>
+<td>&gt;90% — clean up logs/transcripts</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Keep a terminal alias</p>
+<p>Add to <code>~/.bashrc</code>: <code>alias ochealth='openclaw gateway status &amp;&amp; openclaw logs | tail -20 &amp;&amp; free -h &amp;&amp; df -h'</code></p>
+</div>
+<hr />
+<h2 id="2-gateway-issues">2. Gateway Issues</h2>
+<h3 id="gateway-wont-start">Gateway won't start</h3>
+<p><strong>Symptoms:</strong> <code>openclaw gateway start</code> returns immediately, status stays <code>stopped</code>.</p>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Run in foreground to see the actual error</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>start<span class="w"> </span>--foreground
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Check for JSON syntax errors in config</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON OK&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Check if port is already in use (default: 5050)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>lsof<span class="w"> </span>-i<span class="w"> </span>:5050
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># or</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>ss<span class="w"> </span>-tlnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">5050</span>
+</code></pre></div>
+<p><strong>Common causes &amp; fixes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bad JSON in <code>openclaw.json</code></td>
+<td>Fix the syntax error reported by <code>python3</code> above</td>
+</tr>
+<tr>
+<td>Port conflict</td>
+<td>Kill the conflicting process: <code>kill $(lsof -t -i :5050)</code></td>
+</tr>
+<tr>
+<td>Missing env var</td>
+<td>Check for required vars in config; set via <code>export</code> or <code>.env</code> file</td>
+</tr>
+<tr>
+<td>Corrupt gateway store</td>
+<td><code>rm -rf ~/.openclaw/store &amp;&amp; openclaw gateway start</code> (loses cron state — re-register crons)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Kill whatever is on port 5050 and restart</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">kill</span><span class="w"> </span><span class="k">$(</span>lsof<span class="w"> </span>-t<span class="w"> </span>-i<span class="w"> </span>:5050<span class="k">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+</code></pre></div>
+<hr />
+<h3 id="gateway-crashes-keeps-restarting">Gateway crashes / keeps restarting</h3>
+<p><strong>Symptoms:</strong> Gateway starts but dies within minutes; repeated restarts in logs.</p>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Check for OOM kills</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>oom<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Check gateway logs for last error before crash</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;FATAL|CRASH|killed&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Check memory at time of crash</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;oom|memory&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<p><strong>Fixes:</strong></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">OOM (most common on Pi)</label><label for="__tabbed_1_2">Crash loop</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Confirm OOM kill</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>oom<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-5
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Free memory: stop heavy background processes</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Then restart gateway with fewer concurrent agents if needed</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Stop, wait, start clean</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>sleep<span class="w"> </span><span class="m">3</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># If still crashing, check config validity first</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<hr />
+<h3 id="config-changes-not-taking-effect">Config changes not taking effect</h3>
+<div class="admonition info">
+<p class="admonition-title">What hot-reloads vs. what requires restart</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Hot reload</th>
+<th>Restart required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent prompts / instructions</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Cron job schedule</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td>New agent registration</td>
+<td>❌ No</td>
+<td><code>openclaw gateway restart</code></td>
+</tr>
+<tr>
+<td>Port / listener config</td>
+<td>❌ No</td>
+<td><code>openclaw gateway restart</code></td>
+</tr>
+<tr>
+<td>Channel credentials (tokens)</td>
+<td>❌ No</td>
+<td><code>openclaw gateway restart</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># For anything that needs a restart:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Verify new config loaded (check startup logs)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;config&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+</code></pre></div>
+<hr />
+<h2 id="3-agent-not-responding">3. Agent Not Responding</h2>
+<h3 id="agent-silent-on-slack">Agent silent on Slack</h3>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Is it skipping due to mention requirement?</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;no-mention&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Is the agent registered?</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>openclaw<span class="w"> </span>agents<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;agent-name&gt;
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Is there an active session stuck open?</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;agent-id&gt;
+</code></pre></div>
+<p><strong>Fix by cause:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logs show <code>no-mention</code></td>
+<td><code>requireMention: true</code>, message didn't @ the bot</td>
+<td>@ the bot, or set <code>requireMention: false</code></td>
+</tr>
+<tr>
+<td>No log entries at all</td>
+<td>Agent not registered / gateway not running</td>
+<td>Re-register agent, restart gateway</td>
+</tr>
+<tr>
+<td>Session shows <code>active</code> but no reply</td>
+<td>Stuck session</td>
+<td>Kill it: <code>openclaw sessions kill &lt;session-id&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="agent-silent-on-telegram">Agent silent on Telegram</h3>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Check webhook status via Telegram Bot API</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://api.telegram.org/bot&lt;TOKEN&gt;/getWebhookInfo&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Check logs for Telegram errors</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;telegram\|webhook&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<p><strong>Fixes:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Re-set the webhook (replace TOKEN and URL)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://api.telegram.org/bot&lt;TOKEN&gt;/setWebhook&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;url=https://&lt;your-gateway-url&gt;/telegram/&lt;TOKEN&gt;&quot;</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Verify it took</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://api.telegram.org/bot&lt;TOKEN&gt;/getWebhookInfo&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool
+</code></pre></div>
+<hr />
+<h3 id="agent-session-stuck-never-clears">Agent session stuck (never clears)</h3>
+<p><strong>Symptoms:</strong> <code>openclaw sessions list</code> shows sessions in <code>active</code> state that have been running for hours.</p>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Find stuck sessions</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span>list
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Check logs for sessions that never got a completion event</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;totalActive&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
+</code></pre></div>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Kill a specific stuck session</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span><span class="nb">kill</span><span class="w"> </span>&lt;session-id&gt;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Nuclear: kill all active sessions for an agent</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;agent-id&gt;
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c1"># then kill each one</span>
+</code></pre></div>
+<hr />
+<h3 id="agent-lost-identity-amnesia">Agent lost identity / amnesia</h3>
+<p><strong>Symptoms:</strong> Agent doesn't know its name, role, or backstory; behaves like a generic assistant.</p>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Run the health check script</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>python3<span class="w"> </span>scripts/agent_health_check.py
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Manual checks</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>openclaw<span class="w"> </span>agents<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;agent-id&gt;<span class="w">   </span><span class="c1"># is workspace/agentDir set?</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>ls<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/<span class="w">        </span><span class="c1"># does SOUL.md exist?</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>cat<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/SOUL.md
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If <code>agentDir</code> is missing from the agent registration, every session reset means the agent loses its identity files entirely. Fix the registration config, not just the files.</p>
+</div>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># 1. Verify registration has agentDir</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>openclaw<span class="w"> </span>agents<span class="w"> </span>show<span class="w"> </span>&lt;agent-id&gt;
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># 2. If missing, edit openclaw.json to add workspace + agentDir, then restart</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># 3. Confirm SOUL.md is in place</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>ls<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/SOUL.md
+</code></pre></div>
+<hr />
+<h2 id="4-slack-specific-issues">4. Slack-Specific Issues</h2>
+<p>See also: <a href="../slack-agent-communication/">Slack Agent Communication</a> for full architecture.</p>
+<h3 id="all-bots-respond-to-every-message">All bots respond to every message</h3>
+<p><strong>Cause:</strong> <code>requireMention: false</code> on multiple agents in the same workspace.</p>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>openclaw<span class="w"> </span>agents<span class="w"> </span>list<span class="w">  </span><span class="c1"># check requireMention for each Slack agent</span>
+</code></pre></div>
+<p><strong>Fix:</strong></p>
+<p>Set <code>requireMention: true</code> on all agents that shouldn't respond to every message. Only the "default responder" agent (if any) should have it false.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1">// openclaw.json — per-agent Slack config</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">&quot;requireMention&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>Then restart: <code>openclaw gateway restart</code></p>
+<hr />
+<h3 id="thread-replies-ignored-bug-24816">Thread replies ignored (bug #24816)</h3>
+<div class="admonition warning">
+<p class="admonition-title">Known bug: openclaw/openclaw#24816</p>
+<p>Thread replies in Slack carry an <strong>implicit mention</strong> — the platform treats them as directed at the bot even without an explicit <code>@mention</code>. The gateway does not always recognize this implicit mention, causing the agent to skip thread replies.</p>
+</div>
+<p><strong>Workaround:</strong></p>
+<ul>
+<li>Always use an explicit <code>@BotName</code> in thread replies when you need a response.</li>
+<li>Or set <code>requireMention: false</code> for agents that must respond in threads (accept the tradeoff of responding to all channel messages).</li>
+</ul>
+<hr />
+<h3 id="bot-responds-in-dm-instead-of-thread">Bot responds in DM instead of thread</h3>
+<p><strong>Cause:</strong> Agent is using the <code>message</code> tool to send a reply instead of using the natural reply mechanism. The <code>message</code> tool sends a new message to a channel/DM rather than replying in-thread.</p>
+<p><strong>Fix:</strong> Update the agent's instructions to use natural reply (just respond) for Slack messages. The <code>message</code> tool should only be used for proactive/outbound messages, not responses.</p>
+<hr />
+<h3 id="slack-socket-disconnected">Slack socket disconnected</h3>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;socket\|reconnect\|disconnect&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Gateway restart re-establishes all socket connections</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Verify socket connected after restart</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;socket\|connected&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If disconnects happen frequently, check Pi network stability and whether the Pi is sleeping/throttling. <code>uptime</code> and <code>dmesg | tail -20</code> can show intermittent issues.</p>
+</div>
+<hr />
+<h2 id="5-session-memory-issues">5. Session &amp; Memory Issues</h2>
+<h3 id="agent-has-no-context-amnesia">Agent has no context / amnesia</h3>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent has <code>agentDir</code> set</td>
+<td><code>openclaw agents show &lt;id&gt;</code></td>
+</tr>
+<tr>
+<td>SOUL.md exists</td>
+<td><code>ls ~/.openclaw/agents/&lt;id&gt;/SOUL.md</code></td>
+</tr>
+<tr>
+<td>agentDir path is correct</td>
+<td><code>cat ~/.openclaw/agents/&lt;id&gt;/SOUL.md</code></td>
+</tr>
+<tr>
+<td>Session transcript exists</td>
+<td><code>ls ~/.openclaw/agents/&lt;id&gt;/sessions/</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Add workspace + agentDir to agent config in openclaw.json</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># Then restart</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+</code></pre></div>
+<hr />
+<h3 id="session-not-resetting-when-it-should">Session not resetting when it should</h3>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Check resetByType config for the agent</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>openclaw<span class="w"> </span>agents<span class="w"> </span>show<span class="w"> </span>&lt;agent-id&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A5<span class="w"> </span><span class="s2">&quot;reset&quot;</span>
+</code></pre></div>
+<p><strong>Common <code>resetByType</code> values:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"idle"</code></td>
+<td>Resets after idle timeout (default 24h for threads)</td>
+</tr>
+<tr>
+<td><code>"always"</code></td>
+<td>New session every message</td>
+</tr>
+<tr>
+<td><code>"never"</code></td>
+<td>Single persistent session</td>
+</tr>
+<tr>
+<td><code>"thread"</code></td>
+<td>One session per Slack thread</td>
+</tr>
+</tbody>
+</table>
+<p>Fix by updating the agent's <code>resetByType</code> in <code>openclaw.json</code> and restarting.</p>
+<hr />
+<h3 id="thread-session-expired-unexpectedly">Thread session expired unexpectedly</h3>
+<p><strong>Cause:</strong> 24-hour idle timeout. The thread went quiet for &gt;24h, session was cleared.</p>
+<p><strong>Fix:</strong> Just <code>@mention</code> the agent in the thread again — a new session starts. The agent won't have memory of the previous thread unless session transcripts are loaded in the prompt.</p>
+<hr />
+<h2 id="6-cron-jobs">6. Cron Jobs</h2>
+<h3 id="job-not-firing">Job not firing</h3>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># List all cron jobs with status</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>openclaw<span class="w"> </span>cron<span class="w"> </span>list
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># Look for: enabled, nextRun, lastRun, lastError</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>openclaw<span class="w"> </span>cron<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field to check</th>
+<th>Expected</th>
+<th>Problem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>true</code></td>
+<td><code>false</code> → job is paused</td>
+</tr>
+<tr>
+<td><code>nextRun</code></td>
+<td>Near-future timestamp</td>
+<td>Far future or null → schedule issue</td>
+</tr>
+<tr>
+<td><code>lastRun</code></td>
+<td>Recent timestamp</td>
+<td>Never ran → first-time config issue</td>
+</tr>
+<tr>
+<td><code>lastError</code></td>
+<td>null / empty</td>
+<td>Has value → job is erroring out</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Enable a disabled job</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>openclaw<span class="w"> </span>cron<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;job-id&gt;
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># Trigger a job manually to test</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>openclaw<span class="w"> </span>cron<span class="w"> </span>run<span class="w"> </span>&lt;job-id&gt;
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="c1"># Check logs after manual run</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;job-id&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<hr />
+<h3 id="job-erroring">Job erroring</h3>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Get last error</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>openclaw<span class="w"> </span>cron<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="s2">import json, sys</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="s2">jobs = json.load(sys.stdin)</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="s2">for j in jobs:</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="s2">    if j.get(&#39;lastError&#39;):</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="s2">        print(j[&#39;id&#39;], &#39;:&#39;, j[&#39;lastError&#39;])</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="s2">&quot;</span>
+</code></pre></div>
+<p><strong>Common causes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tool not found</code></td>
+<td>Agent missing a required tool</td>
+<td>Add tool to agent config</td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>Job taking longer than allowed</td>
+<td>Increase timeout in cron config</td>
+</tr>
+<tr>
+<td><code>API error</code> / <code>401</code></td>
+<td>Expired token</td>
+<td>Refresh token in <code>credentials/</code></td>
+</tr>
+<tr>
+<td><code>ENOENT</code> / file missing</td>
+<td>Script path wrong</td>
+<td>Check <code>command</code> field in cron config</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="jobs-lost-after-restart">Jobs lost after restart</h3>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Cron state persists in the gateway store (<code>~/.openclaw/store</code>). Jobs are <strong>not</strong> lost on normal restart.</p>
+</div>
+<p>If jobs disappeared:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Check if store was wiped</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>ls<span class="w"> </span>-la<span class="w"> </span>~/.openclaw/store/
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1"># Check gateway logs at startup for cron init</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;cron&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
+</code></pre></div></p>
+<p>If the store was wiped (or you wiped it manually), cron jobs need to be re-registered.</p>
+<hr />
+<h2 id="7-pi-resource-issues">7. Pi Resource Issues</h2>
+<h3 id="oom-kills">OOM kills</h3>
+<p><strong>Symptom:</strong> Processes or the gateway die unexpectedly, especially during heavy use.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Confirm OOM kills</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>oom<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># Current memory state</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>free<span class="w"> </span>-h
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="c1"># What&#39;s eating memory?</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>ps<span class="w"> </span>aux<span class="w"> </span>--sort<span class="o">=</span>-%mem<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-15
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Pi memory is limited</p>
+<p>The Pi 4 has 4–8GB RAM but multiple concurrent agent runs + <code>gh</code> CLI + Node.js processes can hit limits fast. If you're running &gt;3 agents concurrently, watch memory closely.</p>
+</div>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Kill memory hogs</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nb">kill</span><span class="w"> </span>&lt;pid&gt;
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="c1"># Check if gh CLI is orphaned</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>gh
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="nb">kill</span><span class="w"> </span><span class="k">$(</span>pgrep<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;gh &quot;</span><span class="k">)</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="c1"># Restart gateway after clearing</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+</code></pre></div>
+<hr />
+<h3 id="disk-full">Disk full</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Check disk usage</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>df<span class="w"> </span>-h
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="c1"># Find what&#39;s eating space</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>du<span class="w"> </span>-sh<span class="w"> </span>~/.openclaw/agents/*/sessions/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-h<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>du<span class="w"> </span>-sh<span class="w"> </span>/tmp/openclaw/<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="c1"># Clean old session transcripts (keep last 30 days)</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>find<span class="w"> </span>~/.openclaw/agents<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.jsonl&quot;</span><span class="w"> </span>-mtime<span class="w"> </span>+30<span class="w"> </span>-delete
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="c1"># Clean old logs</span>
+<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>find<span class="w"> </span>/tmp/openclaw/<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.log&quot;</span><span class="w"> </span>-mtime<span class="w"> </span>+7<span class="w"> </span>-delete
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Don't delete active session files</p>
+<p>Only clean sessions older than your retention window. Active sessions are in <code>sessions/</code> with recent timestamps.</p>
+</div>
+<hr />
+<h3 id="high-cpu">High CPU</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Snapshot of top processes</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>top<span class="w"> </span>-b<span class="w"> </span>-n1<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="c1"># Specifically check for Node (gateway) and Python (agent scripts)</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>ps<span class="w"> </span>aux<span class="w"> </span>--sort<span class="o">=</span>-%cpu<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;node|python&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-10
+</code></pre></div>
+<p><strong>Cause:</strong> Usually multiple agent runs in parallel. Each active session with a model call holds CPU.</p>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Kill stuck sessions to free CPU</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span>list
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>openclaw<span class="w"> </span>sessions<span class="w"> </span><span class="nb">kill</span><span class="w"> </span>&lt;session-id&gt;
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="c1"># Or restart gateway to clear everything</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+</code></pre></div>
+<hr />
+<h2 id="8-common-config-mistakes">8. Common Config Mistakes</h2>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing <code>workspace</code> on agent</td>
+<td>Agent can't find files, may error on tool calls</td>
+<td>Add <code>"workspace": "/home/dobby/.openclaw/workspace"</code> to agent config</td>
+</tr>
+<tr>
+<td>Missing <code>agentDir</code> on agent</td>
+<td>Amnesia on session reset</td>
+<td>Add <code>"agentDir": "agents/&lt;name&gt;"</code> to agent config</td>
+</tr>
+<tr>
+<td><code>replyToMode: "off"</code></td>
+<td>Agent replies in new messages, not threads (Slack)</td>
+<td>Set <code>"replyToMode": "thread"</code></td>
+</tr>
+<tr>
+<td>Wrong calendar ID</td>
+<td>Events not appearing in agent responses</td>
+<td>Get correct ID from Google Calendar settings → copy the calendar ID</td>
+</tr>
+<tr>
+<td>Expired OAuth token</td>
+<td>API calls fail with 401/403</td>
+<td>Refresh token in <code>~/.openclaw/credentials/</code></td>
+</tr>
+<tr>
+<td><code>requireMention: false</code> on multiple agents</td>
+<td>All bots respond to everything</td>
+<td>Set <code>requireMention: true</code> on agents that should only respond when @-mentioned</td>
+</tr>
+<tr>
+<td>Bad cron schedule expression</td>
+<td>Job never fires or fires constantly</td>
+<td>Validate cron expression at <a href="https://crontab.guru">crontab.guru</a></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># After any config change to openclaw.json, validate JSON first:</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON valid&quot;</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># Then restart</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+</code></pre></div>
+<hr />
+<h2 id="9-log-locations-how-to-read-them">9. Log Locations &amp; How to Read Them</h2>
+<h3 id="file-locations">File locations</h3>
+<table>
+<thead>
+<tr>
+<th>Log type</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gateway logs</td>
+<td><code>/tmp/openclaw/openclaw-YYYY-MM-DD.log</code></td>
+</tr>
+<tr>
+<td>Agent session transcripts</td>
+<td><code>~/.openclaw/agents/&lt;id&gt;/sessions/*.jsonl</code></td>
+</tr>
+<tr>
+<td>Cron logs</td>
+<td>Inside gateway logs — grep for <code>"cron"</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Today&#39;s gateway log</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>cat<span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-100
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="c1"># All logs, most recent first</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>ls<span class="w"> </span>-lt<span class="w"> </span>/tmp/openclaw/*.log
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="c1"># Grep for errors across all logs</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>grep<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;ERROR\|FATAL&quot;</span><span class="w"> </span>/tmp/openclaw/*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="c1"># Grep for a specific agent</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>grep<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;&lt;agent-id&gt;&quot;</span><span class="w"> </span>/tmp/openclaw/*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
+</code></pre></div>
+<hr />
+<h3 id="parsing-json-logs">Parsing JSON logs</h3>
+<p>Gateway logs are newline-delimited JSON. Use Python to extract fields:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># Extract just the message field from recent errors</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>tail<span class="w"> </span>-200<span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="s2">import sys, json</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="s2">for line in sys.stdin:</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="s2">    try:</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="s2">        obj = json.loads(line)</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="s2">        if obj.get(&#39;level&#39;) in (&#39;error&#39;, &#39;fatal&#39;):</span>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="s2">            print(obj.get(&#39;time&#39;, &#39;&#39;), obj.get(&#39;msg&#39;, &#39;&#39;), obj.get(&#39;error&#39;, &#39;&#39;))</span>
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="s2">    except:</span>
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="s2">        pass</span>
+<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="s2">&quot;</span>
+<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>
+<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="c1"># Show all fields for lines matching a pattern</span>
+<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>grep<span class="w"> </span><span class="s2">&quot;session&quot;</span><span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="s2">import sys, json</span>
+<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="s2">for line in sys.stdin:</span>
+<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a><span class="s2">    try:</span>
+<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a><span class="s2">        print(json.dumps(json.loads(line), indent=2))</span>
+<a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a><span class="s2">    except:</span>
+<a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a><span class="s2">        print(line, end=&#39;&#39;)</span>
+<a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-100
+</code></pre></div>
+<hr />
+<h3 id="reading-session-transcripts">Reading session transcripts</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># List sessions for an agent</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>ls<span class="w"> </span>-lt<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/sessions/
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="c1"># Read a session (each line is a JSON turn)</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>cat<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/sessions/&lt;session-id&gt;.jsonl<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="s2">import sys, json</span>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="s2">for line in sys.stdin:</span>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="s2">    obj = json.loads(line)</span>
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="s2">    role = obj.get(&#39;role&#39;, &#39;?&#39;)</span>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="s2">    content = obj.get(&#39;content&#39;, &#39;&#39;)</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="s2">    if isinstance(content, list):</span>
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="s2">        content = &#39; &#39;.join(c.get(&#39;text&#39;, &#39;&#39;) for c in content if isinstance(c, dict))</span>
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="s2">    print(f&#39;[{role}] {str(content)[:200]}&#39;)</span>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="s2">&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="10-emergency-recovery">10. Emergency Recovery</h2>
+<h3 id="full-gateway-reset">Full gateway reset</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="c1"># Verify it&#39;s up</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>status
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<hr />
+<h3 id="config-backup-rollback">Config backup &amp; rollback</h3>
+<div class="admonition danger">
+<p class="admonition-title">Always back up before editing <code>openclaw.json</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json<span class="w"> </span>~/.openclaw/openclaw.json.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
+</code></pre></div>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># Back up current config</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json<span class="w"> </span>~/.openclaw/openclaw.json.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="c1"># List backups</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>ls<span class="w"> </span>-lt<span class="w"> </span>~/.openclaw/openclaw.json.bak.*
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c1"># Roll back to a specific backup</span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json.bak.20260223-140000<span class="w"> </span>~/.openclaw/openclaw.json
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="c1"># Validate before restarting</span>
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON valid&quot;</span>
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="c1"># Restart</span>
+<a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+</code></pre></div>
+<hr />
+<h3 id="gateway-store-reset-last-resort">Gateway store reset (last resort)</h3>
+<div class="admonition danger">
+<p class="admonition-title">This wipes cron state and persisted session data</p>
+<p>Only do this if the gateway refuses to start and you've ruled out config/port issues.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># Stop gateway first</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="c1"># Back up the store</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>cp<span class="w"> </span>-r<span class="w"> </span>~/.openclaw/store<span class="w"> </span>~/.openclaw/store.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="c1"># Wipe the store</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.openclaw/store
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a>
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="c1"># Start fresh</span>
+<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a>
+<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="c1"># Re-register any cron jobs that were lost</span>
+</code></pre></div>
+<hr />
+<h3 id="quick-reference-most-common-fixes">Quick reference: most common fixes</h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>One-liner fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gateway won't start — port conflict</td>
+<td><code>kill $(lsof -t -i :5050) &amp;&amp; openclaw gateway start</code></td>
+</tr>
+<tr>
+<td>Config change not reflected</td>
+<td><code>openclaw gateway restart</code></td>
+</tr>
+<tr>
+<td>Stuck session</td>
+<td><code>openclaw sessions kill &lt;id&gt;</code></td>
+</tr>
+<tr>
+<td>Agent amnesia</td>
+<td>Check <code>agentDir</code> in config, <code>openclaw gateway restart</code></td>
+</tr>
+<tr>
+<td>Cron job disabled</td>
+<td><code>openclaw cron enable &lt;id&gt;</code></td>
+</tr>
+<tr>
+<td>Socket disconnected</td>
+<td><code>openclaw gateway restart</code></td>
+</tr>
+<tr>
+<td>Disk full</td>
+<td><code>find ~/.openclaw/agents -name "*.jsonl" -mtime +30 -delete</code></td>
+</tr>
+<tr>
+<td>OOM crash</td>
+<td><code>openclaw gateway restart</code> + reduce concurrent agents</td>
+</tr>
+<tr>
+<td>Roll back config</td>
+<td><code>cp ~/.openclaw/openclaw.json.bak.&lt;ts&gt; ~/.openclaw/openclaw.json &amp;&amp; openclaw gateway restart</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

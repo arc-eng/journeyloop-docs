@@ -48,6 +48,7 @@ nav:
   - Companion:
     - companion/index.md
     - Operator Guide: companion/operator.md
+    - Training Program: companion/training.md
   - Engineering:
     - engineering/index.md
     - Process: engineering/process.md

@@ -32,6 +32,7 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
     The AI companion feature — how it's architected, provisioned, and operated.
 
     - [Operator Guide](companion/operator.md) — architecture (OpenClaw on GCP), provisioning flow, key design decisions, operations runbook
+- [Training Program](companion/training.md) — how companion quality improves over time: scenario-based evaluation, template refinement, bootstrap learning, and the production promotion pipeline
 
     [:octicons-arrow-right-24: Explore Companion](companion/index.md)
 
