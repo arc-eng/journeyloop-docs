@@ -91,6 +91,58 @@ Done and dropped tasks older than 7 days are removed by `clean`. Failed tasks ar
 
 ---
 
+## CEO Team Digest
+
+The CEO agent runs a team-wide digest on every heartbeat (every 30 minutes, 8am–10pm PST). It's the oversight layer built on top of the task queue — the mechanism that converts agent activity into situational awareness for Marco.
+
+### How It Works
+
+On each heartbeat, the CEO scans all agents' completed and failed tasks since its last check:
+
+```bash
+python3 skills/tasks/scripts/tasks.py digest \
+  --since "$(cat agents/ceo/last_digest_ts.txt 2>/dev/null || echo '1970-01-01T00:00:00+00:00')"
+```
+
+The timestamp of the last digest is stored in `agents/ceo/last_digest_ts.txt` and updated after every run. This ensures no task is reported twice.
+
+**If something happened** — the CEO sends Marco a Slack DM interpreting the work. Not a list of task IDs. A read on what the team accomplished, what it means, and whether anything needs attention. Three to five sentences. If something failed, the CEO names the impact and what should happen next.
+
+**If nothing happened** — the CEO updates the timestamp file and replies `HEARTBEAT_OK`. Marco gets no message.
+
+### The Hybrid Model
+
+The design separates two concerns:
+
+- **Done tasks are batched.** Marco gets a digest at most every 30 minutes, not a ping for every completed task. Low-stakes work doesn't interrupt.
+- **Failed tasks surface immediately.** When the CEO runs its digest and finds failures, they're flagged prominently — with error details and retry counts — regardless of how minor the task seemed.
+
+This means failures are never silently lost in a queue. The CEO is the mechanism that turns a `status: "failed"` entry into a human-visible alert.
+
+### CEO Knowledge Base
+
+After each digest, the CEO updates `agents/ceo/MEMORY.md` with key takeaways — patterns, recurring failures, velocity signals. This gives the CEO a running picture of team health across heartbeats, not just point-in-time snapshots.
+
+```mermaid
+sequenceDiagram
+    participant CEO
+    participant tasks.py
+    participant Marco
+
+    CEO->>tasks.py: digest --since <last_ts>
+    tasks.py-->>CEO: done/failed tasks + new timestamp
+    alt Tasks found
+        CEO->>CEO: update last_digest_ts.txt
+        CEO->>CEO: update MEMORY.md with takeaways
+        CEO->>Marco: Slack DM (interpreted summary)
+    else No tasks
+        CEO->>CEO: update last_digest_ts.txt
+        CEO-->>CEO: HEARTBEAT_OK (silent)
+    end
+```
+
+---
+
 ## CLI Quick Reference
 
 The skill lives at `skills/tasks/scripts/tasks.py`. Full reference in `skills/tasks/SKILL.md`.

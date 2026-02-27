@@ -6,33 +6,33 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Internal documentation for the JourneyLoop platform — architecture, infrastructure, and engineering process.">
+        <meta name="description" content="How agents delegate and coordinate work using the persistent task queue skill.">
       
       
       
-        <link rel="canonical" href="http://192.168.1.30:8001/">
+        <link rel="canonical" href="http://192.168.1.30:8001/engineering/agent-task-queue/">
       
       
+        <link rel="prev" href="../troubleshooting/">
       
-        <link rel="next" href="platform/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
-        <title>JourneyLoop Docs - JourneyLoop Docs</title>
+        <title>Agent Task Queue - JourneyLoop Docs</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +51,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#journeyloop-docs" class="md-skip">
+        <a href="#agent-task-queue" class="md-skip">
           Skip to content
         </a>
       
@@ -88,7 +88,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="JourneyLoop Docs" class="md-header__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+    <a href="../.." title="JourneyLoop Docs" class="md-header__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              JourneyLoop Docs
+              Agent Task Queue
             
           </span>
         </div>
@@ -181,11 +181,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -206,7 +204,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="platform/" class="md-tabs__link">
+        <a href="../../platform/" class="md-tabs__link">
           
   
   
@@ -228,7 +226,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="companion/" class="md-tabs__link">
+        <a href="../../companion/" class="md-tabs__link">
           
   
   
@@ -246,11 +244,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="engineering/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -286,7 +286,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="JourneyLoop Docs" class="md-nav__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
+    <a href="../.." title="JourneyLoop Docs" class="md-nav__button md-logo" aria-label="JourneyLoop Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -301,19 +301,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -329,7 +320,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -368,7 +358,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="platform/" class="md-nav__link ">
+            <a href="../../platform/" class="md-nav__link ">
               
   
   
@@ -412,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="platform/overview/" class="md-nav__link">
+      <a href="../../platform/overview/" class="md-nav__link">
         
   
   
@@ -476,7 +466,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="companion/" class="md-nav__link ">
+            <a href="../../companion/" class="md-nav__link ">
               
   
   
@@ -520,7 +510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companion/operator/" class="md-nav__link">
+      <a href="../../companion/operator/" class="md-nav__link">
         
   
   
@@ -548,7 +538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companion/training/" class="md-nav__link">
+      <a href="../../companion/training/" class="md-nav__link">
         
   
   
@@ -580,6 +570,8 @@
       
   
   
+    
+  
   
   
     
@@ -605,22 +597,23 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="engineering/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -638,13 +631,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -664,7 +657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="engineering/process/" class="md-nav__link">
+      <a href="../process/" class="md-nav__link">
         
   
   
@@ -692,7 +685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="engineering/agent-roster/" class="md-nav__link">
+      <a href="../agent-roster/" class="md-nav__link">
         
   
   
@@ -720,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="engineering/local-dev/" class="md-nav__link">
+      <a href="../local-dev/" class="md-nav__link">
         
   
   
@@ -748,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="engineering/slack-agent-communication/" class="md-nav__link">
+      <a href="../slack-agent-communication/" class="md-nav__link">
         
   
   
@@ -776,7 +769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="engineering/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -803,10 +796,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="engineering/agent-task-queue/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Task Queue
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -822,6 +842,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#heartbeat-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heartbeat Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-agent-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Agent Assignment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -854,6 +960,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#heartbeat-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heartbeat Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-agent-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Agent Assignment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -869,53 +1049,105 @@
 
 
 
-<h1 id="journeyloop-docs"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg></span> JourneyLoop Docs</h1>
-<p>Internal documentation for the JourneyLoop platform — architecture decisions, infrastructure setup, engineering process, and agent protocols.</p>
-<div class="admonition info">
-<p class="admonition-title">What this is</p>
-<p>This is <strong>not</strong> code documentation. It captures <strong>why things are built the way they are</strong> and <strong>how to operate them</strong>.</p>
+<h1 id="agent-task-queue"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5h6v6H3zm2 2v2h2V7zm6 0h10v2H11zm0 8h10v2H11zm-6 5-3.5-3.5 1.41-1.41L5 17.17l4.59-4.58L11 14z"/></svg></span> Agent Task Queue</h1>
+<p>The task queue is how JourneyLoop agents assign work to each other and track it across heartbeat cycles. It replaces ad-hoc Slack messages and ephemeral memory as the coordination layer for async agent-to-agent delegation.</p>
+<hr />
+<h2 id="why-it-exists">Why It Exists</h2>
+<p>Before the task queue, agents had no reliable way to assign work to another agent. A PM could send a Slack message to the SWE agent, but if the SWE session restarted — or if the message was buried — the task was lost. Agents also couldn't inspect what work was pending for their teammates.</p>
+<p>The task queue solves this with three properties:</p>
+<ul>
+<li><strong>Persistent</strong> — tasks survive session restarts and gateway reboots</li>
+<li><strong>Agent-scoped</strong> — each agent has its own queue; no shared mutable state</li>
+<li><strong>Inspectable</strong> — JSON files in the workspace, readable by any agent or human</li>
+</ul>
+<hr />
+<h2 id="architecture">Architecture</h2>
+<p>Each agent's queue lives at:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>~/.openclaw/workspace/agents/&lt;name&gt;/TASKS.json
+</code></pre></div>
+<p>The file is created automatically the first time a task is added to an agent. All agents can read and write all queues — there's no access control. Trust is the protocol.</p>
+<p>Tasks have five statuses: <code>pending</code> → <code>in-progress</code> → <code>done</code> / <code>failed</code> / <code>dropped</code>.</p>
+<p><strong>Priority</strong> is <code>high</code> &gt; <code>normal</code> &gt; <code>low</code>. Within the same priority tier, the oldest task is picked first (FIFO). This keeps the queue predictable and prevents starvation.</p>
+<hr />
+<h2 id="heartbeat-integration">Heartbeat Integration</h2>
+<p>On every heartbeat, each agent:</p>
+<ol>
+<li>Picks the next pending task: <code>python3 skills/tasks/scripts/tasks.py pick --agent &lt;name&gt;</code></li>
+<li>If nothing is returned — stops and replies <code>HEARTBEAT_OK</code></li>
+<li>Works on the task</li>
+<li>Marks it done or failed</li>
+</ol>
+<p><strong>One task per heartbeat. No exceptions.</strong> Agents don't loop through the queue in a single run. This keeps each heartbeat bounded and ensures that long tasks don't block the agent indefinitely.</p>
+<div class="admonition warning">
+<p class="admonition-title">Don't chain tasks in a single heartbeat</p>
+<p>Picking a second task after finishing the first leads to unbounded run times and makes failure harder to diagnose. The next heartbeat will pick the next task.</p>
 </div>
 <hr />
-<div class="grid cards">
-<ul>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 18.54 7.37-5.74L21 14.07l-9 7-9-7 1.62-1.26zM12 16 3 9l9-7 9 7zm0-11.47L6.26 9 12 13.47 17.74 9z"/></svg></span> <strong>Platform</strong></p>
+<h2 id="cross-agent-assignment">Cross-Agent Assignment</h2>
+<p>Any agent can add a task for any other agent:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python3<span class="w"> </span>skills/tasks/scripts/tasks.py<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--agent<span class="w"> </span>swe<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--title<span class="w"> </span><span class="s2">&quot;Implement companion memory model&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--notes<span class="w"> </span><span class="s2">&quot;See tech-spec: planning/companion/memory-system/tech-spec.md&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--priority<span class="w"> </span>high<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>--added-by<span class="w"> </span>cto
+</code></pre></div>
+<p>This is the primary coordination mechanism between agents. When the PM finishes a brief, it adds a task to the UX queue. When the CTO finishes a tech spec, it adds a task to the SWE queue. No Slack ping required.</p>
 <hr />
-<p>Core concepts, the data model, and the SHIFT coaching quality framework.</p>
-<ul>
-<li><a href="platform/overview/">Platform Overview</a> — what JourneyLoop is, the data model (coaches, clients, sessions, goals), and how sessions flow through the system</li>
-<li><a href="platform/overview/#the-shift-framework">SHIFT Framework</a> — the 5-principle coaching quality model used for AI session analysis</li>
-</ul>
-<p><a href="platform/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Explore Platform</a></p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.5 15.5c0 1.11-.89 2-2 2s-2-.89-2-2 .9-2 2-2 2 .9 2 2m-9-2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.89 2-2-.89-2-2-2M23 15v3c0 .55-.45 1-1 1h-1v1c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2v-1H2c-.55 0-1-.45-1-1v-3c0-.55.45-1 1-1h1c0-3.87 3.13-7 7-7h1V5.73c-.6-.34-1-.99-1-1.73 0-1.1.9-2 2-2s2 .9 2 2c0 .74-.4 1.39-1 1.73V7h1c3.87 0 7 3.13 7 7h1c.55 0 1 .45 1 1m-2 1h-2v-2c0-2.76-2.24-5-5-5h-4c-2.76 0-5 2.24-5 5v2H3v1h2v3h14v-3h2z"/></svg></span> <strong>Companion</strong></p>
+<h2 id="failure-handling">Failure Handling</h2>
+<p>Failed tasks are <strong>never automatically cleaned up</strong>. They stay in the queue with <code>status: "failed"</code>, the error message, and a retry count.</p>
+<p>This is intentional. Failed tasks are diagnostic signals — they tell the <code>doctor</code> agent (or Dobby) what broke, when, and how many times it's been tried. Cleaning them up automatically would erase that history.</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; pending : task added
+    pending --&gt; in_progress : pick
+    in_progress --&gt; done : done
+    in_progress --&gt; failed : fail
+    in_progress --&gt; dropped : drop
+    failed --&gt; in_progress : retry (manual)
+    failed --&gt; dropped : drop (doctor decision)</code></pre>
+<p>Done and dropped tasks older than 7 days are removed by <code>clean</code>. Failed tasks are exempt.</p>
 <hr />
-<p>The AI companion feature — how it's architected, provisioned, and operated.</p>
-<ul>
-<li><a href="companion/operator/">Operator Guide</a> — architecture (OpenClaw on GCP), provisioning flow, key design decisions, operations runbook</li>
-<li><a href="companion/training/">Training Program</a> — how companion quality improves over time: scenario-based evaluation, template refinement, bootstrap learning, and the production promotion pipeline</li>
-</ul>
-<p><a href="companion/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Explore Companion</a></p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2m-2 12c-.25 0-.46-.18-.5-.42l-.37-2.65c-.63-.25-1.17-.59-1.69-.99l-2.49 1.01c-.22.08-.49 0-.61-.22l-2-3.46a.493.493 0 0 1 .12-.64l2.11-1.66L4.5 12l.07-1-2.11-1.63a.493.493 0 0 1-.12-.64l2-3.46c.12-.22.39-.31.61-.22l2.49 1c.52-.39 1.06-.73 1.69-.98l.37-2.65c.04-.24.25-.42.5-.42h4c.25 0 .46.18.5.42l.37 2.65c.63.25 1.17.59 1.69.98l2.49-1c.22-.09.49 0 .61.22l2 3.46c.13.22.07.49-.12.64L19.43 11l.07 1-.07 1 2.11 1.63c.19.15.25.42.12.64l-2 3.46c-.12.22-.39.31-.61.22l-2.49-1c-.52.39-1.06.73-1.69.98l-.37 2.65c-.04.24-.25.42-.5.42zm1.25-18-.37 2.61c-1.2.25-2.26.89-3.03 1.78L5.44 7.35l-.75 1.3L6.8 10.2a5.55 5.55 0 0 0 0 3.6l-2.12 1.56.75 1.3 2.43-1.04c.77.88 1.82 1.52 3.01 1.76l.37 2.62h1.52l.37-2.61c1.19-.25 2.24-.89 3.01-1.77l2.43 1.04.75-1.3-2.12-1.55c.4-1.17.4-2.44 0-3.61l2.11-1.55-.75-1.3-2.41 1.04a5.42 5.42 0 0 0-3.03-1.77L12.75 4z"/></svg></span> <strong>Engineering</strong></p>
-<hr />
-<p>How the team works and how decisions are made.</p>
-<ul>
-<li><a href="engineering/process/">Process</a> — issue lifecycle, agent roles, planning conventions</li>
-<li><a href="engineering/agent-roster/">Agent Roster</a> — the full AI agent team, session keys, responsibilities</li>
-<li><a href="engineering/slack-agent-communication/">Slack Agent Communication</a> — thread-per-session model, gateway config, agent behavior, known limitations</li>
-<li><a href="engineering/troubleshooting/">Troubleshooting</a> — symptom → diagnosis → fix for gateway, agents, sessions, cron, and Pi resources</li>
-<li><a href="engineering/local-dev/">Local Development</a> — UX mockup dev server, Playwright screenshot tooling, and local setup gotchas</li>
-<li><a href="engineering/agent-task-queue/">Agent Task Queue</a> — persistent JSON task queue for async agent-to-agent work delegation, heartbeat integration, and failure tracking</li>
-</ul>
-<p><a href="engineering/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Explore Engineering</a></p>
-</li>
-</ul>
-</div>
-<hr />
-<p><em><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg></span> Last updated: 2026-02-27 — docs are maintained by the Docs Agent. To add or update a page, send a <code>WRITE</code> message to <code>agent:docs:main</code>.</em></p>
+<h2 id="cli-quick-reference">CLI Quick Reference</h2>
+<p>The skill lives at <code>skills/tasks/scripts/tasks.py</code>. Full reference in <code>skills/tasks/SKILL.md</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pick --agent NAME</code></td>
+<td>Pick next pending task (marks in-progress)</td>
+</tr>
+<tr>
+<td><code>done ID --agent NAME --result "..."</code></td>
+<td>Mark done with summary</td>
+</tr>
+<tr>
+<td><code>fail ID --agent NAME --error "..."</code></td>
+<td>Mark failed — persists for diagnosis</td>
+</tr>
+<tr>
+<td><code>add --agent NAME --title "..."</code></td>
+<td>Add a task to any agent's queue</td>
+</tr>
+<tr>
+<td><code>list [--agent NAME] [--status pending]</code></td>
+<td>Inspect queues</td>
+</tr>
+<tr>
+<td><code>digest [--since TIMESTAMP]</code></td>
+<td>Done/failed summary for CEO digest</td>
+</tr>
+<tr>
+<td><code>clean [--days 7]</code></td>
+<td>Remove old done/dropped tasks</td>
+</tr>
+</tbody>
+</table>
+<p>Task IDs support prefix matching — the first 8 characters are enough.</p>
 
 
 
@@ -974,10 +1206,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
