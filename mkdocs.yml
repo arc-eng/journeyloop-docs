@@ -48,6 +48,7 @@ nav:
   - Companion:
     - companion/index.md
     - Operator Guide: companion/operator.md
+    - Page Push: companion/page-push.md
     - Training Program: companion/training.md
   - Engineering:
     - engineering/index.md
@@ -57,3 +58,4 @@ nav:
     - Slack Agent Communication: engineering/slack-agent-communication.md
     - Troubleshooting: engineering/troubleshooting.md
     - Agent Task Queue: engineering/agent-task-queue.md
+    - Operator Infrastructure: engineering/operator-runbook.md

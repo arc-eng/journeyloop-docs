@@ -32,6 +32,19 @@ This section covers the **infrastructure and operations layer**: how agents are 
 
     [:octicons-arrow-right-24: Read the Operator Guide](operator.md)
 
+-   :material-monitor-share: **Page Push**
+
+    ---
+
+    How the companion pushes UI pages to the coach during sessions:
+
+    - Which pages can be pushed (client profiles, sessions, calendar, observations)
+    - Push panel design — overlay with draggable divider, not layout shift
+    - State persistence across reloads
+    - Spotlight: companion-initiated highlights to direct coach attention
+
+    [:octicons-arrow-right-24: Read the Page Push Guide](page-push.md)
+
 -   :material-school-outline: **Training Program**
 
     ---

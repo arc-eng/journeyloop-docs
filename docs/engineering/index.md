@@ -67,4 +67,12 @@ Documentation for how the JourneyLoop engineering team works — process, conven
 
     [:octicons-arrow-right-24: Read the Agent Task Queue Guide](agent-task-queue.md)
 
+-   :material-server-network: **Companion Operator Infrastructure**
+
+    ---
+
+    How the GCP companion operator is managed: heartbeat broadcasting (`heartbeat-all.sh`, `--agent ALL`), operator-controlled cron, the promote pipeline (now auto-migrates all live agents), central skills directory, and task queue access for cross-agent dispatch.
+
+    [:octicons-arrow-right-24: Read the Operator Infrastructure Guide](operator-runbook.md)
+
 </div>

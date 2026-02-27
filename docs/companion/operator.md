@@ -110,6 +110,22 @@ sequenceDiagram
 
 ---
 
+## Companion CLI: Analyze Commands
+
+The `journeyloop` CLI inside each companion's sandbox includes an `analyze` subgroup for deeper client and session analysis:
+
+| Command | Purpose |
+|---------|---------|
+| `journeyloop analyze progress` | Analyze a client's progress toward their goals |
+| `journeyloop analyze patterns` | Analyze coaching patterns across sessions |
+| `journeyloop analyze arc` | Analyze the arc of a specific session |
+
+These complement the existing data-access commands (`clients`, `sessions`, `goals`, etc.). Where the data commands retrieve records, the analyze commands return AI-generated interpretation — the companion delegates this work to the Django backend rather than doing all analysis in-context.
+
+The companion's `TOOLS.md` documents which commands are available and when to use them.
+
+---
+
 ## Operations
 
 !!! warning "GCP VM"

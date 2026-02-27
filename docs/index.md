@@ -32,7 +32,8 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
     The AI companion feature — how it's architected, provisioned, and operated.
 
     - [Operator Guide](companion/operator.md) — architecture (OpenClaw on GCP), provisioning flow, key design decisions, operations runbook
-- [Training Program](companion/training.md) — how companion quality improves over time: scenario-based evaluation, template refinement, bootstrap learning, and the production promotion pipeline
+    - [Page Push](companion/page-push.md) — companion-initiated UI page push, overlay panel design, spotlight highlights, state persistence
+    - [Training Program](companion/training.md) — how companion quality improves over time: scenario-based evaluation, template refinement, bootstrap learning, and the production promotion pipeline
 
     [:octicons-arrow-right-24: Explore Companion](companion/index.md)
 
@@ -48,6 +49,7 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
     - [Troubleshooting](engineering/troubleshooting.md) — symptom → diagnosis → fix for gateway, agents, sessions, cron, and Pi resources
     - [Local Development](engineering/local-dev.md) — UX mockup dev server, Playwright screenshot tooling, and local setup gotchas
     - [Agent Task Queue](engineering/agent-task-queue.md) — persistent JSON task queue for async agent-to-agent work delegation, heartbeat integration, and failure tracking
+    - [Operator Infrastructure](engineering/operator-runbook.md) — heartbeat broadcasting, promote pipeline (auto-migration), central skills directory, operator task queue access
 
     [:octicons-arrow-right-24: Explore Engineering](engineering/index.md)
 
@@ -55,4 +57,4 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
 
 ---
 
-*:material-clock-edit-outline: Last updated: 2026-02-27 — docs are maintained by the Docs Agent. To add or update a page, send a `WRITE` message to `agent:docs:main`.*
+*:material-clock-edit-outline: Last updated: 2026-02-27 (afternoon) — docs are maintained by the Docs Agent. To add or update a page, send a `WRITE` message to `agent:docs:main`.*

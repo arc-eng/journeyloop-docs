@@ -914,6 +914,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ceo-team-digest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CEO Team Digest
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CEO Team Digest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hybrid-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hybrid Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ceo-knowledge-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CEO Knowledge Base
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cli-quick-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1022,6 +1072,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ceo-team-digest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CEO Team Digest
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CEO Team Digest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hybrid-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hybrid Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ceo-knowledge-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CEO Knowledge Base
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cli-quick-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1106,6 +1206,41 @@
     failed --&gt; in_progress : retry (manual)
     failed --&gt; dropped : drop (doctor decision)</code></pre>
 <p>Done and dropped tasks older than 7 days are removed by <code>clean</code>. Failed tasks are exempt.</p>
+<hr />
+<h2 id="ceo-team-digest">CEO Team Digest</h2>
+<p>The CEO agent runs a team-wide digest on every heartbeat (every 30 minutes, 8am–10pm PST). It's the oversight layer built on top of the task queue — the mechanism that converts agent activity into situational awareness for Marco.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>On each heartbeat, the CEO scans all agents' completed and failed tasks since its last check:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python3<span class="w"> </span>skills/tasks/scripts/tasks.py<span class="w"> </span>digest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--since<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>agents/ceo/last_digest_ts.txt<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;1970-01-01T00:00:00+00:00&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>The timestamp of the last digest is stored in <code>agents/ceo/last_digest_ts.txt</code> and updated after every run. This ensures no task is reported twice.</p>
+<p><strong>If something happened</strong> — the CEO sends Marco a Slack DM interpreting the work. Not a list of task IDs. A read on what the team accomplished, what it means, and whether anything needs attention. Three to five sentences. If something failed, the CEO names the impact and what should happen next.</p>
+<p><strong>If nothing happened</strong> — the CEO updates the timestamp file and replies <code>HEARTBEAT_OK</code>. Marco gets no message.</p>
+<h3 id="the-hybrid-model">The Hybrid Model</h3>
+<p>The design separates two concerns:</p>
+<ul>
+<li><strong>Done tasks are batched.</strong> Marco gets a digest at most every 30 minutes, not a ping for every completed task. Low-stakes work doesn't interrupt.</li>
+<li><strong>Failed tasks surface immediately.</strong> When the CEO runs its digest and finds failures, they're flagged prominently — with error details and retry counts — regardless of how minor the task seemed.</li>
+</ul>
+<p>This means failures are never silently lost in a queue. The CEO is the mechanism that turns a <code>status: "failed"</code> entry into a human-visible alert.</p>
+<h3 id="ceo-knowledge-base">CEO Knowledge Base</h3>
+<p>After each digest, the CEO updates <code>agents/ceo/MEMORY.md</code> with key takeaways — patterns, recurring failures, velocity signals. This gives the CEO a running picture of team health across heartbeats, not just point-in-time snapshots.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant CEO
+    participant tasks.py
+    participant Marco
+
+    CEO-&gt;&gt;tasks.py: digest --since &lt;last_ts&gt;
+    tasks.py--&gt;&gt;CEO: done/failed tasks + new timestamp
+    alt Tasks found
+        CEO-&gt;&gt;CEO: update last_digest_ts.txt
+        CEO-&gt;&gt;CEO: update MEMORY.md with takeaways
+        CEO-&gt;&gt;Marco: Slack DM (interpreted summary)
+    else No tasks
+        CEO-&gt;&gt;CEO: update last_digest_ts.txt
+        CEO--&gt;&gt;CEO: HEARTBEAT_OK (silent)
+    end</code></pre>
 <hr />
 <h2 id="cli-quick-reference">CLI Quick Reference</h2>
 <p>The skill lives at <code>skills/tasks/scripts/tasks.py</code>. Full reference in <code>skills/tasks/SKILL.md</code>.</p>
