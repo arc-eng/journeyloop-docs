@@ -59,4 +59,12 @@ Documentation for how the JourneyLoop engineering team works — process, conven
 
     [:octicons-arrow-right-24: Read the Local Dev Guide](local-dev.md)
 
+-   :material-format-list-checks: **Agent Task Queue**
+
+    ---
+
+    How agents delegate and coordinate work: the persistent JSON task queue, heartbeat integration (one task per run), cross-agent assignment, and failure handling designed for doctor diagnosis.
+
+    [:octicons-arrow-right-24: Read the Agent Task Queue Guide](agent-task-queue.md)
+
 </div>

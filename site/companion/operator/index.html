@@ -1117,14 +1117,14 @@
 </div>
 <p><strong>Rebuild the sandbox image after an API change:</strong></p>
 <div class="highlight"><span class="filename">Rebuild sandbox</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>mlamina@34.63.156.77
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>~/openclaw-operator
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>~/journeyloop/operator
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./scripts/build-sandbox.sh
 </code></pre></div>
 <p>Then restart the OpenClaw gateway so it picks up the new image:</p>
 <div class="highlight"><span class="filename">Restart gateway</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>openclaw-gateway
 </code></pre></div>
 <hr />
-<p><strong>Companion operator repo:</strong> <a href="https://github.com/arc-eng/companion-operator"><code>arc-eng/companion-operator</code></a> — provisioning scripts, Dockerfile, templates</p>
+<p><strong>Companion operator files:</strong> <a href="https://github.com/arc-eng/journeyloop/tree/main/operator"><code>arc-eng/journeyloop/operator/</code></a> — provisioning scripts, Dockerfile, templates (migrated from the now-archived <a href="https://github.com/arc-eng/companion-operator"><code>arc-eng/companion-operator</code></a>)</p>
 
 
 

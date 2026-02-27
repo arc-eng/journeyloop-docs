@@ -56,3 +56,4 @@ nav:
     - Local Development: engineering/local-dev.md
     - Slack Agent Communication: engineering/slack-agent-communication.md
     - Troubleshooting: engineering/troubleshooting.md
+    - Agent Task Queue: engineering/agent-task-queue.md
