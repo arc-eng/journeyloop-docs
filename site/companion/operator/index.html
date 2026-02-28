@@ -16,7 +16,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../training/">
+        <link rel="next" href="../page-push/">
       
       
         
@@ -451,6 +451,8 @@
       
         
       
+        
+      
     
     
     
@@ -608,6 +610,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#companion-cli-analyze-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion CLI: Analyze Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#operations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -622,6 +635,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Page Push
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -673,6 +714,8 @@
       
         
           
+        
+      
         
       
         
@@ -913,6 +956,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/operator-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operator Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -973,6 +1044,17 @@
     <span class="md-ellipsis">
       
         Key Design Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-cli-analyze-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion CLI: Analyze Commands
       
     </span>
   </a>
@@ -1116,6 +1198,33 @@
 </div>
 </div>
 </div>
+<hr />
+<h2 id="companion-cli-analyze-commands">Companion CLI: Analyze Commands</h2>
+<p>The <code>journeyloop</code> CLI inside each companion's sandbox includes an <code>analyze</code> subgroup for deeper client and session analysis:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>journeyloop analyze progress</code></td>
+<td>Analyze a client's progress toward their goals</td>
+</tr>
+<tr>
+<td><code>journeyloop analyze patterns</code></td>
+<td>Analyze coaching patterns across sessions</td>
+</tr>
+<tr>
+<td><code>journeyloop analyze arc</code></td>
+<td>Analyze the arc of a specific session</td>
+</tr>
+</tbody>
+</table>
+<p>These complement the existing data-access commands (<code>clients</code>, <code>sessions</code>, <code>goals</code>, etc.). Where the data commands retrieve records, the analyze commands return AI-generated interpretation — the companion delegates this work to the Django backend rather than doing all analysis in-context.</p>
+<p>The companion's <code>TOOLS.md</code> documents which commands are available and when to use them.</p>
 <hr />
 <h2 id="operations">Operations</h2>
 <div class="admonition warning">

@@ -59,3 +59,4 @@ nav:
     - Troubleshooting: engineering/troubleshooting.md
     - Agent Task Queue: engineering/agent-task-queue.md
     - Operator Infrastructure: engineering/operator-runbook.md
+    - GitHub Label Routing: engineering/label-routing.md

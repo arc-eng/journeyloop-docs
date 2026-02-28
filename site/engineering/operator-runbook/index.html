@@ -6,17 +6,15 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="How agents delegate and coordinate work using the persistent task queue skill.">
+        <meta name="description" content="How the companion operator VM is managed — heartbeat broadcasting, promotion pipeline, skill distribution, and cross-agent coordination.">
       
       
       
-        <link rel="canonical" href="http://192.168.1.30:8001/engineering/agent-task-queue/">
+        <link rel="canonical" href="http://192.168.1.30:8001/engineering/operator-runbook/">
       
       
-        <link rel="prev" href="../troubleshooting/">
+        <link rel="prev" href="../agent-task-queue/">
       
-      
-        <link rel="next" href="../operator-runbook/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Agent Task Queue - JourneyLoop Docs</title>
+        <title>Companion Operator Infrastructure - JourneyLoop Docs</title>
       
     
     
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#agent-task-queue" class="md-skip">
+        <a href="#companion-operator-infrastructure" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Agent Task Queue
+              Companion Operator Infrastructure
             
           </span>
         </div>
@@ -830,6 +828,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-task-queue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Task Queue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -849,7 +875,7 @@
   <span class="md-ellipsis">
     
   
-    Agent Task Queue
+    Operator Infrastructure
   
 
     
@@ -867,7 +893,7 @@
   <span class="md-ellipsis">
     
   
-    Agent Task Queue
+    Operator Infrastructure
   
 
     
@@ -893,99 +919,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-it-exists" class="md-nav__link">
+  <a href="#heartbeat-broadcasting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why It Exists
+        Heartbeat Broadcasting
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#heartbeat-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Heartbeat Integration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cross-agent-assignment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-Agent Assignment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure Handling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ceo-team-digest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CEO Team Digest
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="CEO Team Digest">
+    <nav class="md-nav" aria-label="Heartbeat Broadcasting">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#operator-controlled-heartbeat-cron" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How It Works
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-hybrid-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The Hybrid Model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ceo-knowledge-base" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CEO Knowledge Base
+        Operator-Controlled Heartbeat Cron
       
     </span>
   </a>
@@ -998,10 +947,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cli-quick-reference" class="md-nav__link">
+  <a href="#promotion-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLI Quick Reference
+        Promotion Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-distribution-central-skills-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Distribution: Central Skills Directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-queue-for-the-operator-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Queue for the Operator Agent
       
     </span>
   </a>
@@ -1012,34 +983,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../operator-runbook/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Operator Infrastructure
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1079,99 +1022,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-it-exists" class="md-nav__link">
+  <a href="#heartbeat-broadcasting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why It Exists
+        Heartbeat Broadcasting
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#heartbeat-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Heartbeat Integration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cross-agent-assignment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-Agent Assignment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure Handling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ceo-team-digest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CEO Team Digest
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="CEO Team Digest">
+    <nav class="md-nav" aria-label="Heartbeat Broadcasting">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#operator-controlled-heartbeat-cron" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How It Works
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-hybrid-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The Hybrid Model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ceo-knowledge-base" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CEO Knowledge Base
+        Operator-Controlled Heartbeat Cron
       
     </span>
   </a>
@@ -1184,10 +1050,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cli-quick-reference" class="md-nav__link">
+  <a href="#promotion-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLI Quick Reference
+        Promotion Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-distribution-central-skills-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Distribution: Central Skills Directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-queue-for-the-operator-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Queue for the Operator Agent
       
     </span>
   </a>
@@ -1211,140 +1099,52 @@
 
 
 
-<h1 id="agent-task-queue"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5h6v6H3zm2 2v2h2V7zm6 0h10v2H11zm0 8h10v2H11zm-6 5-3.5-3.5 1.41-1.41L5 17.17l4.59-4.58L11 14z"/></svg></span> Agent Task Queue</h1>
-<p>The task queue is how JourneyLoop agents assign work to each other and track it across heartbeat cycles. It replaces ad-hoc Slack messages and ephemeral memory as the coordination layer for async agent-to-agent delegation.</p>
+<h1 id="companion-operator-infrastructure"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19h1a1 1 0 0 1 1 1h7v2h-7a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1H2v-2h7a1 1 0 0 1 1-1h1v-2H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-7zM4 3h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m5 4h1V5H9zm0 8h1v-2H9zM5 5v2h2V5zm0 8v2h2v-2z"/></svg></span> Companion Operator Infrastructure</h1>
+<p>How the GCP companion operator is managed and how its agents coordinate. This covers the operational layer on the VM — not the companion agents themselves, but the infrastructure that runs and maintains them.</p>
+<p>For provisioning and architecture, see the <a href="../../companion/operator/">Operator Guide</a>.</p>
 <hr />
-<h2 id="why-it-exists">Why It Exists</h2>
-<p>Before the task queue, agents had no reliable way to assign work to another agent. A PM could send a Slack message to the SWE agent, but if the SWE session restarted — or if the message was buried — the task was lost. Agents also couldn't inspect what work was pending for their teammates.</p>
-<p>The task queue solves this with three properties:</p>
+<h2 id="heartbeat-broadcasting">Heartbeat Broadcasting</h2>
+<p>The operator can trigger heartbeats for all companion agents at once using <code>heartbeat-all.sh</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>~/journeyloop/operator
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./scripts/heartbeat-all.sh
+</code></pre></div>
+<p>This also uses an <code>--agent ALL</code> flag on <code>tasks.py</code>, which applies a command across every agent's queue simultaneously. It's used when the operator needs to push a coordinated update — for example, triggering all agents to pick up a configuration change or run a specific task.</p>
+<p>Individual agent heartbeats are still managed by their own cron schedules. The broadcast mechanism is for operator-initiated coordination, not routine operation.</p>
+<h3 id="operator-controlled-heartbeat-cron">Operator-Controlled Heartbeat Cron</h3>
+<p>The operator maintains a cron schedule for heartbeats with logging. This means:</p>
 <ul>
-<li><strong>Persistent</strong> — tasks survive session restarts and gateway reboots</li>
-<li><strong>Agent-scoped</strong> — each agent has its own queue; no shared mutable state</li>
-<li><strong>Inspectable</strong> — JSON files in the workspace, readable by any agent or human</li>
+<li>The operator (not individual agents) owns the heartbeat schedule</li>
+<li>Heartbeat runs are logged centrally on the VM, not just inside each agent session</li>
+<li>The operator can temporarily suppress or modify heartbeats for maintenance without touching each agent's config</li>
 </ul>
 <hr />
-<h2 id="architecture">Architecture</h2>
-<p>Each agent's queue lives at:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>~/.openclaw/workspace/agents/&lt;name&gt;/TASKS.json
+<h2 id="promotion-pipeline">Promotion Pipeline</h2>
+<p>The <code>promote.sh</code> script handles promoting a new companion configuration to all live agents. As of Feb 2026, promotion <strong>auto-migrates all live agents</strong> — every companion agent picks up the new configuration as part of the promote run.</p>
+<p>Previously, migration was a separate step. The consolidation removes the risk of partially-migrated fleets: every promote is atomic across all agents.</p>
+<div class="highlight"><span class="filename">Promote to all live agents</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>~/journeyloop/operator
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./scripts/promote.sh
 </code></pre></div>
-<p>The file is created automatically the first time a task is added to an agent. All agents can read and write all queues — there's no access control. Trust is the protocol.</p>
-<p>Tasks have five statuses: <code>pending</code> → <code>in-progress</code> → <code>done</code> / <code>failed</code> / <code>dropped</code>.</p>
-<p><strong>Priority</strong> is <code>high</code> &gt; <code>normal</code> &gt; <code>low</code>. Within the same priority tier, the oldest task is picked first (FIFO). This keeps the queue predictable and prevents starvation.</p>
-<hr />
-<h2 id="heartbeat-integration">Heartbeat Integration</h2>
-<p>On every heartbeat, each agent:</p>
-<ol>
-<li>Picks the next pending task: <code>python3 skills/tasks/scripts/tasks.py pick --agent &lt;name&gt;</code></li>
-<li>If nothing is returned — stops and replies <code>HEARTBEAT_OK</code></li>
-<li>Works on the task</li>
-<li>Marks it done or failed</li>
-</ol>
-<p><strong>One task per heartbeat. No exceptions.</strong> Agents don't loop through the queue in a single run. This keeps each heartbeat bounded and ensures that long tasks don't block the agent indefinitely.</p>
 <div class="admonition warning">
-<p class="admonition-title">Don't chain tasks in a single heartbeat</p>
-<p>Picking a second task after finishing the first leads to unbounded run times and makes failure harder to diagnose. The next heartbeat will pick the next task.</p>
+<p class="admonition-title">Promotion is irreversible during the run</p>
+<p>There's no partial rollback once promote starts migrating agents. Test in staging first.</p>
 </div>
 <hr />
-<h2 id="cross-agent-assignment">Cross-Agent Assignment</h2>
-<p>Any agent can add a task for any other agent:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python3<span class="w"> </span>skills/tasks/scripts/tasks.py<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--agent<span class="w"> </span>swe<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--title<span class="w"> </span><span class="s2">&quot;Implement companion memory model&quot;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--notes<span class="w"> </span><span class="s2">&quot;See tech-spec: planning/companion/memory-system/tech-spec.md&quot;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--priority<span class="w"> </span>high<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>--added-by<span class="w"> </span>cto
+<h2 id="skill-distribution-central-skills-directory">Skill Distribution: Central Skills Directory</h2>
+<p>Companion agents share a central <code>skills/</code> directory on the operator VM rather than maintaining per-agent skill copies.</p>
+<p><strong>Before:</strong> Each agent workspace had its own copy of shared skills. Updating a skill meant merging changes into every agent.</p>
+<p><strong>After:</strong> A single <code>skills/</code> directory at the operator level is referenced by all agents. Agent workspaces contain only agent-specific files (<code>SOUL.md</code>, <code>MEMORY.md</code>, credentials, etc.).</p>
+<p>This makes skill updates atomic — change once, all agents see it on next heartbeat. It also keeps agent workspaces lean: each workspace is only what's unique to that coach's agent.</p>
+<p>The <code>operator/agent</code> files (templates, workspace structure) are kept separate from the shared <code>skills/</code> directory. Operator-level config doesn't bleed into agent workspaces.</p>
+<hr />
+<h2 id="task-queue-for-the-operator-agent">Task Queue for the Operator Agent</h2>
+<p>The main operator agent now has access to the task queue skill for cross-agent dispatch. The operator can add tasks to individual companion agent queues:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python3<span class="w"> </span>skills/tasks/scripts/tasks.py<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--agent<span class="w"> </span>&lt;coach-agent-id&gt;<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--title<span class="w"> </span><span class="s2">&quot;Reload client profile for next session&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>--added-by<span class="w"> </span>operator
 </code></pre></div>
-<p>This is the primary coordination mechanism between agents. When the PM finishes a brief, it adds a task to the UX queue. When the CTO finishes a tech spec, it adds a task to the SWE queue. No Slack ping required.</p>
-<hr />
-<h2 id="failure-handling">Failure Handling</h2>
-<p>Failed tasks are <strong>never automatically cleaned up</strong>. They stay in the queue with <code>status: "failed"</code>, the error message, and a retry count.</p>
-<p>This is intentional. Failed tasks are diagnostic signals — they tell the <code>doctor</code> agent (or Dobby) what broke, when, and how many times it's been tried. Cleaning them up automatically would erase that history.</p>
-<pre class="mermaid"><code>stateDiagram-v2
-    [*] --&gt; pending : task added
-    pending --&gt; in_progress : pick
-    in_progress --&gt; done : done
-    in_progress --&gt; failed : fail
-    in_progress --&gt; dropped : drop
-    failed --&gt; in_progress : retry (manual)
-    failed --&gt; dropped : drop (doctor decision)</code></pre>
-<p>Done and dropped tasks older than 7 days are removed by <code>clean</code>. Failed tasks are exempt.</p>
-<hr />
-<h2 id="ceo-team-digest">CEO Team Digest</h2>
-<p>The CEO agent runs a team-wide digest on every heartbeat (every 30 minutes, 8am–10pm PST). It's the oversight layer built on top of the task queue — the mechanism that converts agent activity into situational awareness for Marco.</p>
-<h3 id="how-it-works">How It Works</h3>
-<p>On each heartbeat, the CEO scans all agents' completed and failed tasks since its last check:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python3<span class="w"> </span>skills/tasks/scripts/tasks.py<span class="w"> </span>digest<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--since<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>agents/ceo/last_digest_ts.txt<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;1970-01-01T00:00:00+00:00&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
-</code></pre></div>
-<p>The timestamp of the last digest is stored in <code>agents/ceo/last_digest_ts.txt</code> and updated after every run. This ensures no task is reported twice.</p>
-<p><strong>If something happened</strong> — the CEO sends Marco a Slack DM interpreting the work. Not a list of task IDs. A read on what the team accomplished, what it means, and whether anything needs attention. Three to five sentences. If something failed, the CEO names the impact and what should happen next.</p>
-<p><strong>If nothing happened</strong> — the CEO updates the timestamp file and replies <code>HEARTBEAT_OK</code>. Marco gets no message.</p>
-<h3 id="the-hybrid-model">The Hybrid Model</h3>
-<p>The design separates two concerns:</p>
-<ul>
-<li><strong>Done tasks are batched.</strong> Marco gets a digest at most every 30 minutes, not a ping for every completed task. Low-stakes work doesn't interrupt.</li>
-<li><strong>Failed tasks surface immediately.</strong> When the CEO runs its digest and finds failures, they're flagged prominently — with error details and retry counts — regardless of how minor the task seemed.</li>
-</ul>
-<p>This means failures are never silently lost in a queue. The CEO is the mechanism that turns a <code>status: "failed"</code> entry into a human-visible alert.</p>
-<h3 id="ceo-knowledge-base">CEO Knowledge Base</h3>
-<p>After each digest, the CEO updates <code>agents/ceo/MEMORY.md</code> with key takeaways — patterns, recurring failures, velocity signals. This gives the CEO a running picture of team health across heartbeats, not just point-in-time snapshots.</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant CEO
-    participant tasks.py
-    participant Marco
-
-    CEO-&gt;&gt;tasks.py: digest --since &lt;last_ts&gt;
-    tasks.py--&gt;&gt;CEO: done/failed tasks + new timestamp
-    alt Tasks found
-        CEO-&gt;&gt;CEO: update last_digest_ts.txt
-        CEO-&gt;&gt;CEO: update MEMORY.md with takeaways
-        CEO-&gt;&gt;Marco: Slack DM (interpreted summary)
-    else No tasks
-        CEO-&gt;&gt;CEO: update last_digest_ts.txt
-        CEO--&gt;&gt;CEO: HEARTBEAT_OK (silent)
-    end</code></pre>
-<hr />
-<h2 id="cli-quick-reference">CLI Quick Reference</h2>
-<p>The skill lives at <code>skills/tasks/scripts/tasks.py</code>. Full reference in <code>skills/tasks/SKILL.md</code>.</p>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>pick --agent NAME</code></td>
-<td>Pick next pending task (marks in-progress)</td>
-</tr>
-<tr>
-<td><code>done ID --agent NAME --result "..."</code></td>
-<td>Mark done with summary</td>
-</tr>
-<tr>
-<td><code>fail ID --agent NAME --error "..."</code></td>
-<td>Mark failed — persists for diagnosis</td>
-</tr>
-<tr>
-<td><code>add --agent NAME --title "..."</code></td>
-<td>Add a task to any agent's queue</td>
-</tr>
-<tr>
-<td><code>list [--agent NAME] [--status pending]</code></td>
-<td>Inspect queues</td>
-</tr>
-<tr>
-<td><code>digest [--since TIMESTAMP]</code></td>
-<td>Done/failed summary for CEO digest</td>
-</tr>
-<tr>
-<td><code>clean [--days 7]</code></td>
-<td>Remove old done/dropped tasks</td>
-</tr>
-</tbody>
-</table>
-<p>Task IDs support prefix matching — the first 8 characters are enough.</p>
+<p>This closes the coordination loop: the operator can not only broadcast heartbeats but also assign specific work to specific agents without sending a chat message.</p>
+<p>Combined with <code>--agent ALL</code>, the operator can add the same task to every agent's queue at once.</p>
 
 
 

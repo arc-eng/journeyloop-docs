@@ -50,6 +50,7 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
     - [Local Development](engineering/local-dev.md) — UX mockup dev server, Playwright screenshot tooling, and local setup gotchas
     - [Agent Task Queue](engineering/agent-task-queue.md) — persistent JSON task queue for async agent-to-agent work delegation, heartbeat integration, and failure tracking
     - [Operator Infrastructure](engineering/operator-runbook.md) — heartbeat broadcasting, promote pipeline (auto-migration), central skills directory, operator task queue access
+    - [GitHub Label Routing](engineering/label-routing.md) — how GitHub labels auto-dispatch work to agents via the label_tasks poller and task queue
 
     [:octicons-arrow-right-24: Explore Engineering](engineering/index.md)
 

@@ -75,4 +75,12 @@ Documentation for how the JourneyLoop engineering team works — process, conven
 
     [:octicons-arrow-right-24: Read the Operator Infrastructure Guide](operator-runbook.md)
 
+-   :material-label-outline: **GitHub Label → Agent Routing**
+
+    ---
+
+    How applying a GitHub label automatically queues work for the right agent. Covers the routing map (`needs-spec` → PM, `auto-build` → SWE, etc.), the 15-minute `label_tasks` poller, and how label-triggered tasks integrate with the agent task queue.
+
+    [:octicons-arrow-right-24: Read the Label Routing Guide](label-routing.md)
+
 </div>

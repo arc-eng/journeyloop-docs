@@ -13,6 +13,10 @@
          <lastmod>2026-02-27</lastmod>
     </url>
     <url>
+         <loc>http://192.168.1.30:8001/companion/page-push/</loc>
+         <lastmod>2026-02-27</lastmod>
+    </url>
+    <url>
          <loc>http://192.168.1.30:8001/companion/training/</loc>
          <lastmod>2026-02-27</lastmod>
     </url>
@@ -30,6 +34,10 @@
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/local-dev/</loc>
+         <lastmod>2026-02-27</lastmod>
+    </url>
+    <url>
+         <loc>http://192.168.1.30:8001/engineering/operator-runbook/</loc>
          <lastmod>2026-02-27</lastmod>
     </url>
     <url>
