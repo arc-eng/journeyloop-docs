@@ -21,7 +21,7 @@ The alternative (a separate dispatch step, or sending a Slack message to each ag
 
 | Label | Routes to | Task created |
 |-------|-----------|-------------|
-| `needs-spec` | PM | Write product spec (brief.md) for the issue |
+| `needs-spec` | PM | Write product spec in issue body |
 | `needs-ux` | UX | Design UX concept / wireframes |
 | `needs-docs` | Docs | Write documentation for the feature |
 | `auto-build` | SWE | Implement the changes and open a PR |
@@ -66,7 +66,6 @@ These labels don't trigger agent routing but are part of the shared label vocabu
 | `ready-for-dev` | Issue is scoped and ready for development |
 | `needs-refinement` | CTO input needed before dev starts |
 | `needs-work` | PR was reviewed and requires changes |
-| `needs-review` | PR needs code review |
 | `bug` · `feature` · `refactoring` · `technical-debt` | Standard categorization |
 
 ---

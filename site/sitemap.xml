@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://192.168.1.30:8001/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/companion/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/companion/operator/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/companion/page-push/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/companion/training/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/agent-roster/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/agent-task-queue/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
+    </url>
+    <url>
+         <loc>http://192.168.1.30:8001/engineering/label-routing/</loc>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/local-dev/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/operator-runbook/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/process/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/slack-agent-communication/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/engineering/troubleshooting/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/platform/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
     <url>
          <loc>http://192.168.1.30:8001/platform/overview/</loc>
-         <lastmod>2026-02-27</lastmod>
+         <lastmod>2026-02-28</lastmod>
     </url>
 </urlset>

@@ -25,27 +25,27 @@ Every feature gets a folder under its project namespace:
 
 ```
 planning/<project>/<feature>/
-  brief.md          ← Product spec: user stories, acceptance criteria
   ux.md             ← UX concept: layout, interaction, wireframes
   tech-spec.md      ← Technical architecture: system design, decisions
+  plan.md           ← SWE implementation plan (created after all specs done)
 ```
 
+!!! info "Product spec lives in the issue body"
+    There is no `brief.md`. PM writes the product spec (user stories, acceptance criteria) directly in the issue. No separate file, no `plans/` folder.
+
 !!! tip "Not every feature needs every file"
-    Backend-only features skip `ux.md`. Simple features might only need `brief.md`.
+    Backend-only features skip `ux.md`.
 
 **Example structure:**
 
 ```
 planning/companion/
   memory-system/
-    brief.md
     tech-spec.md
   interface/
-    brief.md
     ux.md
     tech-spec.md
   skill-system/
-    brief.md
     ux.md
     tech-spec.md
 ```
@@ -61,8 +61,6 @@ Each feature has **one tracking issue** in `arc-eng/journeyloop-startup-assistan
 ```markdown
 ## [emoji] Feature Name
 
-**Planning:** `planning/<project>/<feature>/`
-
 | Vertical     | Status         |
 |-------------|----------------|
 | Product Spec | ✅ Done / 🔲 Not started / ➖ N/A |
@@ -71,7 +69,13 @@ Each feature has **one tracking issue** in `arc-eng/journeyloop-startup-assistan
 
 ### Summary
 One paragraph describing the feature and why it matters.
+
+### Product Spec
+User stories, acceptance criteria, and PM context — written directly here.
 ```
+
+!!! info "Spec is the issue body"
+    PM writes the product spec inline. No `brief.md`, no `planning/` subfolder for specs. UX and tech specs are still files in `planning/<project>/<feature>/`.
 
 The status table is updated as verticals are completed.
 
@@ -84,16 +88,14 @@ Each feature issue carries **exactly one** lifecycle label at a time. The label 
 ```mermaid
 stateDiagram-v2
     [*] --> needs_spec : Feature created
-    needs_spec --> needs_ux : PM writes brief
+    needs_spec --> needs_ux : PM writes spec (in issue)
     needs_ux --> needs_tech_spec : UX concept done
-    needs_tech_spec --> needs_review : CTO writes tech spec
-    needs_review --> ready_for_dev : Marco approves
+    needs_tech_spec --> ready_for_dev : Marco approves in #development
     ready_for_dev --> [*] : SWE ships it
 
     needs_spec : needs-spec
     needs_ux : needs-ux
     needs_tech_spec : needs-tech-spec
-    needs_review : needs-review
     ready_for_dev : ready-for-dev
 ```
 
@@ -101,10 +103,9 @@ stateDiagram-v2
 
 | Label | Set By | Means |
 |-------|--------|-------|
-| `needs-spec` | — | Feature needs a product spec (brief.md) |
-| `needs-ux` | PM | Brief done, needs UX concept |
+| `needs-spec` | — | Feature needs a product spec (written in issue body) |
+| `needs-ux` | PM | Spec done, needs UX concept |
 | `needs-tech-spec` | PM/UX | Ready for CTO to write tech-spec.md |
-| `needs-review` | CTO | All specs done, needs Marco's review |
 | `ready-for-dev` | Marco | Fully specced and approved, SWE can implement |
 | `needs-po-input` | CTO | CTO needs product clarification |
 | `needs-cto-input` | PM | PM needs technical assessment |
@@ -126,11 +127,11 @@ stateDiagram-v2
 
 | Role | Owns | Transitions |
 |------|------|------------|
-| :material-briefcase-outline: **PM** | `brief.md`, acceptance criteria, prioritization | `needs-spec` → `needs-ux` or `needs-tech-spec` |
-| :material-wrench-outline: **CTO** | `tech-spec.md`, architecture decisions, PR review | `needs-tech-spec` → `needs-review` |
-| :material-palette-outline: **UX Agent** | `ux.md`, interaction design, wireframes | `needs-ux` → `needs-tech-spec` or `needs-review` |
-| :material-crown-outline: **Marco** | Founder decisions, approvals | `needs-review` → `ready-for-dev` |
-| :material-code-braces: **SWE** | Implementation, PRs | `ready-for-dev` → done |
+| :material-briefcase-outline: **PM** | Product spec (in issue body), acceptance criteria, prioritization | `needs-spec` → `needs-ux` or `needs-tech-spec` |
+| :material-wrench-outline: **CTO** | `tech-spec.md`, architecture decisions, PR review | `needs-tech-spec` → (Marco reviews) → `ready-for-dev` |
+| :material-palette-outline: **UX Agent** | `ux.md`, interaction design, wireframes | `needs-ux` → `needs-tech-spec` |
+| :material-crown-outline: **Marco** | Founder decisions, approvals | Reviews tech spec in `#development` → `ready-for-dev` |
+| :material-code-braces: **SWE** | Implementation, PRs, `plan.md` | `ready-for-dev` → done |
 
 ---
 
@@ -250,10 +251,18 @@ See: `planning/<project>/<feature>/` in journeyloop-startup-assistant
 
 ---
 
+## plan.md
+
+When a feature reaches `ready-for-dev`, **SWE** creates `plan.md` in the feature's planning folder. This is the implementation plan — written by SWE, not CTO — and captures how SWE intends to implement the feature before writing code.
+
+!!! info "SWE owns plan.md"
+    CTO owns `tech-spec.md` (architecture). SWE owns `plan.md` (implementation). These are distinct documents with distinct authors.
+
+---
+
 ## Slack Channels
 
 | Channel | Purpose |
 |---------|---------|
-| `#development` | Short log entries for every completed task |
-| `#reviews` | Review threads for specs and PRs |
+| `#development` | Work log, spec reviews, and all review coordination |
 | `#scrum` | Daily standups and sprint coordination |

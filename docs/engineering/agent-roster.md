@@ -69,7 +69,7 @@ JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Ea
 === ":material-brain: CTO"
 
     **Session key:** `agent:cto:main`  
-    **Slack:** `#development`, `#reviews`
+    **Slack:** `#development`
 
     Owns technical architecture for JourneyLoop. Translates product specs into engineering plans and ensures the codebase stays healthy.
 
@@ -82,7 +82,7 @@ JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Ea
     - Maintain architectural consistency across `arc-eng/journeyloop` and `arc-eng/journeyloop-startup-assistant`
 
     !!! warning "Key Constraint"
-        Never auto-proceeds. Always checks in with Marco via `#reviews` before starting a tech spec. Iterates in conversation with Marco rather than writing complete specs upfront.
+        Never auto-proceeds. Always checks in with Marco via `#development` before starting a tech spec. Iterates in conversation with Marco rather than writing complete specs upfront.
 
     !!! info ""
         Signs GitHub comments: `— CTO Agent`
@@ -90,7 +90,7 @@ JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Ea
 === ":material-clipboard-list: PM"
 
     **Session key:** `agent:pm:main`  
-    **Slack:** `#development`, `#reviews`
+    **Slack:** `#development`
 
     Owns the product backlog for JourneyLoop. Writes specs, manages issue lifecycle, and keeps the team aligned on priorities.
 
@@ -107,7 +107,7 @@ JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Ea
 === ":material-pencil-ruler: UX Engineer"
 
     **Session key:** `agent:ux:main`  
-    **Slack:** `#development`, `#reviews`
+    **Slack:** `#development`
 
     Owns design principles, wireframes, and user experience for JourneyLoop.
 
@@ -228,17 +228,15 @@ Issues in `arc-eng/journeyloop` move through these labels, each triggering the r
 graph LR
     A[needs-spec] --> B[needs-ux]
     B --> C[needs-tech-spec]
-    C --> D[needs-review]
-    D --> E[ready-for-dev]
-    E --> F[in-progress]
-    F --> G[done]
+    C --> D[ready-for-dev]
+    D --> E[in-progress]
+    E --> F[done]
 
-    style D fill:#f4a261,stroke:#e76f51,color:#000
-    style E fill:#2a9d8f,stroke:#264653,color:#fff
+    style D fill:#2a9d8f,stroke:#264653,color:#fff
 ```
 
 !!! note "Marco's Gate"
-    Marco approves transitions at `needs-review` before work proceeds to `ready-for-dev`.
+    Marco reviews the tech spec in `#development` and transitions the issue to `ready-for-dev` when approved.
 
 ### Agent-to-Agent Communication
 
@@ -255,8 +253,7 @@ sessions_send(sessionKey="agent:<name>:main", message="...")
 
 | Channel | Purpose |
 |---|---|
-| `#development` | Work log — short updates after every completed task |
-| `#reviews` | Escalation to Marco — always includes specific questions or decisions needed |
+| `#development` | Work log, spec reviews, and all review coordination |
 | `#bot-problems` | Blockers and errors that need human attention |
 
 ### Marco's Role

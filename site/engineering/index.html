@@ -627,6 +627,8 @@
       
         
       
+        
+      
     
     
     
@@ -882,6 +884,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="label-routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Label Routing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -976,6 +1006,12 @@
 <hr />
 <p>How the GCP companion operator is managed: heartbeat broadcasting (<code>heartbeat-all.sh</code>, <code>--agent ALL</code>), operator-controlled cron, the promote pipeline (now auto-migrates all live agents), central skills directory, and task queue access for cross-agent dispatch.</p>
 <p><a href="operator-runbook/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the Operator Infrastructure Guide</a></p>
+</li>
+<li>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 17H5V7h11l3.55 5m-1.92-6.16C17.27 5.33 16.67 5 16 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11c.67 0 1.27-.34 1.63-.85L22 12z"/></svg></span> <strong>GitHub Label → Agent Routing</strong></p>
+<hr />
+<p>How applying a GitHub label automatically queues work for the right agent. Covers the routing map (<code>needs-spec</code> → PM, <code>auto-build</code> → SWE, etc.), the 15-minute <code>label_tasks</code> poller, and how label-triggered tasks integrate with the agent task queue.</p>
+<p><a href="label-routing/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the Label Routing Guide</a></p>
 </li>
 </ul>
 </div>
