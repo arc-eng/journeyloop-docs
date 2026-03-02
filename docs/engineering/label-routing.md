@@ -27,6 +27,7 @@ The alternative (a separate dispatch step, or sending a Slack message to each ag
 | `auto-build` | SWE | Implement the changes and open a PR |
 | `needs-code-review` | CTO | Automated code review on the PR |
 | `needs-human` | Marco | Telegram notification — requires founder attention |
+| `companion-tuning` | Companion Operator | Update agent markdown/skills — no standard lifecycle gates |
 
 ---
 

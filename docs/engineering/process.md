@@ -110,6 +110,7 @@ stateDiagram-v2
 | `needs-po-input` | CTO | CTO needs product clarification |
 | `needs-cto-input` | PM | PM needs technical assessment |
 | `blocked-technical` | CTO | Technical blocker identified |
+| `companion-tuning` | Marco/Agent | Prompt/behavior change only — routes directly to companion operator, skips standard lifecycle |
 
 ### Escalation Labels (to Marco)
 
@@ -120,6 +121,14 @@ stateDiagram-v2
 | `needs-founder-decision` | :material-bell: Ping Marco | Above agent authority — options + recommendation |
 | `needs-founder-approval` | :material-bell: Ping Marco | Both agents signed off, need go/no-go |
 | `founder-fyi` | Silent | Awareness only |
+
+### Fast-Track: `companion-tuning`
+
+!!! tip "companion-tuning bypasses the standard lifecycle"
+    Issues labeled `companion-tuning` require only changes to agent markdown or skills — prompts, response format, behavior instructions. No UX concept, no tech spec, no Marco review gate. The label routes directly to the companion operator, who applies the change and closes the issue.
+
+    Use this label when the work is **purely behavioral** (no code, no data model, no UI). If in doubt, use the standard lifecycle.
+
 
 ---
 
