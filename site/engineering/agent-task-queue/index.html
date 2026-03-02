@@ -917,10 +917,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#heartbeat-integration" class="md-nav__link">
+  <a href="#task-dispatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Heartbeat Integration
+        Task Dispatch
       
     </span>
   </a>
@@ -1131,10 +1131,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#heartbeat-integration" class="md-nav__link">
+  <a href="#task-dispatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Heartbeat Integration
+        Task Dispatch
       
     </span>
   </a>
@@ -1261,18 +1261,25 @@
 <p>Tasks have five statuses: <code>pending</code> → <code>in-progress</code> → <code>done</code> / <code>failed</code> / <code>dropped</code>.</p>
 <p><strong>Priority</strong> is <code>high</code> &gt; <code>normal</code> &gt; <code>low</code>. Within the same priority tier, the oldest task is picked first (FIFO). This keeps the queue predictable and prevents starvation.</p>
 <hr />
-<h2 id="heartbeat-integration">Heartbeat Integration</h2>
-<p>On every heartbeat, each agent:</p>
+<h2 id="task-dispatch">Task Dispatch</h2>
+<p>Agents receive tasks in two ways:</p>
+<p><strong>Push (primary):</strong> The <code>label_tasks</code> poller — which runs every 5 minutes — scans for pending tasks and fires the target agent immediately via the OpenResponses API. This is the primary delivery path and results in sub-5-minute handoff from label application to agent execution.</p>
+<p><strong>Pull (fallback):</strong> On every heartbeat, each agent also self-picks from its own queue:</p>
 <ol>
 <li>Picks the next pending task: <code>python3 skills/tasks/scripts/tasks.py pick --agent &lt;name&gt;</code></li>
 <li>If nothing is returned — stops and replies <code>HEARTBEAT_OK</code></li>
 <li>Works on the task</li>
 <li>Marks it done or failed</li>
 </ol>
+<p>The pull path ensures that any task missed by dispatch (e.g., agent not in <code>DISPATCHABLE_AGENTS</code>) is still picked up.</p>
 <p><strong>One task per heartbeat. No exceptions.</strong> Agents don't loop through the queue in a single run. This keeps each heartbeat bounded and ensures that long tasks don't block the agent indefinitely.</p>
 <div class="admonition warning">
 <p class="admonition-title">Don't chain tasks in a single heartbeat</p>
 <p>Picking a second task after finishing the first leads to unbounded run times and makes failure harder to diagnose. The next heartbeat will pick the next task.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">No more per-agent worker crons</p>
+<p>The old architecture had 8 per-agent task-worker crons firing every 30 minutes. Those are disabled. The <code>label_tasks</code> poller is now the sole dispatcher.</p>
 </div>
 <hr />
 <h2 id="cross-agent-assignment">Cross-Agent Assignment</h2>

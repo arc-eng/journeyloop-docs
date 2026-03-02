@@ -982,6 +982,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dispatchable-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatchable Agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#other-notable-labels" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1079,6 +1090,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dispatchable-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatchable Agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#other-notable-labels" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1118,7 +1140,7 @@
 
 
 <h1 id="github-label-agent-routing"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 17H5V7h11l3.55 5m-1.92-6.16C17.27 5.33 16.67 5 16 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11c.67 0 1.27-.34 1.63-.85L22 12z"/></svg></span> GitHub Label → Agent Routing</h1>
-<p>Applying a label to a GitHub issue is all it takes to route work to an agent. A poller checks <code>arc-eng/journeyloop</code> every 15 minutes, maps new labels to agent queues, and creates tasks automatically. No Slack message, no manual dispatch.</p>
+<p>Applying a label to a GitHub issue is all it takes to route work to an agent. A poller checks <code>arc-eng/journeyloop</code> every 5 minutes, maps new labels to agent queues, creates tasks, and immediately dispatches the target agent via the OpenResponses API. No Slack message, no manual dispatch, no waiting for a heartbeat.</p>
 <hr />
 <h2 id="why-labels">Why Labels</h2>
 <p>Labels are already how the team tracks issue state. Routing based on them adds zero friction for Marco — the same action that advances an issue through the lifecycle also dispatches work to the right agent.</p>
@@ -1168,27 +1190,40 @@
 </table>
 <hr />
 <h2 id="how-it-works">How It Works</h2>
+<p>The poller runs three phases on every tick:</p>
+<ol>
+<li><strong>Label scan</strong> — fetch recently labeled issues, create tasks for any new labels not yet queued</li>
+<li><strong>Pending task scan</strong> — find tasks sitting in <code>pending</code> state across all agent queues</li>
+<li><strong>Dispatch</strong> — fire the target agent immediately via the OpenResponses API (no waiting for a self-triggered heartbeat)</li>
+</ol>
 <pre class="mermaid"><code>sequenceDiagram
     participant Marco
     participant GitHub
-    participant Poller as label_tasks poller
+    participant Poller as label_tasks poller (every 5 min)
     participant Queue as Agent task queue
+    participant OpenResponses
     participant Agent
 
     Marco-&gt;&gt;GitHub: Apply label to issue
-    Note over Poller: Runs every 15 minutes
-    Poller-&gt;&gt;GitHub: Fetch recently labeled issues
+    Poller-&gt;&gt;GitHub: Phase 1 — fetch recently labeled issues
     Poller-&gt;&gt;Queue: Create task for target agent
-    Agent-&gt;&gt;Queue: pick (next heartbeat)
+    Poller-&gt;&gt;Queue: Phase 2 — scan for pending tasks
+    Poller-&gt;&gt;OpenResponses: Phase 3 — dispatch agent immediately
+    OpenResponses-&gt;&gt;Agent: Wake agent session
     Agent-&gt;&gt;Agent: Work the task
     Agent-&gt;&gt;Queue: done / fail</code></pre>
-<ol>
-<li>Marco applies a label to an issue in <code>arc-eng/journeyloop</code></li>
-<li>The <code>label_tasks</code> poller fires within 15 minutes</li>
-<li>A task is created in the target agent's queue with the issue as context</li>
-<li>The agent picks it up at its next heartbeat and works it</li>
-<li>The agent marks done or failed — no manual follow-up needed</li>
-</ol>
+<p>End-to-end handoff time is typically <strong>under 5 minutes</strong> — down from ~35 minutes with the old heartbeat-only model.</p>
+<div class="admonition info">
+<p class="admonition-title">No more worker crons</p>
+<p>The previous architecture had per-agent task-worker crons firing every 30 minutes. Those are disabled. The <code>label_tasks</code> poller is now the sole dispatcher and handles both task creation and agent wakeup.</p>
+</div>
+<hr />
+<h2 id="dispatchable-agents">Dispatchable Agents</h2>
+<p>The poller dispatches agents by name. The current <code>DISPATCHABLE_AGENTS</code> list includes:</p>
+<ul>
+<li><code>pm</code>, <code>ux</code>, <code>docs</code>, <code>swe</code>, <code>cto</code>, <code>ceo</code>, <code>doctor</code>, <code>claude-code-expert</code></li>
+</ul>
+<p>Agents not on this list won't be dispatched automatically — tasks will still be created but agents must self-pick on heartbeat.</p>
 <hr />
 <h2 id="other-notable-labels">Other Notable Labels</h2>
 <p>These labels don't trigger agent routing but are part of the shared label vocabulary:</p>
