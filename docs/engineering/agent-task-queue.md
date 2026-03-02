@@ -37,19 +37,28 @@ Tasks have five statuses: `pending` → `in-progress` → `done` / `failed` / `d
 
 ---
 
-## Heartbeat Integration
+## Task Dispatch
 
-On every heartbeat, each agent:
+Agents receive tasks in two ways:
+
+**Push (primary):** The `label_tasks` poller — which runs every 5 minutes — scans for pending tasks and fires the target agent immediately via the OpenResponses API. This is the primary delivery path and results in sub-5-minute handoff from label application to agent execution.
+
+**Pull (fallback):** On every heartbeat, each agent also self-picks from its own queue:
 
 1. Picks the next pending task: `python3 skills/tasks/scripts/tasks.py pick --agent <name>`
 2. If nothing is returned — stops and replies `HEARTBEAT_OK`
 3. Works on the task
 4. Marks it done or failed
 
+The pull path ensures that any task missed by dispatch (e.g., agent not in `DISPATCHABLE_AGENTS`) is still picked up.
+
 **One task per heartbeat. No exceptions.** Agents don't loop through the queue in a single run. This keeps each heartbeat bounded and ensures that long tasks don't block the agent indefinitely.
 
 !!! warning "Don't chain tasks in a single heartbeat"
     Picking a second task after finishing the first leads to unbounded run times and makes failure harder to diagnose. The next heartbeat will pick the next task.
+
+!!! info "No more per-agent worker crons"
+    The old architecture had 8 per-agent task-worker crons firing every 30 minutes. Those are disabled. The `label_tasks` poller is now the sole dispatcher.
 
 ---
 

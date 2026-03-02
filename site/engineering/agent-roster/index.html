@@ -1273,7 +1273,7 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><strong>Session key:</strong> <code>agent:cto:main</code><br />
-<strong>Slack:</strong> <code>#development</code>, <code>#reviews</code></p>
+<strong>Slack:</strong> <code>#development</code></p>
 <p>Owns technical architecture for JourneyLoop. Translates product specs into engineering plans and ensures the codebase stays healthy.</p>
 <p><strong>Responsibilities</strong></p>
 <ul>
@@ -1285,7 +1285,7 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Key Constraint</p>
-<p>Never auto-proceeds. Always checks in with Marco via <code>#reviews</code> before starting a tech spec. Iterates in conversation with Marco rather than writing complete specs upfront.</p>
+<p>Never auto-proceeds. Always checks in with Marco via <code>#development</code> before starting a tech spec. Iterates in conversation with Marco rather than writing complete specs upfront.</p>
 </div>
 <div class="admonition info">
 <p>Signs GitHub comments: <code>— CTO Agent</code></p>
@@ -1293,7 +1293,7 @@
 </div>
 <div class="tabbed-block">
 <p><strong>Session key:</strong> <code>agent:pm:main</code><br />
-<strong>Slack:</strong> <code>#development</code>, <code>#reviews</code></p>
+<strong>Slack:</strong> <code>#development</code></p>
 <p>Owns the product backlog for JourneyLoop. Writes specs, manages issue lifecycle, and keeps the team aligned on priorities.</p>
 <p><strong>Responsibilities</strong></p>
 <ul>
@@ -1309,7 +1309,7 @@
 </div>
 <div class="tabbed-block">
 <p><strong>Session key:</strong> <code>agent:ux:main</code><br />
-<strong>Slack:</strong> <code>#development</code>, <code>#reviews</code></p>
+<strong>Slack:</strong> <code>#development</code></p>
 <p>Owns design principles, wireframes, and user experience for JourneyLoop.</p>
 <p><strong>Responsibilities</strong></p>
 <ul>
@@ -1487,16 +1487,14 @@
 <pre class="mermaid"><code>graph LR
     A[needs-spec] --&gt; B[needs-ux]
     B --&gt; C[needs-tech-spec]
-    C --&gt; D[needs-review]
-    D --&gt; E[ready-for-dev]
-    E --&gt; F[in-progress]
-    F --&gt; G[done]
+    C --&gt; D[ready-for-dev]
+    D --&gt; E[in-progress]
+    E --&gt; F[done]
 
-    style D fill:#f4a261,stroke:#e76f51,color:#000
-    style E fill:#2a9d8f,stroke:#264653,color:#fff</code></pre>
+    style D fill:#2a9d8f,stroke:#264653,color:#fff</code></pre>
 <div class="admonition note">
 <p class="admonition-title">Marco's Gate</p>
-<p>Marco approves transitions at <code>needs-review</code> before work proceeds to <code>ready-for-dev</code>.</p>
+<p>Marco reviews the tech spec in <code>#development</code> and transitions the issue to <code>ready-for-dev</code> when approved.</p>
 </div>
 <h3 id="agent-to-agent-communication">Agent-to-Agent Communication</h3>
 <p>Agents dispatch work to each other via:</p>
@@ -1517,11 +1515,7 @@
 <tbody>
 <tr>
 <td><code>#development</code></td>
-<td>Work log — short updates after every completed task</td>
-</tr>
-<tr>
-<td><code>#reviews</code></td>
-<td>Escalation to Marco — always includes specific questions or decisions needed</td>
+<td>Work log, spec reviews, and all review coordination</td>
 </tr>
 <tr>
 <td><code>#bot-problems</code></td>

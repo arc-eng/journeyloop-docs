@@ -5,7 +5,7 @@ description: How applying a GitHub label automatically queues work for the right
 
 # :material-label-outline: GitHub Label → Agent Routing
 
-Applying a label to a GitHub issue is all it takes to route work to an agent. A poller checks `arc-eng/journeyloop` every 15 minutes, maps new labels to agent queues, and creates tasks automatically. No Slack message, no manual dispatch.
+Applying a label to a GitHub issue is all it takes to route work to an agent. A poller checks `arc-eng/journeyloop` every 5 minutes, maps new labels to agent queues, creates tasks, and immediately dispatches the target agent via the OpenResponses API. No Slack message, no manual dispatch, no waiting for a heartbeat.
 
 ---
 
@@ -32,28 +32,45 @@ The alternative (a separate dispatch step, or sending a Slack message to each ag
 
 ## How It Works
 
+The poller runs three phases on every tick:
+
+1. **Label scan** — fetch recently labeled issues, create tasks for any new labels not yet queued
+2. **Pending task scan** — find tasks sitting in `pending` state across all agent queues
+3. **Dispatch** — fire the target agent immediately via the OpenResponses API (no waiting for a self-triggered heartbeat)
+
 ```mermaid
 sequenceDiagram
     participant Marco
     participant GitHub
-    participant Poller as label_tasks poller
+    participant Poller as label_tasks poller (every 5 min)
     participant Queue as Agent task queue
+    participant OpenResponses
     participant Agent
 
     Marco->>GitHub: Apply label to issue
-    Note over Poller: Runs every 15 minutes
-    Poller->>GitHub: Fetch recently labeled issues
+    Poller->>GitHub: Phase 1 — fetch recently labeled issues
     Poller->>Queue: Create task for target agent
-    Agent->>Queue: pick (next heartbeat)
+    Poller->>Queue: Phase 2 — scan for pending tasks
+    Poller->>OpenResponses: Phase 3 — dispatch agent immediately
+    OpenResponses->>Agent: Wake agent session
     Agent->>Agent: Work the task
     Agent->>Queue: done / fail
 ```
 
-1. Marco applies a label to an issue in `arc-eng/journeyloop`
-2. The `label_tasks` poller fires within 15 minutes
-3. A task is created in the target agent's queue with the issue as context
-4. The agent picks it up at its next heartbeat and works it
-5. The agent marks done or failed — no manual follow-up needed
+End-to-end handoff time is typically **under 5 minutes** — down from ~35 minutes with the old heartbeat-only model.
+
+!!! info "No more worker crons"
+    The previous architecture had per-agent task-worker crons firing every 30 minutes. Those are disabled. The `label_tasks` poller is now the sole dispatcher and handles both task creation and agent wakeup.
+
+---
+
+## Dispatchable Agents
+
+The poller dispatches agents by name. The current `DISPATCHABLE_AGENTS` list includes:
+
+- `pm`, `ux`, `docs`, `swe`, `cto`, `ceo`, `doctor`, `claude-code-expert`
+
+Agents not on this list won't be dispatched automatically — tasks will still be created but agents must self-pick on heartbeat.
 
 ---
 
