@@ -26,7 +26,7 @@ The alternative (a separate dispatch step, or sending a Slack message to each ag
 | `needs-docs` | Docs | Write documentation for the feature |
 | `auto-build` | SWE | Implement the changes and open a PR |
 | `needs-code-review` | CTO | Automated code review on the PR |
-| `needs-human` | Marco | Slack DM — requires founder attention |
+| `needs-human` | Marco | Telegram notification — requires founder attention |
 
 ---
 
@@ -42,7 +42,7 @@ The poller runs three phases on every tick:
 sequenceDiagram
     participant Marco
     participant GitHub
-    participant Poller as label_tasks poller (every 5 min)
+    participant Poller as label_tasks poller (systemd timer, every 5 min)
     participant Queue as Agent task queue
     participant OpenResponses
     participant Agent
@@ -61,6 +61,63 @@ End-to-end handoff time is typically **under 5 minutes** — down from ~35 minut
 
 !!! info "No more worker crons"
     The previous architecture had per-agent task-worker crons firing every 30 minutes. Those are disabled. The `label_tasks` poller is now the sole dispatcher and handles both task creation and agent wakeup.
+
+---
+
+## Scheduler
+
+The poller runs via **systemd timer** (`label-poller.timer` → `label-poller.service`), not an OpenClaw/LLM cron.
+
+!!! success "Zero LLM dependency"
+    The poller is a plain Python script. No Haiku agent wrapper, no Anthropic API call. It keeps running even when the Anthropic API is overloaded or rate-limited. The old OpenClaw cron `label-task-poller` is **disabled**.
+
+```bash
+# Check timer status
+systemctl list-timers label-poller.timer
+
+# View today's logs
+cat ~/.openclaw/workspace/logs/label-poller/$(date +%Y-%m-%d).log
+
+# Manually trigger a run
+sudo systemctl start label-poller.service
+```
+
+Logs are written to `logs/label-poller/YYYY-MM-DD.log` and auto-trimmed to 1000 lines.
+
+---
+
+## Session Dedup Guard
+
+Before dispatching an agent, the poller checks the agent's `sessions.json` for active OpenResponses sessions. If a session was updated within the last **30 minutes**, the agent is considered busy — dispatch is skipped and the task remains queued for the next cycle.
+
+This prevents duplicate concurrent sessions when a long-running agent task is still in progress.
+
+Sessions older than 30 minutes are treated as stale/finished and ignored.
+
+---
+
+## Retry Flag
+
+If a task was incorrectly marked done or needs re-processing, clear its seen-set entry with `--retry`:
+
+```bash
+# Retry all labels on issue 349
+python3 skills/label_tasks/scripts/label_task_poller.py --retry 349
+
+# Retry a specific label on issue 349
+python3 skills/label_tasks/scripts/label_task_poller.py --retry 349:auto-build
+
+# Retry multiple issues
+python3 skills/label_tasks/scripts/label_task_poller.py --retry 349 350 351
+```
+
+The next poller run will re-scan those issues and re-queue as needed.
+
+---
+
+## `needs-human` Notifications
+
+When an issue is labeled `needs-human`, the poller sends a Telegram notification directly via `openclaw message send` CLI — no LLM agent in the loop. This ensures Marco is notified even when agents are unavailable or throttled.
 
 ---
 
