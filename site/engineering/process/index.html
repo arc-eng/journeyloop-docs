@@ -826,10 +826,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#escalation-labels-to-marco" class="md-nav__link">
+  <a href="#escalation-labels" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Escalation Labels (to Marco)
+        Escalation Labels
       
     </span>
   </a>
@@ -958,10 +958,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#slack-channels" class="md-nav__link">
+  <a href="#communication" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Slack Channels
+        Communication
       
     </span>
   </a>
@@ -1282,10 +1282,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#escalation-labels-to-marco" class="md-nav__link">
+  <a href="#escalation-labels" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Escalation Labels (to Marco)
+        Escalation Labels
       
     </span>
   </a>
@@ -1414,10 +1414,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#slack-channels" class="md-nav__link">
+  <a href="#communication" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Slack Channels
+        Communication
       
     </span>
   </a>
@@ -1587,36 +1587,32 @@
 </tr>
 </tbody>
 </table>
-<h3 id="escalation-labels-to-marco">Escalation Labels (to Marco)</h3>
+<h3 id="escalation-labels">Escalation Labels</h3>
 <div class="admonition warning">
-<p class="admonition-title">Escalation labels trigger a ping to Marco</p>
+<p class="admonition-title">Use <code>needs-ceo</code> for decisions. Use <code>needs-human</code> only for founder-level escalations.</p>
 </div>
 <table>
 <thead>
 <tr>
 <th>Label</th>
-<th>Action</th>
+<th>Routes to</th>
 <th>Means</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>needs-founder-decision</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2 2 2 0 0 1-2-2"/></svg></span> Ping Marco</td>
-<td>Above agent authority — options + recommendation</td>
+<td><code>needs-ceo</code></td>
+<td>CEO agent</td>
+<td>Tactical decision or blocker within team authority — CEO handles</td>
 </tr>
 <tr>
-<td><code>needs-founder-approval</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2 2 2 0 0 1-2-2"/></svg></span> Ping Marco</td>
-<td>Both agents signed off, need go/no-go</td>
-</tr>
-<tr>
-<td><code>founder-fyi</code></td>
-<td>Silent</td>
-<td>Awareness only</td>
+<td><code>needs-human</code></td>
+<td>Marco (Telegram DM)</td>
+<td>Truly founder-level — options + recommendation required</td>
 </tr>
 </tbody>
 </table>
+<p>The CEO agent handles the bulk of tactical decisions so Marco isn't pinged for routine unblocking. <code>needs-human</code> triggers a Telegram DM to Marco directly.</p>
 <h3 id="fast-track-companion-tuning">Fast-Track: <code>companion-tuning</code></h3>
 <div class="admonition tip">
 <p class="admonition-title">companion-tuning bypasses the standard lifecycle</p>
@@ -1765,25 +1761,13 @@
 <p>CTO owns <code>tech-spec.md</code> (architecture). SWE owns <code>plan.md</code> (implementation). These are distinct documents with distinct authors.</p>
 </div>
 <hr />
-<h2 id="slack-channels">Slack Channels</h2>
-<table>
-<thead>
-<tr>
-<th>Channel</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>#development</code></td>
-<td>Work log, spec reviews, and all review coordination</td>
-</tr>
-<tr>
-<td><code>#scrum</code></td>
-<td>Daily standups and sprint coordination</td>
-</tr>
-</tbody>
-</table>
+<h2 id="communication">Communication</h2>
+<p>Marco communicates via <strong>Telegram only</strong>. Slack is fully disabled.</p>
+<p>Agents do not wait for Slack replies for label transitions. The check-in protocol uses GitHub comments — see <a href="../agents/shared/label-workflow.md">Label Workflow</a> for the full protocol.</p>
+<div class="admonition info">
+<p class="admonition-title">Agent check-in protocol</p>
+<p>After finishing work, agents post a GitHub comment on the issue/PR, then apply label transitions directly. For decisions, apply <code>needs-ceo</code>. For founder-level escalations, apply <code>needs-human</code> (triggers Telegram DM to Marco).</p>
+</div>
 
 
 

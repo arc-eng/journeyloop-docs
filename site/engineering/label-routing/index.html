@@ -1015,6 +1015,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#needs-ceo-tactical-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        needs-ceo — Tactical Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#needs-human-notifications" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1167,6 +1178,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#needs-ceo-tactical-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        needs-ceo — Tactical Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#needs-human-notifications" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1270,6 +1292,11 @@
 <td>Automated code review on the PR</td>
 </tr>
 <tr>
+<td><code>needs-ceo</code></td>
+<td>CEO</td>
+<td>Tactical decision or unblocking — CEO handles; only true founder-level decisions escalate further</td>
+</tr>
+<tr>
 <td><code>needs-human</code></td>
 <td>Marco</td>
 <td>Telegram notification — requires founder attention</td>
@@ -1346,8 +1373,12 @@
 </code></pre></div>
 <p>The next poller run will re-scan those issues and re-queue as needed.</p>
 <hr />
+<h2 id="needs-ceo-tactical-decisions"><code>needs-ceo</code> — Tactical Decisions</h2>
+<p>When any agent is blocked on a decision that's within the team's authority, they apply <code>needs-ceo</code>. The CEO agent picks this up, makes the call, and unblocks the work. Only decisions that are truly founder-level (budget, strategy, company direction) escalate further to <code>needs-human</code>.</p>
+<p>This keeps Marco out of routine unblocking loops. Agents do not wait for Slack replies — there is no Slack.</p>
 <h2 id="needs-human-notifications"><code>needs-human</code> Notifications</h2>
-<p>When an issue is labeled <code>needs-human</code>, the poller sends a Telegram notification directly via <code>openclaw message send</code> CLI — no LLM agent in the loop. This ensures Marco is notified even when agents are unavailable or throttled.</p>
+<p>When an issue is labeled <code>needs-human</code>, the poller sends a Telegram DM to Marco directly via <code>openclaw message send</code> CLI — no LLM agent in the loop. This ensures Marco is notified even when agents are unavailable or throttled.</p>
+<p>Marco communicates via <strong>Telegram only</strong> (no Slack).</p>
 <hr />
 <h2 id="dispatchable-agents">Dispatchable Agents</h2>
 <p>The poller dispatches agents by name. The current <code>DISPATCHABLE_AGENTS</code> list includes:</p>

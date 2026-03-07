@@ -544,6 +544,48 @@ openclaw gateway restart
 
 ---
 
+### Go tooling slow (DNS/EDNS0 router bug)
+
+**Symptom:** `gh` CLI or other Go-based tools take ~10 seconds per call. `curl` equivalent is fast (<1s).
+
+**Root cause:**
+
+Go's built-in DNS resolver always sends EDNS0 extensions with every query. Statically-linked Go binaries (like `gh`) **must** use the Go resolver — they can't fall back to glibc. The home router (192.168.1.1) silently drops AAAA (IPv6) queries that include EDNS0 extensions, causing:
+
+1. Go sends A + AAAA queries, both with EDNS0
+2. Router drops the AAAA+EDNS0 query
+3. Go waits 5 seconds → retries → waits 5 more seconds
+4. Total: ~10s per DNS lookup
+
+`curl` uses glibc's resolver, which doesn't trigger the bug — so `curl` is fast while Go tools are not.
+
+**Diagnose:**
+
+```bash
+# Time a gh call
+time gh api /user
+
+# If it takes ~10s, DNS is the cause
+# Quick check: does it resolve fast with explicit DNS?
+dig @8.8.8.8 api.github.com
+```
+
+**Fix — add Google DNS ahead of router in NetworkManager:**
+
+```bash
+nmcli con mod "<your-wifi-ssid>" ipv4.dns "8.8.8.8 8.8.4.4 192.168.1.1"
+nmcli con mod "<your-wifi-ssid>" ipv4.ignore-auto-dns yes
+nmcli con down "<your-wifi-ssid>" && nmcli con up "<your-wifi-ssid>"
+```
+
+!!! info "Pi setup"
+    On Dobby (Pi 5), the SSID is `Noise Upstairs 5g`. This fix was applied 2026-03-07 and brought `gh` calls from 10.3s → 0.38s (27× speedup). The setting persists across reboots.
+
+!!! warning "Affects all Go binaries"
+    Any statically-linked Go binary hitting the network will show this symptom. This includes `gh`, custom Go CLI tools, and Go HTTP clients. Dynamic binaries using glibc are unaffected.
+
+---
+
 ## 8. Common Config Mistakes
 
 | Mistake | Symptom | Fix |
