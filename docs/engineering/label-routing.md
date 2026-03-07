@@ -26,6 +26,7 @@ The alternative (a separate dispatch step, or sending a Slack message to each ag
 | `needs-docs` | Docs | Write documentation for the feature |
 | `auto-build` | SWE | Implement the changes and open a PR |
 | `needs-code-review` | CTO | Automated code review on the PR |
+| `needs-ceo` | CEO | Tactical decision or unblocking — CEO handles; only true founder-level decisions escalate further |
 | `needs-human` | Marco | Telegram notification — requires founder attention |
 | `companion-tuning` | Companion Operator | Update agent markdown/skills — no standard lifecycle gates |
 
@@ -116,9 +117,17 @@ The next poller run will re-scan those issues and re-queue as needed.
 
 ---
 
+## `needs-ceo` — Tactical Decisions
+
+When any agent is blocked on a decision that's within the team's authority, they apply `needs-ceo`. The CEO agent picks this up, makes the call, and unblocks the work. Only decisions that are truly founder-level (budget, strategy, company direction) escalate further to `needs-human`.
+
+This keeps Marco out of routine unblocking loops. Agents do not wait for Slack replies — there is no Slack.
+
 ## `needs-human` Notifications
 
-When an issue is labeled `needs-human`, the poller sends a Telegram notification directly via `openclaw message send` CLI — no LLM agent in the loop. This ensures Marco is notified even when agents are unavailable or throttled.
+When an issue is labeled `needs-human`, the poller sends a Telegram DM to Marco directly via `openclaw message send` CLI — no LLM agent in the loop. This ensures Marco is notified even when agents are unavailable or throttled.
+
+Marco communicates via **Telegram only** (no Slack).
 
 ---
 

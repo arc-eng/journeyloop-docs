@@ -112,15 +112,16 @@ stateDiagram-v2
 | `blocked-technical` | CTO | Technical blocker identified |
 | `companion-tuning` | Marco/Agent | Prompt/behavior change only — routes directly to companion operator, skips standard lifecycle |
 
-### Escalation Labels (to Marco)
+### Escalation Labels
 
-!!! warning "Escalation labels trigger a ping to Marco"
+!!! warning "Use `needs-ceo` for decisions. Use `needs-human` only for founder-level escalations."
 
-| Label | Action | Means |
-|-------|--------|-------|
-| `needs-founder-decision` | :material-bell: Ping Marco | Above agent authority — options + recommendation |
-| `needs-founder-approval` | :material-bell: Ping Marco | Both agents signed off, need go/no-go |
-| `founder-fyi` | Silent | Awareness only |
+| Label | Routes to | Means |
+|-------|-----------|-------|
+| `needs-ceo` | CEO agent | Tactical decision or blocker within team authority — CEO handles |
+| `needs-human` | Marco (Telegram DM) | Truly founder-level — options + recommendation required |
+
+The CEO agent handles the bulk of tactical decisions so Marco isn't pinged for routine unblocking. `needs-human` triggers a Telegram DM to Marco directly.
 
 ### Fast-Track: `companion-tuning`
 
@@ -269,9 +270,11 @@ When a feature reaches `ready-for-dev`, **SWE** creates `plan.md` in the feature
 
 ---
 
-## Slack Channels
+## Communication
 
-| Channel | Purpose |
-|---------|---------|
-| `#development` | Work log, spec reviews, and all review coordination |
-| `#scrum` | Daily standups and sprint coordination |
+Marco communicates via **Telegram only**. Slack is fully disabled.
+
+Agents do not wait for Slack replies for label transitions. The check-in protocol uses GitHub comments — see [Label Workflow](../agents/shared/label-workflow.md) for the full protocol.
+
+!!! info "Agent check-in protocol"
+    After finishing work, agents post a GitHub comment on the issue/PR, then apply label transitions directly. For decisions, apply `needs-ceo`. For founder-level escalations, apply `needs-human` (triggers Telegram DM to Marco).
