@@ -30,12 +30,6 @@ JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Ea
 
     `agent:ux:main`
 
-- :material-code-braces: **SWE**
-
-    Implements features, fixes bugs, writes tests. Works from `ready-for-dev`.
-
-    `agent:swe:main`
-
 - :material-file-document: **Docs Agent**
 
     Owns the documentation site. Accepts structured `WRITE` / `READ` / `LIST` messages.
@@ -121,24 +115,6 @@ JourneyLoop is built and operated by a team of AI agents running on OpenClaw. Ea
 
     !!! tip "Trigger"
         Activated by issues labeled `needs-ux`, dispatched by PM.
-
-=== ":material-code-braces: SWE"
-
-    **Session key:** `agent:swe:main`  
-    **Slack:** `#development`
-
-    Implements features, fixes bugs, writes tests, and maintains code quality across `arc-eng/journeyloop`.
-
-    **Responsibilities**
-
-    - Implement features from tech specs when issues reach `ready-for-dev`
-    - Follow gitflow: feature branch (named with issue number) → commits → PR
-    - Write and maintain tests
-    - Maintain `CLAUDE.md` files across repos
-    - Fix bugs and handle tech debt items
-
-    !!! warning "Not Auto-Triggered"
-        `ready-for-dev` is the final pipeline stage — Marco initiates dev work manually.
 
 === ":material-file-document: Docs Agent"
 
@@ -229,14 +205,13 @@ graph LR
     A[needs-spec] --> B[needs-ux]
     B --> C[needs-tech-spec]
     C --> D[ready-for-dev]
-    D --> E[in-progress]
-    E --> F[done]
+    D --> E[Marco codes locally]
 
     style D fill:#2a9d8f,stroke:#264653,color:#fff
 ```
 
 !!! note "Marco's Gate"
-    Marco reviews the tech spec in `#development` and transitions the issue to `ready-for-dev` when approved.
+    Marco reviews the tech spec in `#development` and transitions the issue to `ready-for-dev` when approved. Marco then implements locally — no agent picks up `ready-for-dev`.
 
 ### Agent-to-Agent Communication
 
@@ -285,4 +260,4 @@ Marco Lamina is the founder and primary stakeholder.
 
 ---
 
-*Last updated: 2026-02-23*
+*Last updated: 2026-03-11*

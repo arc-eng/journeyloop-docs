@@ -9,6 +9,9 @@ Applying a label to a GitHub issue is all it takes to route work to an agent. A 
 
 ---
 
+!!! info "SWE agent removed — March 2026"
+    As of March 10, 2026, the SWE agent is no longer part of the team. Marco codes locally. The `auto-build` label is retired. `ready-for-dev` is the final pipeline stage — no agent picks it up automatically.
+
 ## Why Labels
 
 Labels are already how the team tracks issue state. Routing based on them adds zero friction for Marco — the same action that advances an issue through the lifecycle also dispatches work to the right agent.
@@ -24,7 +27,6 @@ The alternative (a separate dispatch step, or sending a Slack message to each ag
 | `needs-spec` | PM | Write product spec in issue body |
 | `needs-ux` | UX | Design UX concept / wireframes |
 | `needs-docs` | Docs | Write documentation for the feature |
-| `auto-build` | SWE | Implement the changes and open a PR |
 | `needs-code-review` | CTO | Automated code review on the PR |
 | `needs-ceo` | CEO | Tactical decision or unblocking — CEO handles; only true founder-level decisions escalate further |
 | `needs-human` | Marco | Telegram notification — requires founder attention |
@@ -135,7 +137,7 @@ Marco communicates via **Telegram only** (no Slack).
 
 The poller dispatches agents by name. The current `DISPATCHABLE_AGENTS` list includes:
 
-- `pm`, `ux`, `docs`, `swe`, `cto`, `ceo`, `doctor`, `claude-code-expert`
+- `pm`, `ux`, `docs`, `cto`, `ceo`, `doctor`, `claude-code-expert`
 
 Agents not on this list won't be dispatched automatically — tasks will still be created but agents must self-pick on heartbeat.
 
@@ -147,9 +149,9 @@ These labels don't trigger agent routing but are part of the shared label vocabu
 
 | Label | Meaning |
 |-------|---------|
-| `ready-for-dev` | Issue is scoped and ready for development |
+| `ready-for-dev` | Issue is fully specced — Marco implements locally (no agent picks this up) |
 | `needs-refinement` | CTO input needed before dev starts |
-| `needs-work` | PR was reviewed and requires changes |
+| `needs-work` | PR was reviewed and requires changes — Marco fixes locally |
 | `bug` · `feature` · `refactoring` · `technical-debt` | Standard categorization |
 
 ---

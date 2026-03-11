@@ -1196,6 +1196,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#go-tooling-slow-dnsedns0-router-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Go tooling slow (DNS/EDNS0 router bug)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1771,6 +1782,17 @@
     <span class="md-ellipsis">
       
         High CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#go-tooling-slow-dnsedns0-router-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Go tooling slow (DNS/EDNS0 router bug)
       
     </span>
   </a>
@@ -2510,6 +2532,39 @@
 <a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
 </code></pre></div>
 <hr />
+<h3 id="go-tooling-slow-dnsedns0-router-bug">Go tooling slow (DNS/EDNS0 router bug)</h3>
+<p><strong>Symptom:</strong> <code>gh</code> CLI or other Go-based tools take ~10 seconds per call. <code>curl</code> equivalent is fast (&lt;1s).</p>
+<p><strong>Root cause:</strong></p>
+<p>Go's built-in DNS resolver always sends EDNS0 extensions with every query. Statically-linked Go binaries (like <code>gh</code>) <strong>must</strong> use the Go resolver — they can't fall back to glibc. The home router (192.168.1.1) silently drops AAAA (IPv6) queries that include EDNS0 extensions, causing:</p>
+<ol>
+<li>Go sends A + AAAA queries, both with EDNS0</li>
+<li>Router drops the AAAA+EDNS0 query</li>
+<li>Go waits 5 seconds → retries → waits 5 more seconds</li>
+<li>Total: ~10s per DNS lookup</li>
+</ol>
+<p><code>curl</code> uses glibc's resolver, which doesn't trigger the bug — so <code>curl</code> is fast while Go tools are not.</p>
+<p><strong>Diagnose:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Time a gh call</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nb">time</span><span class="w"> </span>gh<span class="w"> </span>api<span class="w"> </span>/user
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># If it takes ~10s, DNS is the cause</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="c1"># Quick check: does it resolve fast with explicit DNS?</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>dig<span class="w"> </span>@8.8.8.8<span class="w"> </span>api.github.com
+</code></pre></div>
+<p><strong>Fix — add Google DNS ahead of router in NetworkManager:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>nmcli<span class="w"> </span>con<span class="w"> </span>mod<span class="w"> </span><span class="s2">&quot;&lt;your-wifi-ssid&gt;&quot;</span><span class="w"> </span>ipv4.dns<span class="w"> </span><span class="s2">&quot;8.8.8.8 8.8.4.4 192.168.1.1&quot;</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>nmcli<span class="w"> </span>con<span class="w"> </span>mod<span class="w"> </span><span class="s2">&quot;&lt;your-wifi-ssid&gt;&quot;</span><span class="w"> </span>ipv4.ignore-auto-dns<span class="w"> </span>yes
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>nmcli<span class="w"> </span>con<span class="w"> </span>down<span class="w"> </span><span class="s2">&quot;&lt;your-wifi-ssid&gt;&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>nmcli<span class="w"> </span>con<span class="w"> </span>up<span class="w"> </span><span class="s2">&quot;&lt;your-wifi-ssid&gt;&quot;</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Pi setup</p>
+<p>On Dobby (Pi 5), the SSID is <code>Noise Upstairs 5g</code>. This fix was applied 2026-03-07 and brought <code>gh</code> calls from 10.3s → 0.38s (27× speedup). The setting persists across reboots.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Affects all Go binaries</p>
+<p>Any statically-linked Go binary hitting the network will show this symptom. This includes <code>gh</code>, custom Go CLI tools, and Go HTTP clients. Dynamic binaries using glibc are unaffected.</p>
+</div>
+<hr />
 <h2 id="8-common-config-mistakes">8. Common Config Mistakes</h2>
 <table>
 <thead>
@@ -2557,11 +2612,11 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># After any config change to openclaw.json, validate JSON first:</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON valid&quot;</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># Then restart</span>
-<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># After any config change to openclaw.json, validate JSON first:</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON valid&quot;</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="c1"># Then restart</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
 </code></pre></div>
 <hr />
 <h2 id="9-log-locations-how-to-read-them">9. Log Locations &amp; How to Read Them</h2>
@@ -2588,90 +2643,90 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Today&#39;s gateway log</span>
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>cat<span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-100
-<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
-<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="c1"># All logs, most recent first</span>
-<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>ls<span class="w"> </span>-lt<span class="w"> </span>/tmp/openclaw/*.log
-<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>
-<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="c1"># Grep for errors across all logs</span>
-<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>grep<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;ERROR\|FATAL&quot;</span><span class="w"> </span>/tmp/openclaw/*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
-<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
-<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="c1"># Grep for a specific agent</span>
-<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>grep<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;&lt;agent-id&gt;&quot;</span><span class="w"> </span>/tmp/openclaw/*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Today&#39;s gateway log</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>cat<span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-100
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="c1"># All logs, most recent first</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>ls<span class="w"> </span>-lt<span class="w"> </span>/tmp/openclaw/*.log
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="c1"># Grep for errors across all logs</span>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>grep<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;ERROR\|FATAL&quot;</span><span class="w"> </span>/tmp/openclaw/*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="c1"># Grep for a specific agent</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>grep<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;&lt;agent-id&gt;&quot;</span><span class="w"> </span>/tmp/openclaw/*.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-30
 </code></pre></div>
 <hr />
 <h3 id="parsing-json-logs">Parsing JSON logs</h3>
 <p>Gateway logs are newline-delimited JSON. Use Python to extract fields:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># Extract just the message field from recent errors</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>tail<span class="w"> </span>-200<span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="s2">import sys, json</span>
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="s2">for line in sys.stdin:</span>
-<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="s2">    try:</span>
-<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="s2">        obj = json.loads(line)</span>
-<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="s2">        if obj.get(&#39;level&#39;) in (&#39;error&#39;, &#39;fatal&#39;):</span>
-<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="s2">            print(obj.get(&#39;time&#39;, &#39;&#39;), obj.get(&#39;msg&#39;, &#39;&#39;), obj.get(&#39;error&#39;, &#39;&#39;))</span>
-<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="s2">    except:</span>
-<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="s2">        pass</span>
-<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="s2">&quot;</span>
-<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>
-<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="c1"># Show all fields for lines matching a pattern</span>
-<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>grep<span class="w"> </span><span class="s2">&quot;session&quot;</span><span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
-<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="s2">import sys, json</span>
-<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="s2">for line in sys.stdin:</span>
-<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a><span class="s2">    try:</span>
-<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a><span class="s2">        print(json.dumps(json.loads(line), indent=2))</span>
-<a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a><span class="s2">    except:</span>
-<a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a><span class="s2">        print(line, end=&#39;&#39;)</span>
-<a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-100
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># Extract just the message field from recent errors</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>tail<span class="w"> </span>-200<span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="s2">import sys, json</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="s2">for line in sys.stdin:</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="s2">    try:</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="s2">        obj = json.loads(line)</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="s2">        if obj.get(&#39;level&#39;) in (&#39;error&#39;, &#39;fatal&#39;):</span>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="s2">            print(obj.get(&#39;time&#39;, &#39;&#39;), obj.get(&#39;msg&#39;, &#39;&#39;), obj.get(&#39;error&#39;, &#39;&#39;))</span>
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="s2">    except:</span>
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="s2">        pass</span>
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="s2">&quot;</span>
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a>
+<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="c1"># Show all fields for lines matching a pattern</span>
+<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>grep<span class="w"> </span><span class="s2">&quot;session&quot;</span><span class="w"> </span>/tmp/openclaw/openclaw-<span class="k">$(</span>date<span class="w"> </span>+%Y-%m-%d<span class="k">)</span>.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="s2">import sys, json</span>
+<a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="s2">for line in sys.stdin:</span>
+<a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="s2">    try:</span>
+<a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="s2">        print(json.dumps(json.loads(line), indent=2))</span>
+<a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="s2">    except:</span>
+<a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a><span class="s2">        print(line, end=&#39;&#39;)</span>
+<a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-100
 </code></pre></div>
 <hr />
 <h3 id="reading-session-transcripts">Reading session transcripts</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># List sessions for an agent</span>
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>ls<span class="w"> </span>-lt<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/sessions/
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
-<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="c1"># Read a session (each line is a JSON turn)</span>
-<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>cat<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/sessions/&lt;session-id&gt;.jsonl<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
-<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="s2">import sys, json</span>
-<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="s2">for line in sys.stdin:</span>
-<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="s2">    obj = json.loads(line)</span>
-<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="s2">    role = obj.get(&#39;role&#39;, &#39;?&#39;)</span>
-<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="s2">    content = obj.get(&#39;content&#39;, &#39;&#39;)</span>
-<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="s2">    if isinstance(content, list):</span>
-<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="s2">        content = &#39; &#39;.join(c.get(&#39;text&#39;, &#39;&#39;) for c in content if isinstance(c, dict))</span>
-<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="s2">    print(f&#39;[{role}] {str(content)[:200]}&#39;)</span>
-<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="c1"># List sessions for an agent</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>ls<span class="w"> </span>-lt<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/sessions/
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="c1"># Read a session (each line is a JSON turn)</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>cat<span class="w"> </span>~/.openclaw/agents/&lt;agent-id&gt;/sessions/&lt;session-id&gt;.jsonl<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="s2">import sys, json</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="s2">for line in sys.stdin:</span>
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="s2">    obj = json.loads(line)</span>
+<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="s2">    role = obj.get(&#39;role&#39;, &#39;?&#39;)</span>
+<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="s2">    content = obj.get(&#39;content&#39;, &#39;&#39;)</span>
+<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="s2">    if isinstance(content, list):</span>
+<a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="s2">        content = &#39; &#39;.join(c.get(&#39;text&#39;, &#39;&#39;) for c in content if isinstance(c, dict))</span>
+<a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="s2">    print(f&#39;[{role}] {str(content)[:200]}&#39;)</span>
+<a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="s2">&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="10-emergency-recovery">10. Emergency Recovery</h2>
 <h3 id="full-gateway-reset">Full gateway reset</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="c1"># Verify it&#39;s up</span>
-<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>status
-<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="c1"># Verify it&#39;s up</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>status
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>openclaw<span class="w"> </span>logs<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
 </code></pre></div>
 <hr />
 <h3 id="config-backup-rollback">Config backup &amp; rollback</h3>
 <div class="admonition danger">
 <p class="admonition-title">Always back up before editing <code>openclaw.json</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json<span class="w"> </span>~/.openclaw/openclaw.json.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json<span class="w"> </span>~/.openclaw/openclaw.json.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
 </code></pre></div>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># Back up current config</span>
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json<span class="w"> </span>~/.openclaw/openclaw.json.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>
-<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="c1"># List backups</span>
-<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>ls<span class="w"> </span>-lt<span class="w"> </span>~/.openclaw/openclaw.json.bak.*
-<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
-<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c1"># Roll back to a specific backup</span>
-<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json.bak.20260223-140000<span class="w"> </span>~/.openclaw/openclaw.json
-<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>
-<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="c1"># Validate before restarting</span>
-<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON valid&quot;</span>
-<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>
-<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="c1"># Restart</span>
-<a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># Back up current config</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json<span class="w"> </span>~/.openclaw/openclaw.json.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="c1"># List backups</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>ls<span class="w"> </span>-lt<span class="w"> </span>~/.openclaw/openclaw.json.bak.*
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="c1"># Roll back to a specific backup</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a>cp<span class="w"> </span>~/.openclaw/openclaw.json.bak.20260223-140000<span class="w"> </span>~/.openclaw/openclaw.json
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="c1"># Validate before restarting</span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json; json.load(open(&#39;</span><span class="nv">$HOME</span><span class="s2">/.openclaw/openclaw.json&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON valid&quot;</span>
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a>
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="c1"># Restart</span>
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
 </code></pre></div>
 <hr />
 <h3 id="gateway-store-reset-last-resort">Gateway store reset (last resort)</h3>
@@ -2679,19 +2734,19 @@
 <p class="admonition-title">This wipes cron state and persisted session data</p>
 <p>Only do this if the gateway refuses to start and you've ruled out config/port issues.</p>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># Stop gateway first</span>
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop
-<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
-<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="c1"># Back up the store</span>
-<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>cp<span class="w"> </span>-r<span class="w"> </span>~/.openclaw/store<span class="w"> </span>~/.openclaw/store.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
-<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
-<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="c1"># Wipe the store</span>
-<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.openclaw/store
-<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a>
-<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="c1"># Start fresh</span>
-<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
-<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a>
-<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="c1"># Re-register any cron jobs that were lost</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># Stop gateway first</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>stop
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="c1"># Back up the store</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>cp<span class="w"> </span>-r<span class="w"> </span>~/.openclaw/store<span class="w"> </span>~/.openclaw/store.bak.<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d-%H%M%S<span class="k">)</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="c1"># Wipe the store</span>
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>rm<span class="w"> </span>-rf<span class="w"> </span>~/.openclaw/store
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="c1"># Start fresh</span>
+<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a>
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a><span class="c1"># Re-register any cron jobs that were lost</span>
 </code></pre></div>
 <hr />
 <h3 id="quick-reference-most-common-fixes">Quick reference: most common fixes</h3>

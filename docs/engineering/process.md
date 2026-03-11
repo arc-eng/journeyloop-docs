@@ -91,7 +91,7 @@ stateDiagram-v2
     needs_spec --> needs_ux : PM writes spec (in issue)
     needs_ux --> needs_tech_spec : UX concept done
     needs_tech_spec --> ready_for_dev : Marco approves in #development
-    ready_for_dev --> [*] : SWE ships it
+    ready_for_dev --> [*] : Marco implements locally
 
     needs_spec : needs-spec
     needs_ux : needs-ux
@@ -106,7 +106,7 @@ stateDiagram-v2
 | `needs-spec` | — | Feature needs a product spec (written in issue body) |
 | `needs-ux` | PM | Spec done, needs UX concept |
 | `needs-tech-spec` | PM/UX | Ready for CTO to write tech-spec.md |
-| `ready-for-dev` | Marco | Fully specced and approved, SWE can implement |
+| `ready-for-dev` | Marco | Fully specced and approved — Marco implements locally |
 | `needs-po-input` | CTO | CTO needs product clarification |
 | `needs-cto-input` | PM | PM needs technical assessment |
 | `blocked-technical` | CTO | Technical blocker identified |
@@ -140,8 +140,7 @@ The CEO agent handles the bulk of tactical decisions so Marco isn't pinged for r
 | :material-briefcase-outline: **PM** | Product spec (in issue body), acceptance criteria, prioritization | `needs-spec` → `needs-ux` or `needs-tech-spec` |
 | :material-wrench-outline: **CTO** | `tech-spec.md`, architecture decisions, PR review | `needs-tech-spec` → (Marco reviews) → `ready-for-dev` |
 | :material-palette-outline: **UX Agent** | `ux.md`, interaction design, wireframes | `needs-ux` → `needs-tech-spec` |
-| :material-crown-outline: **Marco** | Founder decisions, approvals | Reviews tech spec in `#development` → `ready-for-dev` |
-| :material-code-braces: **SWE** | Implementation, PRs, `plan.md` | `ready-for-dev` → done |
+| :material-crown-outline: **Marco** | Founder decisions, approvals, all implementation | Reviews tech spec → `ready-for-dev`; codes locally |
 
 ---
 
@@ -245,7 +244,7 @@ Why this matters — 1-2 sentences.
 
 ## Implementation Issues
 
-When a feature reaches `ready-for-dev`, implementation issues are created in `arc-eng/journeyloop` (the code repo):
+When a feature reaches `ready-for-dev`, Marco implements it locally. Implementation issues in `arc-eng/journeyloop` follow this format:
 
 ```markdown
 **As a** [role],
@@ -259,14 +258,8 @@ When a feature reaches `ready-for-dev`, implementation issues are created in `ar
 See: `planning/<project>/<feature>/` in journeyloop-startup-assistant
 ```
 
----
-
-## plan.md
-
-When a feature reaches `ready-for-dev`, **SWE** creates `plan.md` in the feature's planning folder. This is the implementation plan — written by SWE, not CTO — and captures how SWE intends to implement the feature before writing code.
-
-!!! info "SWE owns plan.md"
-    CTO owns `tech-spec.md` (architecture). SWE owns `plan.md` (implementation). These are distinct documents with distinct authors.
+!!! info "`ready-for-dev` is the final pipeline stage"
+    As of March 2026, there is no SWE agent. Marco codes locally. `ready-for-dev` means the feature is fully specced and approved — Marco picks it up when ready. No agent auto-triggers on this label.
 
 ---
 
