@@ -60,4 +60,30 @@ This section covers the **infrastructure and operations layer**: how agents are 
 
     [:octicons-arrow-right-24: Read the Training Program](training.md)
 
+-   :material-file-code-outline: **Dotfile IPC**
+
+    ---
+
+    How sandboxed agents request side-effects from the operator:
+
+    - JSON `*.request.json` files for file delivery and Telegram UI
+    - Auto-resolved delivery target from `.credentials.json`
+    - `journeyloop` vs `jl-operator` CLI split
+    - Monitor reliability design
+
+    [:octicons-arrow-right-24: Dotfile IPC Reference](dotfile-ipc.md)
+
+-   :material-chart-line: **Monitoring Stack**
+
+    ---
+
+    Prometheus + Grafana observability on the GCP VM:
+
+    - Message flow, token cost, session health
+    - Docker container + VM resource metrics
+    - SSH tunnel access to Grafana
+    - OpenClaw OTLP configuration
+
+    [:octicons-arrow-right-24: Monitoring Stack](monitoring.md)
+
 </div>

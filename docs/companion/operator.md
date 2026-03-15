@@ -42,26 +42,39 @@ graph LR
 
 ## Provisioning Flow
 
-When a coach is provisioned from the Django admin:
+Provisioning is fully automated via `jl-operator reconcile`. The reconciler polls Django for `CompanionProfile` records in `pending` status and drives them through a state machine:
+
+```
+pending → provisioning → activating → active
+                                    ↘ error (retried automatically)
+```
 
 ```mermaid
 sequenceDiagram
     participant Django
-    participant Operator as Main Operator Agent
+    participant Reconciler as jl-operator reconcile
     participant OpenClaw as OpenClaw Config
-    participant Script as provision-coach.sh
+    participant Agent as Coach Agent
 
-    Django->>Operator: Provisioning instruction
-    Operator->>Script: Run provision-coach.sh
-    Script->>OpenClaw: Create agent, write workspace files<br/>(SOUL.md, TOOLS.md, AGENTS.md)
-    Script->>Script: Generate API key
-    Script->>Django: POST /api/companion/v1/internal/set-key/<agent_id>/
+    Django->>Reconciler: CompanionProfile (status=pending)
+    Reconciler->>OpenClaw: Create workspace + openclaw.json entry
+    Reconciler->>Reconciler: Generate API key
+    Reconciler->>Django: POST /internal/set-key/<agent_id>/
     Note over Django: Stores SHA-256 hash only<br/>Plaintext never persisted
-    Script->>OpenClaw: Write .credentials.json<br/>(API key + Django URL)
+    Reconciler->>OpenClaw: Write .credentials.json + reload gateway
+    Reconciler->>Django: Fetch client data → write jl-data/
+    Reconciler->>Agent: Send ACTIVATION.md (companion-memory skill)
+    Agent-->>Reconciler: ACTIVATION_COMPLETE
+    Reconciler->>OpenClaw: Write BOOTSTRAP.md + create admin Telegram topic
+    Reconciler->>Django: PATCH status → active
 ```
 
 !!! success "Security: operator-generated keys"
     Django used to generate keys and store them. After a Copilot review flagged this, the architecture was inverted — **the operator generates the key and registers the hash with Django**. This way the plaintext never exists in Django's database.
+
+**Error recovery:** stale `activating` or `error` profiles are retried automatically on the next reconcile run. The reconciler is idempotent — safe to re-run at any point.
+
+For the complete state machine reference, see [`operator/docs/reconciler.md`](https://github.com/arc-eng/journeyloop/blob/main/operator/docs/reconciler.md) in the source repo.
 
 ---
 
@@ -154,6 +167,33 @@ Then restart the OpenClaw gateway so it picks up the new image:
 ```bash title="Restart gateway"
 sudo systemctl restart openclaw-gateway
 ```
+
+---
+
+## Agent → Operator Communication (Dotfile IPC)
+
+Sandboxed agents cannot send messages directly. They communicate with the operator by writing JSON request files to their workspace. The operator monitor detects these files and acts on them.
+
+Two request types are supported:
+
+| Type | Purpose | Companion command |
+|------|---------|-----------------|
+| `deliver-file` | Send a PDF or file to the coach | `journeyloop companion deliver-file <file>` |
+| `telegram-ui` | Send a poll or message with inline buttons | `journeyloop companion send-poll` / `send-message` |
+
+Since March 2026, agents no longer need to specify their Telegram ID — the monitor auto-resolves it from `.credentials.json`.
+
+[:octicons-arrow-right-24: Dotfile IPC Reference](dotfile-ipc.md)
+
+---
+
+## Monitoring
+
+The companion operator ships a Prometheus + Grafana stack covering message throughput, token cost, session health, and VM/container resources.
+
+Access Grafana via SSH tunnel to `127.0.0.1:3000` on the GCP VM — no auth required.
+
+[:octicons-arrow-right-24: Monitoring Stack](monitoring.md)
 
 ---
 

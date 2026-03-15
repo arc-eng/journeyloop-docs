@@ -947,17 +947,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#planmd" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        plan.md
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#communication" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1403,17 +1392,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#planmd" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        plan.md
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#communication" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1529,7 +1507,7 @@
     needs_spec --&gt; needs_ux : PM writes spec (in issue)
     needs_ux --&gt; needs_tech_spec : UX concept done
     needs_tech_spec --&gt; ready_for_dev : Marco approves in #development
-    ready_for_dev --&gt; [*] : SWE ships it
+    ready_for_dev --&gt; [*] : Marco implements locally
 
     needs_spec : needs-spec
     needs_ux : needs-ux
@@ -1563,7 +1541,7 @@
 <tr>
 <td><code>ready-for-dev</code></td>
 <td>Marco</td>
-<td>Fully specced and approved, SWE can implement</td>
+<td>Fully specced and approved — Marco implements locally</td>
 </tr>
 <tr>
 <td><code>needs-po-input</code></td>
@@ -1647,13 +1625,8 @@
 </tr>
 <tr>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 8 3 5.2 3-2.7-.7 3.5H6.7L6 10.5l3 2.7zm0-4-3.5 6L3 5l2 11h14l2-11-5.5 5zm7 14H5v1c0 .6.4 1 1 1h12c.6 0 1-.4 1-1z"/></svg></span> <strong>Marco</strong></td>
-<td>Founder decisions, approvals</td>
-<td>Reviews tech spec in <code>#development</code> → <code>ready-for-dev</code></td>
-</tr>
-<tr>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg></span> <strong>SWE</strong></td>
-<td>Implementation, PRs, <code>plan.md</code></td>
-<td><code>ready-for-dev</code> → done</td>
+<td>Founder decisions, approvals, all implementation</td>
+<td>Reviews tech spec → <code>ready-for-dev</code>; codes locally</td>
 </tr>
 </tbody>
 </table>
@@ -1742,7 +1715,7 @@
 </div>
 <hr />
 <h2 id="implementation-issues">Implementation Issues</h2>
-<p>When a feature reaches <code>ready-for-dev</code>, implementation issues are created in <code>arc-eng/journeyloop</code> (the code repo):</p>
+<p>When a feature reaches <code>ready-for-dev</code>, Marco implements it locally. Implementation issues in <code>arc-eng/journeyloop</code> follow this format:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gs">**As a**</span> [role],
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="gs">**I want**</span> [goal]
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gs">**so that**</span> [value].
@@ -1753,12 +1726,9 @@
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="gu">## Planning</span>
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>See: <span class="sb">`planning/&lt;project&gt;/&lt;feature&gt;/`</span> in journeyloop-startup-assistant
 </code></pre></div>
-<hr />
-<h2 id="planmd">plan.md</h2>
-<p>When a feature reaches <code>ready-for-dev</code>, <strong>SWE</strong> creates <code>plan.md</code> in the feature's planning folder. This is the implementation plan — written by SWE, not CTO — and captures how SWE intends to implement the feature before writing code.</p>
 <div class="admonition info">
-<p class="admonition-title">SWE owns plan.md</p>
-<p>CTO owns <code>tech-spec.md</code> (architecture). SWE owns <code>plan.md</code> (implementation). These are distinct documents with distinct authors.</p>
+<p class="admonition-title"><code>ready-for-dev</code> is the final pipeline stage</p>
+<p>As of March 2026, there is no SWE agent. Marco codes locally. <code>ready-for-dev</code> means the feature is fully specced and approved — Marco picks it up when ready. No agent auto-triggers on this label.</p>
 </div>
 <hr />
 <h2 id="communication">Communication</h2>

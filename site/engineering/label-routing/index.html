@@ -1252,6 +1252,10 @@
 <h1 id="github-label-agent-routing"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 17H5V7h11l3.55 5m-1.92-6.16C17.27 5.33 16.67 5 16 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11c.67 0 1.27-.34 1.63-.85L22 12z"/></svg></span> GitHub Label → Agent Routing</h1>
 <p>Applying a label to a GitHub issue is all it takes to route work to an agent. A poller checks <code>arc-eng/journeyloop</code> every 5 minutes, maps new labels to agent queues, creates tasks, and immediately dispatches the target agent via the OpenResponses API. No Slack message, no manual dispatch, no waiting for a heartbeat.</p>
 <hr />
+<div class="admonition info">
+<p class="admonition-title">SWE agent removed — March 2026</p>
+<p>As of March 10, 2026, the SWE agent is no longer part of the team. Marco codes locally. The <code>auto-build</code> label is retired. <code>ready-for-dev</code> is the final pipeline stage — no agent picks it up automatically.</p>
+</div>
 <h2 id="why-labels">Why Labels</h2>
 <p>Labels are already how the team tracks issue state. Routing based on them adds zero friction for Marco — the same action that advances an issue through the lifecycle also dispatches work to the right agent.</p>
 <p>The alternative (a separate dispatch step, or sending a Slack message to each agent) introduces a second system to remember and a second place to check. Labels collapse both into one.</p>
@@ -1280,11 +1284,6 @@
 <td><code>needs-docs</code></td>
 <td>Docs</td>
 <td>Write documentation for the feature</td>
-</tr>
-<tr>
-<td><code>auto-build</code></td>
-<td>SWE</td>
-<td>Implement the changes and open a PR</td>
 </tr>
 <tr>
 <td><code>needs-code-review</code></td>
@@ -1383,7 +1382,7 @@
 <h2 id="dispatchable-agents">Dispatchable Agents</h2>
 <p>The poller dispatches agents by name. The current <code>DISPATCHABLE_AGENTS</code> list includes:</p>
 <ul>
-<li><code>pm</code>, <code>ux</code>, <code>docs</code>, <code>swe</code>, <code>cto</code>, <code>ceo</code>, <code>doctor</code>, <code>claude-code-expert</code></li>
+<li><code>pm</code>, <code>ux</code>, <code>docs</code>, <code>cto</code>, <code>ceo</code>, <code>doctor</code>, <code>claude-code-expert</code></li>
 </ul>
 <p>Agents not on this list won't be dispatched automatically — tasks will still be created but agents must self-pick on heartbeat.</p>
 <hr />
@@ -1399,7 +1398,7 @@
 <tbody>
 <tr>
 <td><code>ready-for-dev</code></td>
-<td>Issue is scoped and ready for development</td>
+<td>Issue is fully specced — Marco implements locally (no agent picks this up)</td>
 </tr>
 <tr>
 <td><code>needs-refinement</code></td>
@@ -1407,7 +1406,7 @@
 </tr>
 <tr>
 <td><code>needs-work</code></td>
-<td>PR was reviewed and requires changes</td>
+<td>PR was reviewed and requires changes — Marco fixes locally</td>
 </tr>
 <tr>
 <td><code>bug</code> · <code>feature</code> · <code>refactoring</code> · <code>technical-debt</code></td>

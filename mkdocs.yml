@@ -50,6 +50,8 @@ nav:
     - Operator Guide: companion/operator.md
     - Page Push: companion/page-push.md
     - Training Program: companion/training.md
+    - Dotfile IPC: companion/dotfile-ipc.md
+    - Monitoring Stack: companion/monitoring.md
   - Engineering:
     - engineering/index.md
     - Process: engineering/process.md

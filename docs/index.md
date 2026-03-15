@@ -31,9 +31,11 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
 
     The AI companion feature — how it's architected, provisioned, and operated.
 
-    - [Operator Guide](companion/operator.md) — architecture (OpenClaw on GCP), provisioning flow, key design decisions, operations runbook
+    - [Operator Guide](companion/operator.md) — architecture (OpenClaw on GCP), declarative reconciler provisioning, key design decisions, operations runbook
     - [Page Push](companion/page-push.md) — companion-initiated UI page push, overlay panel design, spotlight highlights, state persistence
     - [Training Program](companion/training.md) — how companion quality improves over time: scenario-based evaluation, template refinement, bootstrap learning, and the production promotion pipeline
+    - [Dotfile IPC](companion/dotfile-ipc.md) — how sandboxed agents communicate with the operator: file delivery, Telegram UI, delivery target auto-resolution, CLI split
+    - [Monitoring Stack](companion/monitoring.md) — Prometheus + Grafana on the GCP VM: message flow, token cost, session health, SSH tunnel access
 
     [:octicons-arrow-right-24: Explore Companion](companion/index.md)
 
@@ -58,4 +60,4 @@ Internal documentation for the JourneyLoop platform — architecture decisions, 
 
 ---
 
-*:material-clock-edit-outline: Last updated: 2026-02-27 (afternoon) — docs are maintained by the Docs Agent. To add or update a page, send a `WRITE` message to `agent:docs:main`.*
+*:material-clock-edit-outline: Last updated: 2026-03-15 — docs are maintained by the Docs Agent. To add or update a page, send a `WRITE` message to `agent:docs:main`.*
